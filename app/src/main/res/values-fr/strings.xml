@@ -1,5 +1,20 @@
 <resources>
+
+    <!--Login-->
     <string name="app_name">GFaim</string>
-    <string name="welcomeBack">Bienvenue!</string>
+    <string name="welcomeBack">  Bienvenue!</string>
     <string name="password">Mot de passe</string>
+    <string name="email">Email</string>
+    <string name="login">Connexion</string>
+    <string name="or">ou</string>
+    <string name="noAccount">Pas de compte ?</string>
+    <string name="signUp">Inscris-toi</string>
+
+    <!--Register-->
+    <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
+    <string name="helloTxt">Hi, Salut 👋</string>
+    <string name="name">Nom</string>
+    <string name="surname">Prenom</string>
+    <string name="haveAccount">Tu as un compte ?</string>
+
 </resources>

@@ -2,4 +2,12 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="grey">#303030</color>
+
+    <color name="appBackground">#D3D5C9</color>
+    <color name="greyOr">#909090</color>
+
+    <!--Button -->
+    <color name="greenBtn">#A6CB96</color>
+    <color name="orangeBtn">#F1B17D</color>
 </resources>

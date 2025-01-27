@@ -32,7 +32,7 @@ public class loginActivity extends AppCompatActivity {
             return insets;
         });
         }catch (Exception e){
-         log.warning("[MainActivity][onCreate] Problem on MainActivity launch");
+         log.warning("[loginActivity][onCreate] Problem on MainActivity launch");
         }
 
         classiclogin();
@@ -44,7 +44,7 @@ public class loginActivity extends AppCompatActivity {
 
     protected void classiclogin(){
 
-        log.info("[MainActivity][classiclogin] classiclogin ");
+        log.info("[loginActivity][classiclogin] classiclogin ");
 
 
         EditText emailField = findViewById(R.id.email);
@@ -69,7 +69,7 @@ public class loginActivity extends AppCompatActivity {
 
     protected void fbLogin(){
 
-        log.info("[MainActivity][fbLogin] fblogin ");
+        log.info("[loginActivity][fbLogin] fblogin ");
 
         ImageButton facebookBtn = findViewById(R.id.facebookButton);
 
@@ -81,7 +81,7 @@ public class loginActivity extends AppCompatActivity {
 
     protected void googleLogin(){
 
-        log.info("[MainActivity][googleLogin] googleLogin ");
+        log.info("[loginActivity][googleLogin] googleLogin ");
 
         ImageButton googleBtn = findViewById(R.id.googleButton);
 
@@ -93,7 +93,7 @@ public class loginActivity extends AppCompatActivity {
 
     protected void register(){
 
-        log.info("[MainActivity][register] register ");
+        log.info("[loginActivity][register] register ");
 
         Button signUpBtn = findViewById(R.id.signUpBtn);
 

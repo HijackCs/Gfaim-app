@@ -6,10 +6,17 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.logging.Logger;
+
 public class loadingActivity extends AppCompatActivity {
+
+    private Logger log = Logger.getLogger(loadingActivity.class.getName()) ;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        log.info("[loadingActivity][onCreate] Application starting");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);

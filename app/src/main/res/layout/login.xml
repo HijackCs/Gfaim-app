@@ -130,12 +130,13 @@
 
     </RelativeLayout>
 
-
     <ImageButton
         android:id="@+id/googleButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/round_background"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_border"
+        android:scaleType="fitXY"
+        android:padding="10dp"
         android:src="@drawable/google"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -146,10 +147,12 @@
 
     <ImageButton
         android:id="@+id/facebookButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/round_background"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/rounded_border"
         android:src="@drawable/facebook"
+        android:scaleType="fitXY"
+        android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.63"
@@ -170,6 +173,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.743" />
+
 
     <Button
         android:id="@+id/signUpBtn"

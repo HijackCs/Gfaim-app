@@ -6,6 +6,10 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+
 import java.util.logging.Logger;
 
 public class loadingActivity extends AppCompatActivity {
@@ -21,19 +25,34 @@ public class loadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
 
-        //redirige vers main
-
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(getApplicationContext(), loginActivity.class);
+                Class<?> targetActivity = checkSession() ? acceuilActivity.class : loginActivity.class;
+                Intent intent = new Intent(getApplicationContext(), targetActivity);
                 startActivity(intent);
                 finish();
             }
         };
 
         new Handler().postDelayed(runnable, 3000);
-
     }
 
+
+    private boolean checkSession() {
+        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
+        if (googleAccount != null) {
+            log.info("[loadingActivity][checkSession] User logged in with Google");
+            return true;
+        }
+
+        AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
+        if (facebookAccessToken != null && !facebookAccessToken.isExpired()) {
+            log.info("[loadingActivity][checkSession] User logged in with Facebook");
+            return true;
+        }
+
+        log.info("[loadingActivity][checkSession] No active session found");
+        return false;
+    }
 }

@@ -92,10 +92,14 @@ public class acceuilActivity extends AppCompatActivity {
                 @Override
                 public void onCompleted(@Nullable JSONObject jsonObject, @Nullable GraphResponse graphResponse) {
                     if (jsonObject != null) {
+
+                        System.out.println(jsonObject);
                         try {
                             String fullName = jsonObject.getString("name");
+                            String mail = jsonObject.getString("email");
+
                             name.setText(fullName);
-                            email.setText("Logged in with Facebook");
+                            email.setText(mail);
                             log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
                             Toast.makeText(acceuilActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
@@ -107,7 +111,7 @@ public class acceuilActivity extends AppCompatActivity {
 
             // Request Facebook user details
             Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,link");
+            parameters.putString("fields", "id,name,email,link");
             request.setParameters(parameters);
             request.executeAsync();
         }

@@ -49,7 +49,7 @@ public class FacebookAuthManager {
 
         facebookBtn.setOnClickListener(v -> {
             log.info("[FacebookAuthManager][setupFacebookLogin] Facebook login button clicked");
-            LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("public_profile"));
+            LoginManager.getInstance().logInWithReadPermissions(activity, Arrays.asList("email", "public_profile"));
         });
     }
 

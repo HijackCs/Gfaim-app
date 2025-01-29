@@ -15,4 +15,5 @@
     <string name="name">Imię</string>
     <string name="surname">Nazwisko</string>
     <string name="haveAccount">Masz już konto?</string>
+    <string name="terms">J\'accepte les termes d\'utilisation</string>
 </resources>

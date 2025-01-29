@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -19,6 +20,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.gfaim.utility.auth.AuthManager;
 import com.gfaim.utility.auth.FacebookAuthManager;
 import com.gfaim.utility.auth.GoogleAuthManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -35,8 +37,7 @@ public class loginActivity extends AppCompatActivity {
 
     private Logger log = Logger.getLogger(loginActivity.class.getName()) ;
 
-    private GoogleAuthManager googleAuthManager;
-    private FacebookAuthManager facebookAuthManager;
+    private AuthManager authManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,13 +55,14 @@ public class loginActivity extends AppCompatActivity {
          log.warning("[loginActivity][onCreate] Problem on MainActivity launch");
         }
 
+        ImageButton googleBtn = findViewById(R.id.googleButton);
+        ImageButton facebookBtn = findViewById(R.id.facebookButton);
 
-        googleAuthManager = new GoogleAuthManager(this);
-        facebookAuthManager = new FacebookAuthManager();
+        authManager = new AuthManager(this);
+        authManager.setupGoogleLogin(googleBtn, this);
+        authManager.setupFacebookLogin(facebookBtn, this);
 
         setupClassicLogin();
-        setupFacebookLogin();
-        setupGoogleLogin();
         setupRegister();
     }
 
@@ -90,25 +92,10 @@ public class loginActivity extends AppCompatActivity {
     }
 
 
-  private void setupGoogleLogin() {
-        log.info("[loginActivity][setupGoogleLogin] google setup ");
-        ImageButton googleBtn = findViewById(R.id.googleButton);
-        googleBtn.setOnClickListener(v -> googleAuthManager.startGoogleLogin(this));
-    }
-
-    private void setupFacebookLogin() {
-        log.info("[loginActivity][setupFacebookLogin] facebook setup ");
-        ImageButton facebookBtn = findViewById(R.id.facebookButton);
-        facebookAuthManager.setupFacebookLogin(facebookBtn, this);
-    }
-
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         super.onActivityResult(requestCode, resultCode, data);
-        facebookAuthManager.getCallbackManager().onActivityResult(requestCode, resultCode, data);
-        googleAuthManager.handleActivityResult(requestCode, resultCode, data, this);
+        authManager.handleActivityResult(requestCode, resultCode, data, this);
     }
 
 

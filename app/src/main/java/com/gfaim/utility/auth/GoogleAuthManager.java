@@ -2,9 +2,10 @@ package com.gfaim.utility.auth;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gfaim.acceuilActivity;
+import com.gfaim.accueilActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -43,15 +44,15 @@ public class GoogleAuthManager {
         }
     }
 
+    //Faire la verif inscription ici
     public void handleActivityResult(int requestCode, int resultCode, Intent data, Activity activity) {
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 log.info("Google Login Successful: " + account.getEmail());
                 activity.finish();
-                Intent intent = new Intent(activity, acceuilActivity.class);
+                Intent intent = new Intent(activity, accueilActivity.class);
                 activity.startActivity(intent);
             } catch (ApiException e) {
                 log.warning("Google Login Failed: " + e.getMessage());

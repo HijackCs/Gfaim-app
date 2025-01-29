@@ -16,5 +16,7 @@
     <string name="name">Nom</string>
     <string name="surname">Prenom</string>
     <string name="haveAccount">Tu as un compte ?</string>
+    <string name="terms">J\'accepte les termes d\'utilisation</string>
+
 
 </resources>

@@ -1,5 +1,6 @@
 package com.gfaim;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -16,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.gfaim.utility.auth.GoogleAuthManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,9 +28,9 @@ import org.json.JSONObject;
 
 import java.util.logging.Logger;
 
-public class acceuilActivity extends AppCompatActivity {
+public class accueilActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(acceuilActivity.class.getName()) ;
+    private Logger log = Logger.getLogger(accueilActivity.class.getName()) ;
 
     // Google Sign-In variables
     private GoogleSignInOptions gso;
@@ -37,13 +39,15 @@ public class acceuilActivity extends AppCompatActivity {
     private TextView name, email;
     private Button signOutBtn;
 
+    private GoogleAuthManager gam;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
             super.onCreate(savedInstanceState);
 
             EdgeToEdge.enable(this);
-            setContentView(R.layout.acceuil);
+            setContentView(R.layout.accueil);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -56,6 +60,7 @@ public class acceuilActivity extends AppCompatActivity {
             signOutBtn = findViewById(R.id.signOutBtn);
             signOutBtn.setOnClickListener(v -> signOut());
 
+            //gam.handleGoogleLogin(this);
             handleGoogleLogin();
             handleFacebookLogin();
 
@@ -65,9 +70,7 @@ public class acceuilActivity extends AppCompatActivity {
         }
 
     }
-
-
-    private void handleGoogleLogin() {
+    public void handleGoogleLogin() {
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -78,10 +81,13 @@ public class acceuilActivity extends AppCompatActivity {
             String personEmail = acct.getEmail();
             name.setText(personName);
             email.setText(personEmail);
-            log.warning("[acceuil][handleGoogleLogin] logged in with Google");
+            log.info("[acceuil][handleGoogleLogin] logged in with Google");
             Toast.makeText(this, "Logged in with Google", Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
 
 
     private void handleFacebookLogin() {
@@ -92,8 +98,6 @@ public class acceuilActivity extends AppCompatActivity {
                 @Override
                 public void onCompleted(@Nullable JSONObject jsonObject, @Nullable GraphResponse graphResponse) {
                     if (jsonObject != null) {
-
-                        System.out.println(jsonObject);
                         try {
                             String fullName = jsonObject.getString("name");
                             String mail = jsonObject.getString("email");
@@ -101,7 +105,7 @@ public class acceuilActivity extends AppCompatActivity {
                             name.setText(fullName);
                             email.setText(mail);
                             log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
-                            Toast.makeText(acceuilActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(accueilActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             log.warning("[acceuil][handleFacebookLogin] Error parsing Facebook user info: " + e.getMessage());
                         }
@@ -121,7 +125,7 @@ public class acceuilActivity extends AppCompatActivity {
         GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (googleAccount != null) {
             gsc.signOut().addOnCompleteListener(task -> {
-                Toast.makeText(acceuilActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
+                Toast.makeText(accueilActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
                 log.info("[acceuil][signOut] Signed out from Google ");
                 goToLoginScreen();
             });
@@ -130,7 +134,7 @@ public class acceuilActivity extends AppCompatActivity {
         AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
         if (facebookAccessToken != null) {
             com.facebook.login.LoginManager.getInstance().logOut();
-            Toast.makeText(acceuilActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
+            Toast.makeText(accueilActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
             log.info("[acceuil][signOut] Signed out from Google ");
             goToLoginScreen();
         }
@@ -138,7 +142,7 @@ public class acceuilActivity extends AppCompatActivity {
 
 
     private void goToLoginScreen() {
-        Intent intent = new Intent(acceuilActivity.this, loginActivity.class);
+        Intent intent = new Intent(accueilActivity.this, loginActivity.class);
         startActivity(intent);
         finish();
     }

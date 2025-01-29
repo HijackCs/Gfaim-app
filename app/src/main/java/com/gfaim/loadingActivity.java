@@ -28,7 +28,7 @@ public class loadingActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Class<?> targetActivity = checkSession() ? acceuilActivity.class : loginActivity.class;
+                Class<?> targetActivity = checkSession() ? accueilActivity.class : loginActivity.class;
                 Intent intent = new Intent(getApplicationContext(), targetActivity);
                 startActivity(intent);
                 finish();

@@ -6,6 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -102,7 +103,7 @@ public class loginActivity extends AppCompatActivity {
     protected void setupRegister(){
 
         log.info("[loginActivity][setupRegister] setup register ");
-        Button signUpBtn = findViewById(R.id.signUpBtn);
+        TextView signUpBtn = findViewById(R.id.signUpBtn);
         signUpBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), registerActivity.class);
             startActivity(intent);

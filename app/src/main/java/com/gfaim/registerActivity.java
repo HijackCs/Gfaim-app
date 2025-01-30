@@ -23,9 +23,9 @@ public class registerActivity extends AppCompatActivity {
     private Logger log = Logger.getLogger(registerActivity.class.getName());
 
     private EditText surname, name, email, password;
-    private Button SignUpBtn, loginBtn;
+    private Button SignUpBtn;
     private CheckBox termsCheckBox;
-    private TextView termsText;
+    private TextView termsText, loginBtn;
 
     private AuthManager authManager;
 

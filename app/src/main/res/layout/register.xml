@@ -25,7 +25,6 @@
         android:id="@+id/HelloTxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-
         android:text="@string/helloTxt"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -255,37 +254,38 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.736" />
 
-    <TextView
-        android:id="@+id/haveAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/haveAccount"
-        android:textSize="10sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.075"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.827" />
-
-    <Button
-        android:id="@+id/loginBtn"
-        android:layout_width="105dp"
-        android:layout_height="36dp"
-        android:background="@android:color/transparent"
+    <LinearLayout
+        android:layout_width="171dp"
+        android:layout_height="43dp"
+        android:layout_marginBottom="124dp"
         android:gravity="center"
-        android:padding="8dp"
-        android:text="@string/login"
-        android:textColor="@color/orangeBtn"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.271"
+        app:layout_constraintHorizontal_bias="0.104"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837" />
+        app:layout_constraintTop_toBottomOf="@+id/SignUpBtn"
+        app:layout_constraintVertical_bias="0.0">
+
+        <TextView
+            android:id="@+id/haveAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/noAccount"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/loginBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingStart="4dp"
+            android:text="@string/signUp"
+            android:textColor="@color/orangeBtn"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

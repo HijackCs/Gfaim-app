@@ -1,6 +1,5 @@
-package com.gfaim;
+package com.gfaim.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
@@ -17,7 +16,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.gfaim.utility.auth.GoogleAuthManager;
+import com.gfaim.R;
+import com.gfaim.activities.auth.LoginActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -28,18 +28,15 @@ import org.json.JSONObject;
 
 import java.util.logging.Logger;
 
-public class accueilActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(accueilActivity.class.getName()) ;
-
-    // Google Sign-In variables
-    private GoogleSignInOptions gso;
+    private Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
+    private TextView email;
+    private TextView name;
+    private Button signOutBtn;
     private GoogleSignInClient gsc;
 
-    private TextView name, email;
-    private Button signOutBtn;
 
-    private GoogleAuthManager gam;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +44,7 @@ public class accueilActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
 
             EdgeToEdge.enable(this);
-            setContentView(R.layout.accueil);
+            setContentView(R.layout.home);
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
                 Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -56,8 +53,7 @@ public class accueilActivity extends AppCompatActivity {
 
             name = findViewById(R.id.name);
             email = findViewById(R.id.email);
-
-            signOutBtn = findViewById(R.id.signOutBtn);
+            Button signOutBtn = findViewById(R.id.signOutBtn);
             signOutBtn.setOnClickListener(v -> signOut());
 
             //gam.handleGoogleLogin(this);
@@ -71,6 +67,9 @@ public class accueilActivity extends AppCompatActivity {
 
     }
     public void handleGoogleLogin() {
+
+        // Google Sign-In variables
+        GoogleSignInOptions gso;
 
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
         gsc = GoogleSignIn.getClient(this, gso);
@@ -105,7 +104,7 @@ public class accueilActivity extends AppCompatActivity {
                             name.setText(fullName);
                             email.setText(mail);
                             log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
-                            Toast.makeText(accueilActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(HomeActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             log.warning("[acceuil][handleFacebookLogin] Error parsing Facebook user info: " + e.getMessage());
                         }
@@ -125,7 +124,7 @@ public class accueilActivity extends AppCompatActivity {
         GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (googleAccount != null) {
             gsc.signOut().addOnCompleteListener(task -> {
-                Toast.makeText(accueilActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
                 log.info("[acceuil][signOut] Signed out from Google ");
                 goToLoginScreen();
             });
@@ -134,7 +133,7 @@ public class accueilActivity extends AppCompatActivity {
         AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
         if (facebookAccessToken != null) {
             com.facebook.login.LoginManager.getInstance().logOut();
-            Toast.makeText(accueilActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
+            Toast.makeText(HomeActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
             log.info("[acceuil][signOut] Signed out from Google ");
             goToLoginScreen();
         }
@@ -142,7 +141,7 @@ public class accueilActivity extends AppCompatActivity {
 
 
     private void goToLoginScreen() {
-        Intent intent = new Intent(accueilActivity.this, loginActivity.class);
+        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

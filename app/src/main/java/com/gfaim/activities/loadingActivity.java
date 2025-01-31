@@ -1,4 +1,4 @@
-package com.gfaim;
+package com.gfaim.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,8 @@ import android.os.Handler;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
+import com.gfaim.R;
+import com.gfaim.activities.auth.LoginActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -28,7 +30,7 @@ public class loadingActivity extends AppCompatActivity {
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-                Class<?> targetActivity = checkSession() ? accueilActivity.class : loginActivity.class;
+                Class<?> targetActivity = checkSession() ? HomeActivity.class : LoginActivity.class;
                 Intent intent = new Intent(getApplicationContext(), targetActivity);
                 startActivity(intent);
                 finish();

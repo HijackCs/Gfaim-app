@@ -1,4 +1,4 @@
-package com.gfaim;
+package com.gfaim.activities.auth;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,18 +14,24 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.gfaim.R;
+import com.gfaim.activities.HomeActivity;
 import com.gfaim.utility.auth.AuthManager;
 
 import java.util.logging.Logger;
 
-public class registerActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(registerActivity.class.getName());
+    private Logger log = Logger.getLogger(RegisterActivity.class.getName());
 
-    private EditText surname, name, email, password;
+    private EditText surname;
+    private EditText name;
+    private EditText email;
+    private EditText password;
     private Button SignUpBtn;
     private CheckBox termsCheckBox;
-    private TextView termsText, loginBtn;
+    private TextView loginBtn;
+    private TextView termsText;
 
     private AuthManager authManager;
 
@@ -81,7 +87,7 @@ public class registerActivity extends AppCompatActivity {
     }
 
     private void setupAuthButtons() {
-        log.info("[registerActivity][setupAuthButtons] setup auth Btn ");
+        log.info("[RegisterActivity][setupAuthButtons] setup auth Btn ");
 
         LinearLayout googleBtn = findViewById(R.id.googleButton);
         LinearLayout facebookBtn = findViewById(R.id.facebookButton);
@@ -92,21 +98,21 @@ public class registerActivity extends AppCompatActivity {
     }
 
     protected void setupRegisterBtn() {
-        log.info("[registerActivity][setupRegisterBtn] setup Register Btn ");
+        log.info("[RegisterActivity][setupRegisterBtn] setup Register Btn ");
 
         SignUpBtn.setOnClickListener(v -> {
-            log.info("[registerActivity][register] register ");
-            Intent intent = new Intent(getApplicationContext(), accueilActivity.class);
+            log.info("[RegisterActivity][register] register ");
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
         });
     }
 
     protected void setupLoginBtn() {
-        log.info("[registerActivity][setupLoginBtn] setup login button ");
+        log.info("[RegisterActivity][setupLoginBtn] setup login button ");
 
         loginBtn.setOnClickListener(v -> {
-            log.info("[registerActivity][setupLoginBtn] go back to login page ");
-            Intent intent = new Intent(getApplicationContext(), loginActivity.class);
+            log.info("[RegisterActivity][setupLoginBtn] go back to login page ");
+            Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
         });
     }

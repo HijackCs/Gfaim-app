@@ -8,6 +8,8 @@
     <string name="or">or</string>
     <string name="noAccount">Don\'t have an account?</string>
     <string name="signUp">Sign up</string>
+    <string name="forgotPwd">Forget password ?</string>
+
 
     <!--Register-->
     <string name="registerTxtView">Enter your credential to access your account</string>
@@ -17,8 +19,17 @@
     <string name="haveAccount">Have an account?</string>
     <string name="terms">I agree to the terms of use</string>
 
-    <!--facebook-->
+    <!--Check Mail-->
+    <string name="checkMail">Check your mail</string>
+    <string name="continueBtn">Continue</string>
 
+    <!--Forgot pwd-->
+    <string name="sendCode">Send code</string>
+    <string name="resetPwd">Reset Password</string>
+    <string name="remember">Remember your password ?</string>
+    <string name="goBackLogin">Go back to login</string>
+
+    <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>

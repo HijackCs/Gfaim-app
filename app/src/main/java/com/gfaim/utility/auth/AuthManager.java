@@ -4,13 +4,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.gfaim.loginActivity;
+import com.gfaim.activities.auth.LoginActivity;
 
 import java.util.logging.Logger;
 
 public class AuthManager {
 
-    private Logger log = Logger.getLogger(loginActivity.class.getName()) ;
+    private Logger log = Logger.getLogger(LoginActivity.class.getName()) ;
 
     private GoogleAuthManager googleAuthManager;
     private FacebookAuthManager facebookAuthManager;

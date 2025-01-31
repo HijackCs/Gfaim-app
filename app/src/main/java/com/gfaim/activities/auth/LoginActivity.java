@@ -1,42 +1,32 @@
-package com.gfaim;
+package com.gfaim.activities.auth;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.InputType;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
+import com.gfaim.R;
 import com.gfaim.utility.auth.AuthManager;
-import com.gfaim.utility.auth.FacebookAuthManager;
-import com.gfaim.utility.auth.GoogleAuthManager;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.Task;
 
-import java.util.Arrays;
 import java.util.logging.Logger;
 
-public class loginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(loginActivity.class.getName()) ;
+    private Logger log = Logger.getLogger(LoginActivity.class.getName()) ;
 
     private AuthManager authManager;
 
@@ -53,7 +43,7 @@ public class loginActivity extends AppCompatActivity {
             return insets;
         });
         }catch (Exception e){
-         log.warning("[loginActivity][onCreate] Problem on MainActivity launch");
+         log.warning("[LoginActivity][onCreate] Problem on MainActivity launch");
         }
 
         ImageButton googleBtn = findViewById(R.id.googleButton);
@@ -65,13 +55,15 @@ public class loginActivity extends AppCompatActivity {
 
         setupClassicLogin();
         setupRegister();
+        setupForgotPwd();
+
     }
 
 
     //Work in progress
     protected void setupClassicLogin(){
 
-        log.info("[loginActivity][setupClassicLogin] classic login setup ");
+        log.info("[LoginActivity][setupClassicLogin] classic login setup ");
 
 
         EditText emailField = findViewById(R.id.email);
@@ -84,9 +76,9 @@ public class loginActivity extends AppCompatActivity {
             String password = passwordField.getText().toString();
 
             if(email.isEmpty() || password.isEmpty()){
-                Toast.makeText(loginActivity.this, "MDP ou EMAIL incorrect", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "MDP ou EMAIL incorrect", Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(loginActivity.this, "Email: " + email + "\nPassword: " + password, Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Email: " + email + "\nPassword: " + password, Toast.LENGTH_SHORT).show();
             }
 
         });
@@ -102,11 +94,23 @@ public class loginActivity extends AppCompatActivity {
 
     protected void setupRegister(){
 
-        log.info("[loginActivity][setupRegister] setup register ");
+        log.info("[LoginActivity][setupRegister] setup register ");
         TextView signUpBtn = findViewById(R.id.signUpBtn);
         signUpBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), registerActivity.class);
+            Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
             startActivity(intent);
         });
     }
+
+
+    protected void setupForgotPwd(){
+
+        log.info("[LoginActivity][setupForgotPwd] setup forgot pwd ");
+        TextView forgotPwd = findViewById(R.id.forgotPwd);
+        forgotPwd.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), ForgotPwdActivity.class);
+            startActivity(intent);
+        });
+    }
+
 }

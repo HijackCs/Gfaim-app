@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    tools:context=".activities.auth.LoginActivity">
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="160dp"
+        android:layout_height="158dp"
+        android:src="@drawable/logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.013" />
+
+    <TextView
+        android:id="@+id/checkMail"
+        android:layout_width="290dp"
+        android:layout_height="52dp"
+        android:gravity="center"
+        android:text="@string/checkMail"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.244" />
+
+    <LinearLayout
+        android:id="@+id/codeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.32" >
+
+        <EditText
+            android:id="@+id/code1"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/code2"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/code3"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/code4"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/code5"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+
+        <EditText
+            android:id="@+id/code6"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/rounded_border"
+            android:gravity="center"
+            android:hint="•"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="24sp"
+            android:digits="0123456789"
+            android:focusableInTouchMode="true"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/continueBtn"
+        android:layout_width="276dp"
+        android:layout_height="61dp"
+        android:backgroundTint="@color/greenBtn"
+        android:padding="16dp"
+        android:text="@string/continueBtn"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.414" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

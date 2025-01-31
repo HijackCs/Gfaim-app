@@ -8,6 +8,8 @@
     <string name="or">lub</string>
     <string name="noAccount">Nie masz konta?</string>
     <string name="signUp">Zarejestruj się</string>
+    <string name="forgotPwd">Mots de passe oublié ?</string>
+
 
     <!--Register-->
     <string name="registerTxtView">Wprowadź swoje dane, aby uzyskać dostęp do konta</string>
@@ -16,4 +18,14 @@
     <string name="surname">Nazwisko</string>
     <string name="haveAccount">Masz już konto?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
+
+    <!--Check Mail-->
+    <string name="checkMail">Regarde tes mails</string>
+    <string name="continueBtn">Continuer</string>
+
+    <!--Forgot pwd-->
+    <string name="sendCode">Send code</string>
+    <string name="resetPwd">Reset Password</string>
+
+
 </resources>

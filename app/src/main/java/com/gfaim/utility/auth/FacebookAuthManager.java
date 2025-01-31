@@ -3,14 +3,13 @@ package com.gfaim.utility.auth;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
-import android.widget.ImageButton;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.gfaim.accueilActivity;
+import com.gfaim.activities.HomeActivity;
 
 import java.util.Arrays;
 import java.util.logging.Logger;
@@ -33,7 +32,7 @@ public class FacebookAuthManager {
             public void onSuccess(LoginResult loginResult) {
                 log.info("[setupFacebookLogin][onSuccess] Facebook Login Successful");
                 activity.finish();
-                Intent intent = new Intent(activity, accueilActivity.class);
+                Intent intent = new Intent(activity, HomeActivity.class);
                 activity.startActivity(intent);
             }
 

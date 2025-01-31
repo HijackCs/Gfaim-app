@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
-import com.gfaim.accueilActivity;
+import com.gfaim.activities.HomeActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -51,7 +51,7 @@ public class GoogleAuthManager {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 log.info("Google Login Successful: " + account.getEmail());
                 activity.finish();
-                Intent intent = new Intent(activity, accueilActivity.class);
+                Intent intent = new Intent(activity, HomeActivity.class);
                 activity.startActivity(intent);
             } catch (ApiException e) {
                 log.warning("Google Login Failed: " + e.getMessage());

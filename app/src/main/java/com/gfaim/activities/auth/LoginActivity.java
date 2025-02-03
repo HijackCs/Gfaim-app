@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -112,5 +114,19 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(intent);
         });
     }
+
+    public void ShowHidePass(View view) {
+        EditText passwordField = findViewById(R.id.password);
+        ImageView showPassButton = findViewById(R.id.show_pass_btn);
+
+        if (passwordField.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+            showPassButton.setImageResource(R.drawable.ic_eye_close);
+            passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            showPassButton.setImageResource(R.drawable.ic_eye_open);
+            passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+    }
+
 
 }

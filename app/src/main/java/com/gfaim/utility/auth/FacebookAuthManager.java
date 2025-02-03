@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -16,7 +18,7 @@ import java.util.logging.Logger;
 
 public class FacebookAuthManager {
     private final CallbackManager callbackManager;
-    private Logger log = Logger.getLogger(FacebookAuthManager.class.getName());
+    private final Logger log = Logger.getLogger(FacebookAuthManager.class.getName());
 
     public FacebookAuthManager() {
          log.info("[FacebookAuthManager] Facebook init");
@@ -26,8 +28,8 @@ public class FacebookAuthManager {
 
     //Faire la verif inscription ici
     public void setupFacebookLogin(View facebookBtn, Activity activity) {
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-           //La
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<>() {
+            //La
             @Override
             public void onSuccess(LoginResult loginResult) {
                 log.info("[setupFacebookLogin][onSuccess] Facebook Login Successful");
@@ -42,7 +44,7 @@ public class FacebookAuthManager {
             }
 
             @Override
-            public void onError(FacebookException error) {
+            public void onError(@NonNull FacebookException error) {
                 log.severe("[setupFacebookLogin][onError] Facebook Login Failed: " + error.getMessage());
             }
         });

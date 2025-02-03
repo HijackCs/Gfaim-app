@@ -10,10 +10,10 @@ import java.util.logging.Logger;
 
 public class AuthManager {
 
-    private Logger log = Logger.getLogger(LoginActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(LoginActivity.class.getName()) ;
 
-    private GoogleAuthManager googleAuthManager;
-    private FacebookAuthManager facebookAuthManager;
+    private final GoogleAuthManager googleAuthManager;
+    private final FacebookAuthManager facebookAuthManager;
 
     public AuthManager(Activity activity) {
         googleAuthManager = new GoogleAuthManager(activity);

@@ -30,10 +30,9 @@ import java.util.logging.Logger;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
     private TextView email;
     private TextView name;
-    private Button signOutBtn;
     private GoogleSignInClient gsc;
 
 
@@ -93,21 +92,18 @@ public class HomeActivity extends AppCompatActivity {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken != null && !accessToken.isExpired()) {
-            GraphRequest request = GraphRequest.newMeRequest(accessToken, new GraphRequest.GraphJSONObjectCallback() {
-                @Override
-                public void onCompleted(@Nullable JSONObject jsonObject, @Nullable GraphResponse graphResponse) {
-                    if (jsonObject != null) {
-                        try {
-                            String fullName = jsonObject.getString("name");
-                            String mail = jsonObject.getString("email");
+            GraphRequest request = GraphRequest.newMeRequest(accessToken, (jsonObject, graphResponse) -> {
+                if (jsonObject != null) {
+                    try {
+                        String fullName = jsonObject.getString("name");
+                        String mail = jsonObject.getString("email");
 
-                            name.setText(fullName);
-                            email.setText(mail);
-                            log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
-                            Toast.makeText(HomeActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
-                        } catch (JSONException e) {
-                            log.warning("[acceuil][handleFacebookLogin] Error parsing Facebook user info: " + e.getMessage());
-                        }
+                        name.setText(fullName);
+                        email.setText(mail);
+                        log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
+                        Toast.makeText(HomeActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        log.warning("[acceuil][handleFacebookLogin] Error parsing Facebook user info: " + e.getMessage());
                     }
                 }
             });

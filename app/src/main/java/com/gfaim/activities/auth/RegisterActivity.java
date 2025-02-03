@@ -22,17 +22,16 @@ import java.util.logging.Logger;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(RegisterActivity.class.getName());
+    private final Logger log = Logger.getLogger(RegisterActivity.class.getName());
 
     private EditText surname;
     private EditText name;
     private EditText email;
     private EditText password;
-    private Button SignUpBtn;
+    private Button signUpBtn;
     private CheckBox termsCheckBox;
     private TextView loginBtn;
     private TextView termsText;
-
     private AuthManager authManager;
 
     @Override
@@ -54,7 +53,7 @@ public class RegisterActivity extends AppCompatActivity {
         name = findViewById(R.id.Name);
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
-        SignUpBtn = findViewById(R.id.SignUpBtn);
+        signUpBtn = findViewById(R.id.SignUpBtn);
         loginBtn = findViewById(R.id.loginBtn);
         termsCheckBox = findViewById(R.id.termsCheckBox);
         termsText = findViewById(R.id.termsText);
@@ -62,8 +61,8 @@ public class RegisterActivity extends AppCompatActivity {
             checkFields();
         });
 
-        SignUpBtn.setEnabled(false);
-        SignUpBtn.setAlpha(0.5f);
+        signUpBtn.setEnabled(false);
+        signUpBtn.setAlpha(0.5f);
     }
 
     private void setupTextWatchers() {
@@ -100,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity {
     protected void setupRegisterBtn() {
         log.info("[RegisterActivity][setupRegisterBtn] setup Register Btn ");
 
-        SignUpBtn.setOnClickListener(v -> {
+        signUpBtn.setOnClickListener(v -> {
             log.info("[RegisterActivity][register] register ");
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
@@ -134,10 +133,8 @@ public class RegisterActivity extends AppCompatActivity {
     private void checkFields() {
         boolean allFieldsValid = isFormValid();
         boolean termsAccepted = termsCheckBox.isChecked();
-        System.out.println(termsAccepted);
-
-        SignUpBtn.setEnabled(allFieldsValid && termsAccepted);
-        SignUpBtn.setAlpha((allFieldsValid && termsAccepted) ? 1.0f : 0.5f);
+        signUpBtn.setEnabled(allFieldsValid && termsAccepted);
+        signUpBtn.setAlpha((allFieldsValid && termsAccepted) ? 1.0f : 0.5f);
 
         if (!isValidName(surname.getText().toString())) {
             surname.setBackgroundResource(R.drawable.rounded_border_error);
@@ -162,6 +159,7 @@ public class RegisterActivity extends AppCompatActivity {
         } else {
             password.setBackgroundResource(R.drawable.rounded_border);
         }
+
 
         if (!termsAccepted) {
             termsCheckBox.setButtonTintList(getResources().getColorStateList(R.color.red));

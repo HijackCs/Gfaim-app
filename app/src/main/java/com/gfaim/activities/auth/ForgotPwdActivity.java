@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 
 public class ForgotPwdActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(ForgotPwdActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(ForgotPwdActivity.class.getName()) ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

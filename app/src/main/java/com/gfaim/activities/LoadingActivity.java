@@ -14,15 +14,15 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 import java.util.logging.Logger;
 
-public class loadingActivity extends AppCompatActivity {
+public class LoadingActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(loadingActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(LoadingActivity.class.getName()) ;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        log.info("[loadingActivity][onCreate] Application starting");
+        log.info("[LoadingActivity][onCreate] Application starting");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
@@ -41,17 +41,17 @@ public class loadingActivity extends AppCompatActivity {
     private boolean checkSession() {
         GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (googleAccount != null) {
-            log.info("[loadingActivity][checkSession] User logged in with Google");
+            log.info("[LoadingActivity][checkSession] User logged in with Google");
             return true;
         }
 
         AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
         if (facebookAccessToken != null && !facebookAccessToken.isExpired()) {
-            log.info("[loadingActivity][checkSession] User logged in with Facebook");
+            log.info("[LoadingActivity][checkSession] User logged in with Facebook");
             return true;
         }
 
-        log.info("[loadingActivity][checkSession] No active session found");
+        log.info("[LoadingActivity][checkSession] No active session found");
         return false;
     }
 }

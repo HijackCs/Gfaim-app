@@ -1,7 +1,6 @@
 package com.gfaim.activities.auth;
 
 import android.os.Bundle;
-import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,7 +14,7 @@ import java.util.logging.Logger;
 
 public class CheckMailActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(CheckMailActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(CheckMailActivity.class.getName()) ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

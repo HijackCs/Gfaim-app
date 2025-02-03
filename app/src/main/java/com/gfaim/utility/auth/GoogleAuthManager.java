@@ -16,7 +16,7 @@ import java.util.logging.Logger;
 
 public class GoogleAuthManager {
     private GoogleSignInClient gsc;
-    private Logger log = Logger.getLogger(GoogleAuthManager.class.getName());
+    private final Logger log = Logger.getLogger(GoogleAuthManager.class.getName());
     private static final int GOOGLE_SIGN_IN_REQUEST_CODE = 1000;
 
     public GoogleAuthManager(Activity activity) {

@@ -27,14 +27,11 @@ public class loadingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading);
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                Class<?> targetActivity = checkSession() ? HomeActivity.class : LoginActivity.class;
-                Intent intent = new Intent(getApplicationContext(), targetActivity);
-                startActivity(intent);
-                finish();
-            }
+        Runnable runnable = () -> {
+            Class<?> targetActivity = checkSession() ? HomeActivity.class : LoginActivity.class;
+            Intent intent = new Intent(getApplicationContext(), targetActivity);
+            startActivity(intent);
+            finish();
         };
 
         new Handler().postDelayed(runnable, 3000);

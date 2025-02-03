@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
@@ -162,10 +163,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         if (!termsAccepted) {
-            termsCheckBox.setButtonTintList(getResources().getColorStateList(R.color.red));
+            termsCheckBox.setButtonTintList(ContextCompat.getColorStateList(this, R.color.red));
         } else {
-            termsCheckBox.setButtonTintList(getResources().getColorStateList(R.color.black));
+            termsCheckBox.setButtonTintList(ContextCompat.getColorStateList(this, R.color.black));
         }
+
     }
 
     private boolean isFormValid() {

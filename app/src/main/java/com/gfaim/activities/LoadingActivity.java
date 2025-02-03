@@ -3,6 +3,7 @@ package com.gfaim.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,7 +35,7 @@ public class LoadingActivity extends AppCompatActivity {
             finish();
         };
 
-        new Handler().postDelayed(runnable, 3000);
+        new Handler(Looper.getMainLooper()).postDelayed(runnable, 3000);
     }
 
 

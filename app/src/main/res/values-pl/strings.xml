@@ -26,6 +26,7 @@
     <!--Forgot pwd-->
     <string name="sendCode">Send code</string>
     <string name="resetPwd">Reset Password</string>
-
+    <string name="remember">Remember your password ?</string>
+    <string name="goBackLogin">Go back to login</string>
 
 </resources>

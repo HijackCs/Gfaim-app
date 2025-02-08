@@ -31,9 +31,6 @@ import java.util.logging.Logger;
 public class HomeActivity extends AppCompatActivity {
 
     private final Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
-    private TextView email;
-    private TextView name;
-    private GoogleSignInClient gsc;
 
 
 
@@ -50,96 +47,10 @@ public class HomeActivity extends AppCompatActivity {
                 return insets;
             });
 
-            name = findViewById(R.id.name);
-            email = findViewById(R.id.email);
-            Button signOutBtn = findViewById(R.id.signOutBtn);
-            signOutBtn.setOnClickListener(v -> signOut());
-
-            //gam.handleGoogleLogin(this);
-            handleGoogleLogin();
-            handleFacebookLogin();
-
 
         } catch (Exception e) {
             log.warning("[acceuil][onCreate] Problem on MainActivity launch");
         }
 
     }
-    public void handleGoogleLogin() {
-
-        // Google Sign-In variables
-        GoogleSignInOptions gso;
-
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        gsc = GoogleSignIn.getClient(this, gso);
-
-        GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
-        if (acct != null) {
-            String personName = acct.getDisplayName();
-            String personEmail = acct.getEmail();
-            name.setText(personName);
-            email.setText(personEmail);
-            log.info("[acceuil][handleGoogleLogin] logged in with Google");
-            Toast.makeText(this, "Logged in with Google", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-
-
-
-
-    private void handleFacebookLogin() {
-
-        AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken != null && !accessToken.isExpired()) {
-            GraphRequest request = GraphRequest.newMeRequest(accessToken, (jsonObject, graphResponse) -> {
-                if (jsonObject != null) {
-                    try {
-                        String fullName = jsonObject.getString("name");
-                        String mail = jsonObject.getString("email");
-
-                        name.setText(fullName);
-                        email.setText(mail);
-                        log.warning("[acceuil][handleFacebookLogin] logged in with Facebook");
-                        Toast.makeText(HomeActivity.this, "Logged in with Facebook", Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        log.warning("[acceuil][handleFacebookLogin] Error parsing Facebook user info: " + e.getMessage());
-                    }
-                }
-            });
-
-            // Request Facebook user details
-            Bundle parameters = new Bundle();
-            parameters.putString("fields", "id,name,email,link");
-            request.setParameters(parameters);
-            request.executeAsync();
-        }
-    }
-
-    private void signOut() {
-        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if (googleAccount != null) {
-            gsc.signOut().addOnCompleteListener(task -> {
-                Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
-                log.info("[acceuil][signOut] Signed out from Google ");
-                goToLoginScreen();
-            });
-        }
-
-        AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
-        if (facebookAccessToken != null) {
-            com.facebook.login.LoginManager.getInstance().logOut();
-            Toast.makeText(HomeActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
-            log.info("[acceuil][signOut] Signed out from Google ");
-            goToLoginScreen();
-        }
-    }
-
-
-    private void goToLoginScreen() {
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
 }

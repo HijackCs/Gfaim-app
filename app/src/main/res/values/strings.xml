@@ -33,7 +33,11 @@
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-
+    <string name="home">Home</string>
+    <string name="what_s_for_today">What\'s for today ?</string>
+    <string name="weekly_progress">Weekly Progress</string>
+    <string name="calories">Calories</string>
+    <string name="nb_calories">nb calories</string>
 
 
 </resources>

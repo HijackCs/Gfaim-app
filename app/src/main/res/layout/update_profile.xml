@@ -1,0 +1,201 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@color/appBackground"
+    tools:context=".activities.settings.UpdateProfileActivity">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ic_back"
+        android:layout_marginBottom="16dp" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/logo"
+            android:scaleType="centerCrop"
+            android:layout_centerInParent="true" />
+
+        <FrameLayout
+            android:id="@+id/editPhoto"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignBottom="@id/profile_image"
+            android:layout_alignEnd="@id/profile_image"
+            android:layout_marginBottom="4dp"
+            android:layout_marginEnd="4dp">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/circle_bg_orange" />
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_edit" />
+
+        </FrameLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="John Doe"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Family Name"
+        android:textSize="16sp"
+        android:textColor="@color/grey"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Input Fields with Labels -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/your_email"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:drawablePadding="16dp"
+        android:hint="Your Email"
+        android:drawableStart="@drawable/ic_mail"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp" />
+    <EditText
+        android:drawablePadding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:hint="@string/name"
+        android:drawableStart="@drawable/ic_edit_user"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Lastname"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp" />
+    <EditText
+        android:drawableStart="@drawable/ic_edit_user"
+        android:drawablePadding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:hint="Lastname"
+        android:background="@drawable/edittext_rounded"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Password"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/laypass"
+        android:layout_width="362dp"
+        android:layout_height="51dp"
+        >
+
+        <EditText
+            android:drawableStart="@drawable/ic_password"
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/edittext_rounded"
+            android:drawablePadding="16dp"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:padding="16dp"
+            android:textColorHint="@color/greyOr"
+            android:textCursorDrawable="@null"
+            android:textSize="16sp"
+            />
+
+        <ImageView
+            android:id="@+id/show_pass_btn"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="8dp"
+            android:alpha=".5"
+            android:onClick="ShowHidePass"
+            android:padding="5dp"
+            android:src="@drawable/ic_eye_open"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/laypass"
+            app:layout_constraintTop_toTopOf="@+id/password" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!-- Buttons -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/update_profile"
+        android:textColor="@color/orangeBtn"
+        android:background="@drawable/button_update_rounded"
+        android:layout_marginBottom="16dp"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="18sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_profile"
+        android:textColor="@color/red"
+        android:background="@drawable/button_delete_rounded"
+        android:textAllCaps="false"
+        android:gravity="center"
+        android:padding="16dp"
+        android:textSize="18sp" />
+
+</LinearLayout>

@@ -38,6 +38,12 @@
         <activity
             android:name=".activities.auth.ForgotPwdActivity">
         </activity>
+        <activity
+            android:name=".activities.settings.SettingsActivity">
+        </activity>
+        <activity
+            android:name=".activities.settings.UpdateProfileActivity">
+        </activity>
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=

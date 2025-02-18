@@ -9,13 +9,13 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="forgotPwd">Mot de passe oublié ?</string>
 
     <!--Register-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
-    <string name="helloTxt">Hi, Salut 👋</string>
+    <string name="helloTxt">Salut 👋</string>
     <string name="name">Nom</string>
-    <string name="surname">Prenom</string>
+    <string name="surname">Prénom</string>
     <string name="haveAccount">Tu as un compte ?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
 
@@ -24,10 +24,23 @@
     <string name="continueBtn">Continuer</string>
 
     <!--Forgot pwd-->
-    <string name="sendCode">Envoyer code</string>
-    <string name="resetPwd">Reinitialiser mots de passe</string>
-    <string name="remember">Tu te souviens de ton mots de passe ?</string>
-    <string name="goBackLogin">retour à la connexion</string>
+    <string name="sendCode">Envoyer le code</string>
+    <string name="resetPwd">Réinitialiser le mot de passe</string>
+    <string name="remember">Tu te souviens de ton mot de passe ?</string>
+    <string name="goBackLogin">Retour à la connexion</string>
+    <string name="your_email">Ton Email</string>
 
+    <!--settings-->
+    <string name="delete_profile">Supprimer le profil</string>
+    <string name="update_profile">Mettre à jour le profil</string>
+    <string name="my_account">Mon compte</string>
+    <string name="manage_account_settings">Gérer les paramètres de votre compte</string>
+    <string name="family_group">Groupe familial</string>
+    <string name="manage_family_settings">Gérer les paramètres familiaux</string>
+    <string name="log_out">Déconnexion</string>
+    <string name="log_out_text">Sécurisez davantage votre compte</string>
+    <string name="more">Plus</string>
+    <string name="help_support">Aide et support</string>
+    <string name="about_app">À propos de l\'application</string>
 
 </resources>

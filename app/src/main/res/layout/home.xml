@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="@string/home"
+        android:text="@string/Home"
         android:textColor="@color/grey"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -119,144 +119,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/viewPager"
+        android:id="@+id/carrousel"
         android:layout_width="350dp"
         android:layout_height="250dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/bottom_bar"
         app:layout_constraintTop_toBottomOf="@id/textView2" />
 
-    <LinearLayout
-        android:id="@+id/bottom_bar"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="bottom"
-        android:background="@color/white"
-        android:baselineAligned="false"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@id/main"
-        android:padding="8dp"
-        android:weightSum="4">
-
-        <LinearLayout
-            android:id="@+id/nav_home"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageButton
-                android:id="@+id/btn_home"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/home"
-                android:textColor="@color/nav_item_color"
-                android:background="@null"/>
-
-
-            <TextView
-                android:id="@+id/txt_home"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Home"
-                android:textColor="@color/nav_item_color"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/nav_search"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageButton
-                android:id="@+id/btn_groceries"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/groceries"
-                android:textColor="@color/nav_item_color"
-                android:background="@null"/>
-
-            <TextView
-                android:id="@+id/txt_groceries"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Groceries"
-                android:textColor="@color/nav_item_color"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/nav_favorites"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageButton
-                android:id="@+id/btn_recipes"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/recipes"
-                android:textColor="@color/nav_item_color"
-                android:background="@null"/>
-
-            <TextView
-                android:id="@+id/txt_recipes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Recipes"
-                android:textColor="@color/nav_item_color"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/nav_profile"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageButton
-                android:id="@+id/btn_calendar"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:scaleType="fitCenter"
-                android:adjustViewBounds="true"
-                android:src="@drawable/calendar"
-                android:textColor="@color/nav_item_color"
-                android:background="@null"/>
-
-            <TextView
-                android:id="@+id/txt_calendar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Calendar"
-                android:textColor="@color/nav_item_color"
-                android:textSize="12sp"/>
-        </LinearLayout>
-
-    </LinearLayout>
+    <include layout="@layout/navigation_bar"/>
 
 
 

@@ -30,16 +30,13 @@
     <string name="goBackLogin">retour à la connexion</string>
 
     <!--Home-->
-    <string name="home">Home</string>
+    <string name="Home">Home</string>
     <string name="what_s_for_today">What\'s for today ?</string>
     <string name="weekly_progress">Weekly Progress</string>
     <string name="calories">Calories</string>
     <string name="nb_calories">nb calories</string>
-    <string name="profile">Profile</string>
-    <string name="favorites">Favorites</string>
-    <string name="search">Search</string>
-    <string name="groceries">groceries</string>
-    <string name="recipes">recipes</string>
-    <string name="calendar">calendar</string>
+    <string name="Groceries">Groceries</string>
+    <string name="Recipes">Recipes</string>
+    <string name="Calendar">Calendar</string>
 
 </resources>

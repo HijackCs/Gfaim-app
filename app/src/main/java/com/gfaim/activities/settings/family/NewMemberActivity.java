@@ -89,8 +89,7 @@ public class NewMemberActivity extends AppCompatActivity {
                 slideViewPager.setCurrentItem(getItem(1), true);
             else {
 
-                EditText memberName = findViewById(R.id.memberName);
-                String name = memberName.getText().toString().trim();
+                String name = viewPagerAdapter.getMemberName();
                 log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
                 if (!name.isEmpty()) {
                         Intent i = new Intent(NewMemberActivity.this, FamilyActivity.class);

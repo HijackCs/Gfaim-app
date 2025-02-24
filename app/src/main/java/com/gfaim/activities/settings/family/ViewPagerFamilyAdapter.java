@@ -3,6 +3,8 @@ package com.gfaim.activities.settings.family;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -66,8 +68,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         LinearLayout roleDisplay = view.findViewById(R.id.role_display);
 
         if(position == 0){
-            mail.setVisibility(View.VISIBLE);
-            memberName.setVisibility(View.VISIBLE);
+            handleEditText(mail, memberName);
         }else{
             mail.setVisibility(View.GONE);
             memberName.setVisibility(View.GONE);
@@ -85,10 +86,28 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         } else {
             allergyContainer.setVisibility(View.GONE);
         }
-        System.out.println("test "+memberName.getText().toString());
 
         container.addView(view);
         return view;
+    }
+
+    private void handleEditText(EditText mail, EditText memberName){
+        mail.setVisibility(View.VISIBLE);
+        memberName.setVisibility(View.VISIBLE);
+
+        memberName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                name = s.toString(); // Stocke la valeur actuelle
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
     }
 
 
@@ -200,7 +219,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-        name = memberName.getText().toString();
         container.removeView((LinearLayout) object);
     }
 

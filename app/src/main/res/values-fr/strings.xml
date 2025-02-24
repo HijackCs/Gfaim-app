@@ -43,4 +43,57 @@
     <string name="help_support">Aide et support</string>
     <string name="about_app">À propos de l\'application</string>
 
+    <!--OnBoarding-->
+    <string name="skip">Skip</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+
+    <string name="screen0">Enjoy your lunch</string>
+    <string name="screen0Desc">Just relax and don’t overthink what to eat. We’ll take care of it for you with our personalized meal plans tailored to your needs.</string>
+
+    <string name="screen1">Do you have any food allergies?</string>
+    <string name="screen1Desc">To provide you with the best meal suggestions tailored to you and your family, you need to join a family or create a new one.</string>
+
+    <string name="screen2">Do you follow any of these diets?</string>
+    <string name="screen2Desc">To give you the best personalized dietary experience, we need to know more about you.</string>
+
+    <string name="screen3">Join your family</string>
+    <string name="screen3Desc">To give you the best personalized dietary experience, we need to know more about you.</string>
+
+    <string name="allergieGluten">Gluten</string>
+    <string name="allergieDiary">Dairy</string>
+    <string name="allergieEgg">Egg</string>
+    <string name="allergieSoy">Soy</string>
+    <string name="allergiePeanut">Peanuts</string>
+    <string name="allergieWheat">Wheat</string>
+    <string name="allergieMilk">Milk</string>
+    <string name="allergieFish">Fish</string>
+
+    <string name="dietsVegan">Vegan</string>
+    <string name="dietsPaleo">Paleo</string>
+    <string name="dietsDukan">Dukan</string>
+    <string name="dietsVegetarian">Vegetarian</string>
+    <string name="dietsAktin">Atkins</string>
+    <string name="dietsInterFast">Intermittent fasting</string>
+
+    <string name="familyCode">Family code</string>
+    <string name="joinFamilly">Join your family</string>
+    <string name="createFamily">Create a new family group</string>
+    <string name="tv_welcome_message">Welcome to your family!</string>
+    <string name="familyName">Family name</string>
+    <string name="createFamilly">Create your family!</string>
+    <string name="new_fam">A new family has been created!</string>
+    <string name="joinFamily">Join the family</string>
+
+    <!--Family-->
+    <string name="screen0Family">General Data</string>
+    <string name="screen1Family">Member\'s role</string>
+    <string name="screen2Family">Any food allergies?</string>
+    <string name="screen3Family">Do you follow any of these diets?</string>
+    <string name="role_chef">Meal chef\'s</string>
+    <string name="role_consumer">Consumer</string>
+    <string name="cancel">cancel</string>
+
+
 </resources>

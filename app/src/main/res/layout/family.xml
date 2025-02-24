@@ -1,0 +1,107 @@
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/appBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginBottom="16dp" />
+
+        <ImageView
+            android:id="@+id/familyImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:src="@raw/family" />
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+
+            <TextView
+                android:id="@+id/familyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/familyName"
+                android:textColor="@color/black"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <FrameLayout
+                android:id="@+id/editName"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginStart="8dp">
+
+                <ImageView
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:src="@drawable/circle_bg_orange" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_edit" />
+            </FrameLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/familyCode"
+            android:textSize="16sp"
+            android:textColor="@color/grey"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
+
+        <!-- GridLayout pour les membres -->
+        <GridLayout
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/membersGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:padding="16dp"
+            android:layout_marginTop="16dp" />
+
+        <!-- Bouton Ajouter un membre -->
+        <ImageButton
+            android:id="@+id/btnAddMember"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_add"
+            android:background="@null"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/btnDeleteFamily"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Delete Family"
+            android:textColor="@color/red"
+            android:background="@drawable/button_delete_rounded"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</ScrollView>

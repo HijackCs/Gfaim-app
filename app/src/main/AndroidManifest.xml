@@ -44,6 +44,12 @@
         <activity
             android:name=".activities.settings.UpdateProfileActivity">
         </activity>
+        <activity
+            android:name=".activities.settings.family.NewMemberActivity">
+        </activity>
+        <activity
+            android:name=".activities.settings.family.FamilyActivity">
+        </activity>
 
         <activity android:name="com.facebook.FacebookActivity"
             android:configChanges=

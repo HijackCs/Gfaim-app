@@ -2,14 +2,21 @@ package com.gfaim.activities.settings.family;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
@@ -40,10 +47,11 @@ public class FamilyActivity extends AppCompatActivity {
         addMember("John");
         addMember("Alice");
 
-        // Ajouter le bouton "+"
         updateAddButtonPosition();
 
         initAddButton();
+
+        setupEditBtn();
     }
 
     private void initAddButton(){
@@ -119,6 +127,99 @@ public class FamilyActivity extends AppCompatActivity {
 
         btnAddMember.setLayoutParams(params);
         membersGrid.addView(btnAddMember);
+    }
+
+    private void setupEditBtn(){
+        EditText familyName = findViewById(R.id.familyName);
+        FrameLayout editName = findViewById(R.id.editName);
+        ImageView checkName = findViewById(R.id.checkName);
+        ImageView cancelName = findViewById(R.id.cancelName);
+
+        final String[] oldName = {familyName.getText().toString()}; // Stocker l'ancien nom
+
+// Listener pour empêcher d'écrire plus de 30 caractères et filtrer les lettres uniquement
+        familyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Supprimer les caractères non alphabétiques
+                String filteredText = s.toString().replaceAll("[^a-zA-ZÀ-ÿ ]", "");
+
+                // Limiter à 30 caractères
+                if (filteredText.length() > 30) {
+                    filteredText = filteredText.substring(0, 30);
+                }
+
+                // Si modification nécessaire, mettre à jour le texte
+                if (!filteredText.equals(s.toString())) {
+                    familyName.setText(filteredText);
+                    familyName.setSelection(filteredText.length()); // Remettre le curseur à la fin
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        editName.setOnClickListener(v -> {
+            oldName[0] = familyName.getText().toString(); // Sauvegarde l'ancien nom
+
+            // Activer l'édition
+            familyName.setFocusableInTouchMode(true);
+            familyName.setCursorVisible(true);
+            familyName.requestFocus();
+
+            // Afficher les boutons ✔ et ❌, cacher le bouton d'édition
+            editName.setVisibility(View.GONE);
+            checkName.setVisibility(View.VISIBLE);
+            cancelName.setVisibility(View.VISIBLE);
+        });
+
+// Sauvegarde le nouveau nom si valide
+        checkName.setOnClickListener(v -> {
+            String newName = familyName.getText().toString().trim();
+
+            if (newName.isEmpty()) {
+                familyName.setError("Le nom ne peut pas être vide");
+                return;
+            }
+
+            // Désactiver l'édition
+            familyName.setFocusable(false);
+            familyName.setCursorVisible(false);
+
+            // Réafficher le bouton d'édition
+            editName.setVisibility(View.VISIBLE);
+            checkName.setVisibility(View.GONE);
+            cancelName.setVisibility(View.GONE);
+        });
+
+// Annuler et restaurer l'ancien nom
+        cancelName.setOnClickListener(v -> {
+            familyName.setText(oldName[0]); // Restaurer l'ancien texte
+
+            // Désactiver l'édition
+            familyName.setFocusable(false);
+            familyName.setCursorVisible(false);
+
+            // Réafficher le bouton d'édition
+            editName.setVisibility(View.VISIBLE);
+            checkName.setVisibility(View.GONE);
+            cancelName.setVisibility(View.GONE);
+        });
+
+// Empêcher la modification directe sans appuyer sur le crayon
+        familyName.setOnClickListener(v -> {
+            if (!familyName.isFocusable()) {
+                editName.performClick(); // Simule le clic sur le crayon
+            }
+        });
+
+
+
+
     }
 
 

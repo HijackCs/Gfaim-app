@@ -32,35 +32,59 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
+            android:baselineAligned="false"
             android:layout_marginTop="8dp">
 
-            <TextView
+            <EditText
                 android:id="@+id/familyName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/familyName"
                 android:textColor="@color/black"
-                android:textSize="30sp"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:background="@android:color/transparent"/>
 
             <FrameLayout
                 android:id="@+id/editName"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="8dp">
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="4dp"
+                android:layout_gravity="center_vertical">
 
                 <ImageView
-                    android:layout_width="36dp"
-                    android:layout_height="36dp"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
                     android:src="@drawable/circle_bg_orange" />
 
                 <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_edit" />
             </FrameLayout>
+
+            <ImageView
+                android:id="@+id/checkName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_check"
+                android:visibility="gone"
+                android:layout_marginStart="4dp"/>
+
+            <ImageView
+                android:id="@+id/cancelName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_cancel"
+                android:visibility="gone"
+                android:layout_marginStart="4dp"/>
         </LinearLayout>
+
+
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,11 +104,6 @@
             android:horizontalSpacing="16dp"
             android:verticalSpacing="16dp"/>
 
-
-
-
-
-        <!-- Bouton Ajouter un membre -->
         <ImageButton
             android:id="@+id/btnAddMember"
             android:layout_width="64dp"
@@ -98,6 +117,7 @@
             android:id="@+id/btnDeleteFamily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
             android:text="Delete Family"
             android:textColor="@color/red"
             android:background="@drawable/button_delete_rounded"

@@ -61,6 +61,11 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.slider_new_member, container, false);
 
         TextView sliderTitle = view.findViewById(R.id.sliderTitle);
+        TextView sliderTitle2 = view.findViewById(R.id.sliderTitle2);
+        TextView placeHolder1 = view.findViewById(R.id.placeHolder1);
+        TextView placeHolder2 = view.findViewById(R.id.placeHolder2);
+
+
         FlexboxLayout allergyContainer = view.findViewById(R.id.diet_container);
         sliderTitle.setText(this.sliderAllTitle[position]);
         EditText mail = view.findViewById(R.id.mail);
@@ -70,12 +75,14 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         if(position == 0){
             handleEditText(mail, memberName);
         }else{
+            sliderTitle2.setVisibility(View.GONE);
+            placeHolder1.setVisibility(View.GONE);
+            placeHolder2.setVisibility(View.GONE);
             mail.setVisibility(View.GONE);
             memberName.setVisibility(View.GONE);
         }
 
         if(position ==1){
-            roleDisplay.setVisibility(View.VISIBLE);
             initRoleSelect(view);
         }else{
             roleDisplay.setVisibility(View.GONE);

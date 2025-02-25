@@ -70,7 +70,6 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="24dp" />
 
-    <!-- Input Fields with Labels -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

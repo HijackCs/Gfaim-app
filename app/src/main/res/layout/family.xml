@@ -71,15 +71,18 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="24dp" />
 
-        <!-- GridLayout pour les membres -->
         <GridLayout
-            android:layout_gravity="center_horizontal"
             android:id="@+id/membersGrid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:columnCount="2"
-            android:padding="16dp"
-            android:layout_marginTop="16dp" />
+            android:layout_gravity="center"
+            android:horizontalSpacing="16dp"
+            android:verticalSpacing="16dp"/>
+
+
+
+
 
         <!-- Bouton Ajouter un membre -->
         <ImageButton

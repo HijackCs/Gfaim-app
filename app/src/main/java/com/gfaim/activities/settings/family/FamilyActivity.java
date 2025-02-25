@@ -65,36 +65,38 @@ public class FamilyActivity extends AppCompatActivity {
     }
 
     private void addMember(String name) {
-
-        // Ajoute le membre à la liste
         membersList.add(name);
 
-        // Création d'un conteneur pour le membre
+        // Conteneur du membre
         LinearLayout memberLayout = new LinearLayout(this);
         memberLayout.setOrientation(LinearLayout.VERTICAL);
         memberLayout.setGravity(Gravity.CENTER);
+
+        // Augmenter l'espacement entre les membres
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.setMargins(16, 16, 16, 16);
+        params.setMargins(48, 48, 48, 48); // Espacement augmenté
         memberLayout.setLayoutParams(params);
 
-        // Ajout d'une image pour le membre
+        // Image du membre
         ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
-        imageView.setImageResource(R.drawable.ic_person); // Remplace avec ton icône
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(180, 180); // Image légèrement plus grande
+        imageView.setLayoutParams(imageParams);
+        imageView.setImageResource(R.drawable.avatar);
 
-        // Ajout du nom du membre
+        // Nom du membre
         TextView textView = new TextView(this);
         textView.setText(name);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(16);
+        textView.setTextSize(18); // Texte légèrement plus grand
+        textView.setPadding(0, 8, 0, 0); // Ajout d’un petit espace sous l’image
 
-        // Ajout des vues dans le layout du membre
+        // Ajouter les vues au layout
         memberLayout.addView(imageView);
         memberLayout.addView(textView);
 
-        // Ajout du membre au GridLayout
+        // Ajouter le membre à la grille
         membersGrid.addView(memberLayout);
 
         // Met à jour la position du bouton "+"
@@ -102,10 +104,24 @@ public class FamilyActivity extends AppCompatActivity {
     }
 
     private void updateAddButtonPosition() {
-        // Retirer le bouton + s'il existe déjà
-        membersGrid.removeView(btnAddMember);
+        membersGrid.removeView(btnAddMember); // Supprime l'ancien bouton pour éviter les doublons
 
-        // Ajouter le bouton + après le dernier membre
+        int columnCount = 2; // Assurez-vous que c'est le même que dans le XML
+        int totalMembers = membersList.size(); // Nombre total de membres
+
+        int row = totalMembers / columnCount;
+        int column = totalMembers % columnCount;
+
+        GridLayout.LayoutParams params = new GridLayout.LayoutParams();
+        params.rowSpec = GridLayout.spec(row);
+        params.columnSpec = GridLayout.spec(column);
+        params.setMargins(16, 16, 16, 16);
+
+        btnAddMember.setLayoutParams(params);
         membersGrid.addView(btnAddMember);
     }
+
+
+
+
 }

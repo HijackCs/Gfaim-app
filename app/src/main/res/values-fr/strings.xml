@@ -91,9 +91,11 @@
     <string name="screen1Family">Member\'s role</string>
     <string name="screen2Family">Any food allergies?</string>
     <string name="screen3Family">Do you follow any of these diets?</string>
+    <string name="cancel">Cancel</string>
     <string name="role_chef">Meal chef\'s</string>
     <string name="role_consumer">Consumer</string>
-    <string name="cancel">cancel</string>
+    <string name="memberMail">member\'s mail</string>
+    <string name="alreadyAccount">Already have an account ?</string>
 
 
 </resources>

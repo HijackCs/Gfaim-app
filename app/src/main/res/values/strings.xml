@@ -91,15 +91,17 @@
     <string name="screen2Family">Any food allergies?</string>
     <string name="screen3Family">Do you follow any of these diets?</string>
     <string name="cancel">Cancel</string>
-
+    <string name="your_email">Your Email</string>
+    <string name="role_chef">Meal chef\'s</string>
+    <string name="role_consumer">Consumer</string>
+    <string name="memberMail">Member\'s mail</string>
+    <string name="alreadyAccount">Already have an account ?</string>
 
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-    <string name="your_email">Your Email</string>
-    <string name="role_chef">Meal chef\'s</string>
-    <string name="role_consumer">Consumer</string>
+
 
 
 </resources>

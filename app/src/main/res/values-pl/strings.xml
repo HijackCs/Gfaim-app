@@ -15,7 +15,7 @@
     <string name="registerTxtView">Wprowadź swoje dane, aby uzyskać dostęp do konta</string>
     <string name="helloTxt">Cześć, Witaj 👋</string>
     <string name="name">Imię</string>
-    <string name="surname">Nazwisko</string>
+    <string name="firstName">Telefon</string>
     <string name="haveAccount">Masz już konto?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
 
@@ -28,5 +28,9 @@
     <string name="resetPwd">Reset Password</string>
     <string name="remember">Remember your password ?</string>
     <string name="goBackLogin">Go back to login</string>
+    <string name="enter_code">enter code</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="reset_password">reset password\n</string>
 
 </resources>

@@ -3,61 +3,81 @@ package com.gfaim.activities.auth;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.AuthService;
+import com.gfaim.models.ForgotPasswordRequest;
 
-import java.util.logging.Logger;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ForgotPwdActivity extends AppCompatActivity {
 
-    private final Logger log = Logger.getLogger(ForgotPwdActivity.class.getName()) ;
+    private EditText emailInput;
+    private AuthService authService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        try{
-            super.onCreate(savedInstanceState);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.forgotpwd);
 
-            EdgeToEdge.enable(this);
-            setContentView(R.layout.forgotpwd);
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
-        }catch (Exception e){
-            log.warning("[ForgotPwdActivity][onCreate] Problem on MainActivity launch");
-        }
+        emailInput = findViewById(R.id.email);
+        authService = ApiClient.getClient(this).create(AuthService.class);
 
         setupGoBack();
         setupContinue();
     }
 
-
-    protected void setupGoBack(){
-
-        log.info("[ForgotPwdActivity][setupGoBack] setup go back ");
+    private void setupGoBack() {
         TextView loginBtn = findViewById(R.id.goBackLogin);
         loginBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
             startActivity(intent);
+            finish();
         });
     }
 
-    protected void setupContinue(){
-
-        log.info("[ForgotPwdActivity][setupGoBack] setup go back ");
+    private void setupContinue() {
         Button sendMailBtn = findViewById(R.id.SendMail);
         sendMailBtn.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), CheckMailActivity.class);
-            startActivity(intent);
+            String email = emailInput.getText().toString().trim();
+            if (email.isEmpty()) {
+                Toast.makeText(this, "Veuillez entrer votre email.", Toast.LENGTH_SHORT).show();
+            } else {
+                sendForgotPasswordRequest(email);
+            }
         });
     }
 
+    private void sendForgotPasswordRequest(String email) {
+        ForgotPasswordRequest request = new ForgotPasswordRequest(email);
+        Call<Void> call = authService.forgotPassword(request);
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(ForgotPwdActivity.this, "Code envoyé à votre email.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(getApplicationContext(), CheckMailActivity.class);
+                    intent.putExtra("email", email);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(ForgotPwdActivity.this, "Erreur lors de l'envoi du code.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(ForgotPwdActivity.this, "Erreur de connexion : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

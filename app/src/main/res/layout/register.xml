@@ -137,11 +137,11 @@
 
 
     <EditText
-        android:id="@+id/surname"
+        android:id="@+id/usrName"
         android:layout_width="362dp"
         android:layout_height="51dp"
         android:background="@drawable/rounded_border"
-        android:hint="@string/surname"
+        android:hint="@string/name"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColor="@color/grey"
@@ -154,11 +154,11 @@
         app:layout_constraintVertical_bias="0.347" />
 
     <EditText
-        android:id="@+id/Name"
+        android:id="@+id/firstName"
         android:layout_width="362dp"
         android:layout_height="51dp"
         android:background="@drawable/rounded_border"
-        android:hint="@string/name"
+        android:hint="@string/firstName"
         android:inputType="textEmailAddress"
         android:padding="16dp"
         android:textColor="@color/grey"
@@ -271,7 +271,7 @@
             android:id="@+id/haveAccount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/noAccount"
+            android:text="@string/haveAccount"
             android:textColor="@color/black"
             android:textSize="10sp"
             android:textStyle="bold" />
@@ -281,7 +281,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingStart="4dp"
-            android:text="@string/signUp"
+            android:text="@string/login"
             android:textColor="@color/orangeBtn"
             android:textSize="10sp"
             android:textStyle="bold" />

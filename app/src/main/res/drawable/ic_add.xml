@@ -1,0 +1,27 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="68dp"
+    android:height="68dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Ombre -->
+    <path
+        android:fillColor="#80000000"
+        android:pathData="M12,2A10,10 0,1 1 2,12A10,10 0,0 1 12,2z"
+        android:translateX="1"
+        android:translateY="1"
+        android:scaleX="1.1"
+        android:scaleY="1.1"/>
+
+    <!-- Cercle principal -->
+    <path
+        android:fillColor="#F4B183"
+        android:pathData="M12,2A10,10 0,1 1 2,12A10,10 0,0 1 12,2z"/>
+
+    <!-- Symbole "+" -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:strokeWidth="1.5"
+        android:strokeColor="#FFFFFF"
+        android:pathData="M12,7 L12,17 M7,12 L17,12"/>
+</vector>

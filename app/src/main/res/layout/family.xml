@@ -121,7 +121,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Delete Family"
+            android:text="@string/delete_family"
             android:textColor="@color/red"
             android:background="@drawable/button_delete_rounded"
             android:textAllCaps="false"

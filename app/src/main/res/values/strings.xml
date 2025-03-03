@@ -96,6 +96,8 @@
     <string name="role_consumer">Consumer</string>
     <string name="memberMail">Member\'s mail</string>
     <string name="alreadyAccount">Already have an account ?</string>
+    <string name="notEmpty">Name can not be empty ?</string>
+
 
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>

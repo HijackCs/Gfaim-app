@@ -1,13 +1,17 @@
 package com.gfaim.activities.settings.family;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.GridLayout;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
 
@@ -30,7 +35,7 @@ public class FamilyActivity extends AppCompatActivity {
 
     private GridLayout membersGrid;
     private ImageButton btnAddMember;
-    private List<String> membersList = new ArrayList<>(); // Stocke les noms des membres
+    private final List<String> membersList = new ArrayList<>(); // Stocke les noms des membres
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +52,27 @@ public class FamilyActivity extends AppCompatActivity {
         addMember("John");
         addMember("Alice");
 
+        TextView familyCode = findViewById(R.id.familyCode);
+        familyCode.setOnClickListener(v -> copyToClipboard(familyCode.getText().toString()));
+
+
+
         updateAddButtonPosition();
 
         initAddButton();
 
         setupEditBtn();
+
     }
+
+    private void copyToClipboard(String text) {
+        ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+        if (clipboard != null) {
+            ClipData clip = ClipData.newPlainText("Copied Text", text);
+            clipboard.setPrimaryClip(clip);
+        }
+    }
+
 
     private void initAddButton(){
         btnAddMember.setOnClickListener(v -> {
@@ -75,59 +95,113 @@ public class FamilyActivity extends AppCompatActivity {
     private void addMember(String name) {
         membersList.add(name);
 
-        // Conteneur du membre
         LinearLayout memberLayout = new LinearLayout(this);
         memberLayout.setOrientation(LinearLayout.VERTICAL);
         memberLayout.setGravity(Gravity.CENTER);
 
-        // Augmenter l'espacement entre les membres
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.width = ViewGroup.LayoutParams.WRAP_CONTENT;
         params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-        params.setMargins(48, 48, 48, 48); // Espacement augmenté
+        params.setMargins(64, 64, 64, 64);
         memberLayout.setLayoutParams(params);
 
-        // Image du membre
+        // 📌 FrameLayout pour superposer l’image et le bouton
+        FrameLayout frameLayout = new FrameLayout(this);
+        FrameLayout.LayoutParams frameParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+        );
+        frameLayout.setLayoutParams(frameParams);
+
         ImageView imageView = new ImageView(this);
-        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(180, 180); // Image légèrement plus grande
+        LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(220, 220);
+        imageParams.setMargins(0, 0, 0, 24);
         imageView.setLayoutParams(imageParams);
         imageView.setImageResource(R.drawable.avatar);
 
-        // Nom du membre
+        // ❌ Bouton de suppression superposé
+        ImageButton deleteButton = new ImageButton(this);
+        FrameLayout.LayoutParams deleteParams = new FrameLayout.LayoutParams(80, 80);
+        deleteParams.gravity = Gravity.TOP | Gravity.END; // Coin supérieur droit
+        deleteButton.setLayoutParams(deleteParams);
+        deleteButton.setImageResource(R.drawable.ic_delete);
+        deleteButton.setBackground(null);
+        deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog(name, memberLayout));
+
         TextView textView = new TextView(this);
         textView.setText(name);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(18); // Texte légèrement plus grand
-        textView.setPadding(0, 8, 0, 0); // Ajout d’un petit espace sous l’image
+        textView.setTextSize(20);
+        textView.setPadding(8, 8, 8, 8);
+        textView.setMaxWidth(280);
+        textView.setEllipsize(TextUtils.TruncateAt.END);
+        textView.setSingleLine(false);
+        textView.setMaxLines(2);
 
-        // Ajouter les vues au layout
-        memberLayout.addView(imageView);
+        // Ajout des éléments dans le FrameLayout (image + bouton)
+        frameLayout.addView(imageView);
+        frameLayout.addView(deleteButton);
+
+        memberLayout.addView(frameLayout);
         memberLayout.addView(textView);
 
-        // Ajouter le membre à la grille
         membersGrid.addView(memberLayout);
-
-        // Met à jour la position du bouton "+"
         updateAddButtonPosition();
     }
 
-    private void updateAddButtonPosition() {
-        membersGrid.removeView(btnAddMember); // Supprime l'ancien bouton pour éviter les doublons
 
-        int columnCount = 2; // Assurez-vous que c'est le même que dans le XML
-        int totalMembers = membersList.size(); // Nombre total de membres
+    private void showDeleteConfirmationDialog(String name, LinearLayout memberLayout) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Member")
+                .setMessage("Are you sure you want to remove " + name + " from the family?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    membersGrid.removeView(memberLayout);
+                    membersList.remove(name);
+                    updateAddButtonPosition();
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog alertDialog = builder.create();
+
+        // 🌟 Changer la couleur de fond
+        alertDialog.setOnShowListener(dialog -> alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(
+                ContextCompat.getColor(this, R.color.appBackground)
+        )));
+
+        alertDialog.show();
+    }
+
+
+
+
+
+    private void updateAddButtonPosition() {
+        membersGrid.removeView(btnAddMember);
+
+        int columnCount = 2;
+        int totalMembers = membersList.size();
 
         int row = totalMembers / columnCount;
         int column = totalMembers % columnCount;
 
+
+        if (column == 0 && totalMembers > 0) {
+            row++;
+            column = 0;
+        }
+
         GridLayout.LayoutParams params = new GridLayout.LayoutParams();
         params.rowSpec = GridLayout.spec(row);
         params.columnSpec = GridLayout.spec(column);
-        params.setMargins(16, 16, 16, 16);
+        params.setMargins(64, 64, 64, 64);
 
         btnAddMember.setLayoutParams(params);
         membersGrid.addView(btnAddMember);
     }
+
+
+
+
 
     private void setupEditBtn(){
         EditText familyName = findViewById(R.id.familyName);
@@ -137,22 +211,18 @@ public class FamilyActivity extends AppCompatActivity {
 
         final String[] oldName = {familyName.getText().toString()}; // Stocker l'ancien nom
 
-// Listener pour empêcher d'écrire plus de 30 caractères et filtrer les lettres uniquement
         familyName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // Supprimer les caractères non alphabétiques
                 String filteredText = s.toString().replaceAll("[^a-zA-ZÀ-ÿ ]", "");
 
-                // Limiter à 30 caractères
                 if (filteredText.length() > 30) {
                     filteredText = filteredText.substring(0, 30);
                 }
 
-                // Si modification nécessaire, mettre à jour le texte
                 if (!filteredText.equals(s.toString())) {
                     familyName.setText(filteredText);
                     familyName.setSelection(filteredText.length()); // Remettre le curseur à la fin
@@ -164,39 +234,34 @@ public class FamilyActivity extends AppCompatActivity {
         });
 
         editName.setOnClickListener(v -> {
-            oldName[0] = familyName.getText().toString(); // Sauvegarde l'ancien nom
+            oldName[0] = familyName.getText().toString();
 
-            // Activer l'édition
             familyName.setFocusableInTouchMode(true);
             familyName.setCursorVisible(true);
             familyName.requestFocus();
 
-            // Afficher les boutons ✔ et ❌, cacher le bouton d'édition
             editName.setVisibility(View.GONE);
             checkName.setVisibility(View.VISIBLE);
             cancelName.setVisibility(View.VISIBLE);
         });
 
-// Sauvegarde le nouveau nom si valide
+        //Save du nom
         checkName.setOnClickListener(v -> {
             String newName = familyName.getText().toString().trim();
 
             if (newName.isEmpty()) {
-                familyName.setError("Le nom ne peut pas être vide");
+                familyName.setError(getString(R.string.notEmpty));
                 return;
             }
 
-            // Désactiver l'édition
             familyName.setFocusable(false);
             familyName.setCursorVisible(false);
 
-            // Réafficher le bouton d'édition
             editName.setVisibility(View.VISIBLE);
             checkName.setVisibility(View.GONE);
             cancelName.setVisibility(View.GONE);
         });
 
-// Annuler et restaurer l'ancien nom
         cancelName.setOnClickListener(v -> {
             familyName.setText(oldName[0]); // Restaurer l'ancien texte
 
@@ -210,19 +275,10 @@ public class FamilyActivity extends AppCompatActivity {
             cancelName.setVisibility(View.GONE);
         });
 
-// Empêcher la modification directe sans appuyer sur le crayon
         familyName.setOnClickListener(v -> {
             if (!familyName.isFocusable()) {
-                editName.performClick(); // Simule le clic sur le crayon
+                editName.performClick();
             }
         });
-
-
-
-
     }
-
-
-
-
 }

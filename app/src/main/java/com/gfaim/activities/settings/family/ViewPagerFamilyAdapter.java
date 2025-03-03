@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Patterns;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,8 +26,10 @@ import java.util.List;
 public class ViewPagerFamilyAdapter extends PagerAdapter {
 
     private final Context context;
-    EditText memberName;
     String name;
+    String email;
+    private String selectedRole = "";
+
     private final List<String> selectedAllergiesItems = new ArrayList<>();
     private final List<String> selectedDietsItems = new ArrayList<>();
 
@@ -95,6 +98,9 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         }
 
         container.addView(view);
+        memberName.setText(name);
+        mail.setText(email);
+
         return view;
     }
 
@@ -108,13 +114,57 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                name = s.toString(); // Stocke la valeur actuelle
             }
 
             @Override
             public void afterTextChanged(Editable s) {}
         });
 
+
+        // Bloquer l'autre champ lors de la saisie
+        memberName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > 30) {
+                    memberName.setError("Maximum 30 caractères");
+                    memberName.setText(s.subSequence(0, 30));
+                    memberName.setSelection(30);
+                } else {
+                    name = s.toString();
+                    mail.setEnabled(s.toString().isEmpty());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!s.toString().matches("^[a-zA-ZÀ-ÿ\\s]+$")) {
+                    memberName.setError("Seulement des lettres autorisées");
+                }
+            }
+        });
+
+        mail.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                email = s.toString();
+                memberName.setEnabled(s.toString().isEmpty()); // Désactiver memberName si mail est rempli
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
+                    mail.setError("Format d'email invalide");
+                }
+            }
+        });
     }
 
 
@@ -158,12 +208,10 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
             button.setOnClickListener(v -> {
                 if (selectedItems.contains(itemText)) {
-                    // Désélectionner
                     selectedItems.remove(itemText);
                     button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
                     button.setTextColor(Color.BLACK);
                 } else {
-                    // Sélectionner
                     selectedItems.add(itemText);
                     button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
                     button.setTextColor(Color.WHITE);
@@ -181,7 +229,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         }
     }
 
-    private void initRoleSelect(View view){
+    private void initRoleSelect(View view) {
         LinearLayout roleChef = view.findViewById(R.id.role_chef);
         LinearLayout roleConsumer = view.findViewById(R.id.role_consumer);
         ImageView iconChef = view.findViewById(R.id.icon_chef);
@@ -189,28 +237,41 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         TextView textChef = view.findViewById(R.id.text_chef);
         TextView textConsumer = view.findViewById(R.id.text_consumer);
 
-        View.OnClickListener roleClickListener = v -> {
-            roleChef.setBackgroundResource(R.drawable.role_unselected);
-            roleConsumer.setBackgroundResource(R.drawable.role_unselected);
-            iconChef.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
-            iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
-            textChef.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
-            textConsumer.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
+        updateRoleUI(roleChef, roleConsumer, iconChef, iconConsumer, textChef, textConsumer);
 
+        View.OnClickListener roleClickListener = v -> {
             if (v.getId() == R.id.role_chef) {
-                roleChef.setBackgroundResource(R.drawable.role_selected);
-                iconChef.setColorFilter(ContextCompat.getColor(context, R.color.white));
-                textChef.setTextColor(ContextCompat.getColor(context, R.color.white));
+                selectedRole = String.valueOf(R.string.role_chef);
             } else {
-                roleConsumer.setBackgroundResource(R.drawable.role_selected);
-                iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.white));
-                textConsumer.setTextColor(ContextCompat.getColor(context, R.color.white));
+                selectedRole = String.valueOf(R.string.role_consumer);
             }
+
+            updateRoleUI(roleChef, roleConsumer, iconChef, iconConsumer, textChef, textConsumer);
         };
 
         roleChef.setOnClickListener(roleClickListener);
         roleConsumer.setOnClickListener(roleClickListener);
     }
+
+    private void updateRoleUI(LinearLayout roleChef, LinearLayout roleConsumer, ImageView iconChef, ImageView iconConsumer, TextView textChef, TextView textConsumer) {
+        roleChef.setBackgroundResource(R.drawable.role_unselected);
+        roleConsumer.setBackgroundResource(R.drawable.role_unselected);
+        iconChef.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
+        iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
+        textChef.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
+        textConsumer.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
+
+        if (selectedRole.equals(String.valueOf(R.string.role_chef))) {
+            roleChef.setBackgroundResource(R.drawable.role_selected);
+            iconChef.setColorFilter(ContextCompat.getColor(context, R.color.white));
+            textChef.setTextColor(ContextCompat.getColor(context, R.color.white));
+        } else if (selectedRole.equals(String.valueOf(R.string.role_consumer))) {
+            roleConsumer.setBackgroundResource(R.drawable.role_selected);
+            iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.white));
+            textConsumer.setTextColor(ContextCompat.getColor(context, R.color.white));
+        }
+    }
+
 
     private GradientDrawable getRoundedBorder(int backgroundColor, int borderColor) {
         GradientDrawable drawable = new GradientDrawable();

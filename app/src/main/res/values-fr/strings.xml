@@ -96,6 +96,7 @@
     <string name="role_consumer">Consumer</string>
     <string name="memberMail">member\'s mail</string>
     <string name="alreadyAccount">Already have an account ?</string>
+    <string name="notEmpty">Name can not be empty ?</string>
 
 
 </resources>

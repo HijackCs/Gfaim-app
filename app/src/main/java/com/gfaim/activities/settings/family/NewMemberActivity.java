@@ -28,6 +28,9 @@ public class NewMemberActivity extends AppCompatActivity {
     Button cancelButton;
     TextView[] dots;
     ViewPagerFamilyAdapter viewPagerAdapter;
+    private String memberName;
+    private String email;
+
     private final Logger log = Logger.getLogger(NewMemberActivity.class.getName());
 
 

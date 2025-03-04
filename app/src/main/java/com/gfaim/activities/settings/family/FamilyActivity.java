@@ -32,7 +32,6 @@ import java.util.List;
 public class FamilyActivity extends AppCompatActivity {
 
     private static final int REQUEST_ADD_MEMBER = 1;
-
     private GridLayout membersGrid;
     private ImageButton btnAddMember;
     private final List<String> membersList = new ArrayList<>(); // Stocke les noms des membres
@@ -51,6 +50,8 @@ public class FamilyActivity extends AppCompatActivity {
         // Ajouter des membres initiaux
         addMember("John");
         addMember("Alice");
+        addMember("Marceline");
+
 
         TextView familyCode = findViewById(R.id.familyCode);
         familyCode.setOnClickListener(v -> copyToClipboard(familyCode.getText().toString()));
@@ -129,14 +130,15 @@ public class FamilyActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog(name, memberLayout));
 
         TextView textView = new TextView(this);
+        textView.setMaxWidth(600); // Limiter la largeur pour éviter trop d'étirement
+        textView.setTextSize(20);
+        textView.setSingleLine(false); // Permettre plusieurs lignes
+        textView.setEllipsize(null); // Désactiver les "..."
+        textView.setMaxLines(Integer.MAX_VALUE); // Permettre autant de lignes que nécessaire
         textView.setText(name);
         textView.setGravity(Gravity.CENTER);
-        textView.setTextSize(20);
         textView.setPadding(8, 8, 8, 8);
-        textView.setMaxWidth(280);
-        textView.setEllipsize(TextUtils.TruncateAt.END);
-        textView.setSingleLine(false);
-        textView.setMaxLines(2);
+
 
         // Ajout des éléments dans le FrameLayout (image + bouton)
         frameLayout.addView(imageView);

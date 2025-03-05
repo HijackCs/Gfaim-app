@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         setupClassicLogin();
         setupRegister();
         setupForgotPwd();
+        setupHidePwd();
     }
 
 
@@ -152,7 +153,12 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    public void showHidePass() {
+    private void setupHidePwd() {
+        ImageView showPassButton = findViewById(R.id.show_pass_btn);
+        showPassButton.setOnClickListener(v -> showHidePass());
+    }
+
+    private void showHidePass() {
         EditText passwordField = findViewById(R.id.password);
         ImageView showPassButton = findViewById(R.id.show_pass_btn);
 

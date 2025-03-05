@@ -4,5 +4,5 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ResponseStatus {
-    public final static int UNAUTHORIZED = 401;
+    public static final int UNAUTHORIZED = 401;
 }

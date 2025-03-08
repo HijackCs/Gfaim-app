@@ -38,5 +38,7 @@
     <string name="Groceries">Groceries</string>
     <string name="Recipes">Recipes</string>
     <string name="Calendar">Calendar</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="no_meal_planned">No meal planned</string>
 
 </resources>

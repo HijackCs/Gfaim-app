@@ -1,4 +1,4 @@
-package com.gfaim.activities;
+package com.gfaim.activities.home;
 import android.os.Bundle;
 import android.view.View;
 
@@ -10,6 +10,8 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.gfaim.R;
+import com.gfaim.activities.CarrouselAdapter;
+import com.gfaim.activities.NavigationBar;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,7 +33,12 @@ public class HomeActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-            new NavigationBar(this);
+            NavigationBar navigationBar = new NavigationBar(this);
+
+            int activeButtonId = getIntent().getIntExtra("activeButtonId", -1);
+            if (activeButtonId != -1) {
+                navigationBar.setActiveButton(activeButtonId);
+            }
             setupCarrousel();
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY

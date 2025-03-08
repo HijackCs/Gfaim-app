@@ -2,12 +2,16 @@ package com.gfaim.activities;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.calendar.CalendarActivity;
+import com.gfaim.activities.home.HomeActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,19 +44,49 @@ public class NavigationBar {
     private void initNavBar() {
         for (int i = 0; i < navButtons.size(); i++) {
             final int index = i;
+            if (navButtons.get(i) == null) {
+                Log.e("NavigationBar", "Button at index " + i + " is null");
+                continue;
+            }
             navButtons.get(i).setClickable(true);
             navButtons.get(i).setFocusable(true);
             navButtons.get(i).bringToFront();
-            navButtons.get(i).setOnClickListener(v -> onNavItemSelected(navButtons.get(index), navTexts.get(index)));
+            navButtons.get(i).setOnClickListener(v -> onNavItemSelected(navButtons.get(index)));
         }
     }
 
-    private void onNavItemSelected(ImageButton selectedButton, TextView selectedText) {
+    private void onNavItemSelected(ImageButton selectedButton) {
+        Intent intent = null;
+
+        if (selectedButton.getId() == R.id.btn_calendar) {
+            intent = new Intent(context, CalendarActivity.class);
+        } else if (selectedButton.getId() == R.id.btn_home) {
+            intent = new Intent(context, HomeActivity.class);
+        } /*else if (selectedButton.getId() == R.id.btn_groceries) {
+            intent = new Intent(context, GroceriesActivity.class);
+        } else if (selectedButton.getId() == R.id.btn_recipes) {
+            intent = new Intent(context, RecipesActivity.class);
+        }*/
+
+        if (intent != null) {
+            intent.putExtra("activeButtonId", selectedButton.getId());
+            context.startActivity(intent);
+        }
+    }
+
+    public void setActiveButton(int activeButtonId) {
         for (int i = 0; i < navButtons.size(); i++) {
             navButtons.get(i).setColorFilter(ContextCompat.getColor(context, R.color.black));
             navTexts.get(i).setTextColor(ContextCompat.getColor(context, R.color.black));
         }
-        selectedButton.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
-        selectedText.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
+
+        for (int i = 0; i < navButtons.size(); i++) {
+            if (navButtons.get(i).getId() == activeButtonId) {
+                navButtons.get(i).setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
+                navTexts.get(i).setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
+                break;
+            }
+        }
     }
+
 }

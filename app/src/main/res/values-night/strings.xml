@@ -29,6 +29,8 @@
     <string name="resetPwd">Reset Password</string>
     <string name="remember">Remember your password ?</string>
     <string name="goBackLogin">Go back to login</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="no_meal_planned">No meal planned</string>
 
     <!--facebook-->
     <!--<string name="facebook_app_id" translatable="false">617642374011640</string>

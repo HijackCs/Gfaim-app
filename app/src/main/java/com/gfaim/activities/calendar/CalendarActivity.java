@@ -1,6 +1,7 @@
 package com.gfaim.activities.calendar;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
@@ -49,27 +50,20 @@ public class CalendarActivity extends AppCompatActivity {
             navigationBar.setActiveButton(activeButtonId);
         }
 
-        cardView = findViewById(R.id.cardView);
-        cardText = findViewById(R.id.cardText);
-        textTitle = findViewById(R.id.textTitle);
-
         CalendarView calendarView = findViewById(R.id.calendarView);
         calendarView.setFirstDayOfWeek(Calendar.MONDAY);
         calendarView.setOnDateChangeListener((view, year, month, dayOfMonth) -> {
             String date = dayOfMonth + "/" + (month + 1) + "/" + year;
-            cardView.setVisibility(View.VISIBLE);
-            textTitle.setVisibility(View.VISIBLE);
-            RecyclerView mealRecyclerView = findViewById(R.id.mealRecyclerView);
-            mealRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            Log.d("CalendarActivity", "Date sélectionnée: " + date);
 
-            // Créer une liste de données (vous pouvez la remplir avec des données réelles plus tard)
-            List<Meal> mealList = new ArrayList<>();
-            mealList.add(new Meal("Breakfast", "No meal planned", R.drawable.dinner, 0, 0));
-            mealList.add(new Meal("Lunch", "No meal planned", R.drawable.dinner, 0, 0));
-            mealList.add(new Meal("Dinner", "No meal planned", R.drawable.dinner, 0, 0));
+            RecyclerView recyclerView = findViewById(R.id.mealRecyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            MealAdapter mealAdapter = new MealAdapter(mealList);
-            mealRecyclerView.setAdapter(mealAdapter);
+            List<String> mealList = Arrays.asList("Breakfast", "Lunch", "Dinner");
+            Log.d("CalendarActivity", "Nombre de repas: " + mealList.size());
+
+            MealAdapter adapter = new MealAdapter(mealList, CalendarActivity.this);
+            recyclerView.setAdapter(adapter);
         });
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY

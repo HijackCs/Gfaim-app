@@ -1,5 +1,7 @@
 package com.gfaim.activities;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,15 +12,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
+import com.gfaim.activities.calendar.AddIngredientsCalendar;
 
 import java.util.List;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
+    private final List<String> mealList;
+    private final Context context;
 
-    private List<Meal> mealList;
-
-    public MealAdapter(List<Meal> mealList) {
+    public MealAdapter(List<String> mealList, Context context) {
         this.mealList = mealList;
+        this.context = context;
     }
 
     @NonNull
@@ -30,12 +34,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        Meal meal = mealList.get(position);
-        holder.textTitle.setText(meal.getTitle());
-        holder.cardText.setText(meal.getText());
-        holder.cardImage.setImageResource(meal.getImageResId());
-        holder.timeText.setText(meal.getTime() + " min");
-        holder.caloriesText.setText(meal.getCalories() + " kcal");
+        String meal = mealList.get(position);
+        holder.textTitle.setText(meal);
+
+        // Click listener pour chaque card
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, AddIngredientsCalendar.class);
+            intent.putExtra("mealType", meal); // passer le type de repas
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -44,16 +51,11 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     }
 
     public static class MealViewHolder extends RecyclerView.ViewHolder {
-        TextView textTitle, cardText, timeText, caloriesText;
-        ImageView cardImage;
+        TextView textTitle;
 
         public MealViewHolder(@NonNull View itemView) {
             super(itemView);
             textTitle = itemView.findViewById(R.id.textTitle);
-            cardText = itemView.findViewById(R.id.cardText);
-            cardImage = itemView.findViewById(R.id.cardImage);
-            timeText = itemView.findViewById(R.id.timeText);
-            caloriesText = itemView.findViewById(R.id.caloriesText);
         }
     }
 }

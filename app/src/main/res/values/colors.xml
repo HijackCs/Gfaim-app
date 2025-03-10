@@ -4,6 +4,13 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#303030</color>
     <color name="red">#FF0000</color>
+    <color name="green">#A6CE96</color>
+    <color name="lightGrey">#DCDDCB</color>
+    <color name="selected_tab">#6750A4</color> <!-- Violet -->
+    <color name="unselected_tab">#DCDDCB</color> <!-- Gris clair -->
+    <color name="border">#6750A4</color> <!-- Bordure violette -->
+    <color name="unselected_text">#A5C689</color> <!-- Texte vert pour l'onglet inactif -->
+
 
 
     <color name="appBackground">#D3D5C9</color>

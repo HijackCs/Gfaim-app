@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.facebook.AccessToken;
 import com.gfaim.R;
 import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.groceries.GroceryActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
@@ -29,7 +30,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.loading);
 
         Runnable runnable = () -> {
-            Class<?> targetActivity = checkSession() ? HomeActivity.class : LoginActivity.class;
+            Class<?> targetActivity = checkSession() ? HomeActivity.class : GroceryActivity.class;
             Intent intent = new Intent(getApplicationContext(), targetActivity);
             startActivity(intent);
             finish();

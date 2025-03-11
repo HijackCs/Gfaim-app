@@ -3,7 +3,7 @@ package com.gfaim.activities.groceries;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
 import com.gfaim.models.FoodItem;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
@@ -33,15 +34,18 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         FoodItem item = foodList.get(position);
         holder.itemName.setText(item.getName());
-        holder.itemQuantity.setText(String.valueOf(item.getCount()));
 
         holder.itemDeleteButton.setVisibility(View.VISIBLE);
-        holder.itemCheckbox.setVisibility(View.GONE);
 
         holder.itemDeleteButton.setOnClickListener(v -> {
-            foodList.remove(position);
-            notifyDataSetChanged();
+            if (position >= 0 && position < foodList.size()) {
+                foodList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, foodList.size());
+            }
         });
+
+        //holder.itemView.setOnClickListener(v -> showQuantityBottomSheet(holder, item));
     }
 
     @Override
@@ -50,17 +54,49 @@ public class FridgeAdapter extends RecyclerView.Adapter<FridgeAdapter.ViewHolder
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView itemName, itemKcal, itemQuantity;
+        TextView itemName;
         ImageView itemDeleteButton;
-        CheckBox itemCheckbox;
 
         public ViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.itemName);
-            itemKcal = itemView.findViewById(R.id.itemKcal);
-            itemQuantity = itemView.findViewById(R.id.itemQuantity);
             itemDeleteButton = itemView.findViewById(R.id.itemDeleteButton);
-            itemCheckbox = itemView.findViewById(R.id.itemCheckbox);
         }
     }
 }
+
+   /* private void showQuantityBottomSheet(ViewHolder holder, FoodItem item) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(holder.itemView.getContext());
+        View sheetView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.dialogue_quantity, null);
+        bottomSheetDialog.setContentView(sheetView);
+
+        TextView tvItemName = sheetView.findViewById(R.id.tvItemName);
+        TextView tvQuantity = sheetView.findViewById(R.id.tvQuantity);
+        TextView btnIncrease = sheetView.findViewById(R.id.btnIncrease);
+        TextView btnDecrease = sheetView.findViewById(R.id.btnDecrease);
+        Button btnConfirm = sheetView.findViewById(R.id.btnConfirm);
+
+        tvItemName.setText(item.getName());
+        tvQuantity.setText(String.valueOf(item.getQuantity()));
+
+        btnIncrease.setOnClickListener(v -> {
+            int currentQuantity = Integer.parseInt(tvQuantity.getText().toString());
+            tvQuantity.setText(String.valueOf(currentQuantity + 1));
+        });
+
+        btnDecrease.setOnClickListener(v -> {
+            int currentQuantity = Integer.parseInt(tvQuantity.getText().toString());
+            if (currentQuantity > 1) {
+                tvQuantity.setText(String.valueOf(currentQuantity - 1));
+            }
+        });
+
+        btnConfirm.setOnClickListener(v -> {
+            int newQuantity = Integer.parseInt(tvQuantity.getText().toString());
+            item.setQuantity(newQuantity);
+            holder.itemQuantity.setText(String.valueOf(newQuantity));
+            bottomSheetDialog.dismiss();
+        });
+
+        bottomSheetDialog.show();
+    }*/

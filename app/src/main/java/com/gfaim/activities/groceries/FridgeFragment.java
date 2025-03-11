@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,24 +20,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FridgeFragment extends Fragment {
-    private RecyclerView recyclerView;
+    private List<FoodItem> foodList = new ArrayList<>();
     private FridgeAdapter adapter;
-    private List<FoodItem> foodList;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        foodList = new ArrayList<>();
-        foodList.add(new FoodItem("Escalope de poule", 1, 2));
 
         adapter = new FridgeAdapter(foodList);
         recyclerView.setAdapter(adapter);
 
+        // Ajouter un séparateur
+        DividerItemDecoration divider = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.divider));
+        recyclerView.addItemDecoration(divider);
+
         return view;
     }
+
+    public void addItemsToFridge(List<FoodItem> items) {
+        if (items == null || items.isEmpty()) {
+            return;
+        }
+
+        foodList.addAll(items);
+        adapter.notifyDataSetChanged();
+    }
 }
+

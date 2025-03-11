@@ -9,11 +9,11 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="forgotPwd">Mot de passe oublié ?</string>
 
     <!--Register-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
-    <string name="helloTxt">Hi, Salut 👋</string>
+    <string name="helloTxt">Salut, Bonjour 👋</string>
     <string name="name">Nom</string>
     <string name="firstName">Prénom</string>
     <string name="haveAccount">Tu as un compte ?</string>
@@ -24,14 +24,21 @@
     <string name="continueBtn">Continuer</string>
 
     <!--Forgot pwd-->
-    <string name="sendCode">Envoyer code</string>
-    <string name="resetPwd">Reinitialiser mots de passe</string>
-    <string name="remember">Tu te souviens de ton mots de passe ?</string>
-    <string name="goBackLogin">retour à la connexion</string>
-    <string name="enter_code">enter code</string>
-    <string name="new_password">new password</string>
-    <string name="confirm_password">confirm password</string>
-    <string name="reset_password">reset password\n</string>
+    <string name="sendCode">Envoyer le code</string>
+    <string name="resetPwd">Réinitialiser le mot de passe</string>
+    <string name="remember">Tu te souviens de ton mot de passe ?</string>
+    <string name="goBackLogin">Retour à la connexion</string>
+    <string name="enter_code">Entrez le code</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="reset_password">Réinitialiser le mot de passe</string>
 
+    <!--Frigo-->
+    <string name="confirm">Confirmer</string>
+    <string name="groceries">Courses</string>
+    <string name="search">Rechercher</string>
+    <string name="shopping">Courses</string>
+    <string name="fridge">Frigo</string>
+    <string name="send">Envoyer</string>
 
 </resources>

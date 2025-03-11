@@ -30,7 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
-        android:text="Groceries"
+        android:text="@string/groceries"
         android:textColor="@color/grey"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@null"
-            android:hint="Search"
+            android:hint="@string/search"
             android:paddingVertical="8dp"
             android:textColor="@color/black"
             android:textColorHint="@color/grey"
@@ -96,7 +96,7 @@
             android:background="@drawable/tab_unselected"
             android:gravity="center"
             android:paddingVertical="10dp"
-            android:text="Fridge"
+            android:text="@string/fridge"
             android:textColor="@color/unselected_text"
             android:textStyle="bold" />
 
@@ -108,7 +108,7 @@
             android:background="@drawable/tab_selected"
             android:gravity="center"
             android:paddingVertical="10dp"
-            android:text="Shopping"
+            android:text="@string/shopping"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>
@@ -122,7 +122,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <!-- Boutons "+" et "Valider" alignés horizontalement -->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -132,22 +131,30 @@
         android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp">
 
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/send"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/greenBtn"
+            android:padding="10dp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"/>
+
         <ImageView
             android:id="@+id/addButton"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:src="@drawable/ic_add"
-            android:contentDescription="Add"
             android:backgroundTint="@color/green"
-            android:layout_marginEnd="10dp"/>
+            android:layout_marginEnd="10dp"
+            android:layout_weight="1"/>
 
-        <Button
-            android:id="@+id/validateButton"
-            android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="Valider"
-            android:backgroundTint="@color/green"
-            android:textColor="@color/white"/>
     </LinearLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

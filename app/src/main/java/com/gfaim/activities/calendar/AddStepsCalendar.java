@@ -6,17 +6,21 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.MenuData;
 
 public class AddStepsCalendar extends AppCompatActivity {
 
     private LinearLayout stepsContainer;
     private int stepCount = 2;
+    private MenuData menuData;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +32,29 @@ public class AddStepsCalendar extends AppCompatActivity {
 
         addStepButton.setOnClickListener(v -> addNewStep());
 
+        menuData = (MenuData) getIntent().getSerializableExtra("MENU_DATA");
+
+        ImageView back = findViewById(R.id.back);
+        back.setOnClickListener(v -> {
+            Intent intent = new Intent(AddStepsCalendar.this, AddIngredientsCalendar.class);
+            intent.putExtra("MENU_DATA", menuData);
+            setResult(RESULT_OK, intent);
+            startActivity(intent);
+        });
+
+
+        EditText stepEditText = findViewById(R.id.step); // Assure-toi que l'ID correspond à celui du XML
+
         Button nextButton = findViewById(R.id.next);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(AddStepsCalendar.this, SummaryCalendar.class);
-                startActivity(intent);
+        nextButton.setOnClickListener(v -> {
+            String step = stepEditText.getText().toString().trim();
+            if (!step.isEmpty()) {
+                menuData.addStep(step); // Ajoute l'étape au menuData
             }
+            // Passer au résumé
+            Intent intent = new Intent(AddStepsCalendar.this, SummaryCalendar.class);
+            intent.putExtra("MENU_DATA", menuData);
+            startActivity(intent);
         });
     }
 

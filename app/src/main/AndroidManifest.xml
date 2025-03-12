@@ -60,6 +60,7 @@
         </activity>
         <activity android:name=".activities.calendar.CalendarActivity"/>
         <activity android:name=".activities.calendar.AddIngredientsCalendar"/>
+        <activity android:name=".activities.calendar.AddIngredient"/>
         <activity android:name=".activities.calendar.AddStepsCalendar"/>
         <activity android:name=".activities.calendar.SummaryCalendar"/>
 

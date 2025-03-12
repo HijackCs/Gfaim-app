@@ -27,9 +27,6 @@ import java.util.Calendar;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
-    private CardView cardView;
-    private TextView cardText;
-    private TextView textTitle;
 
 
     @Override

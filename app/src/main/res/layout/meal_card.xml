@@ -101,13 +101,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cardView">
 
-        <ImageButton
-            android:id="@+id/add_snack_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/snack_image"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_add_green"
-            android:background="@null"/>
+            android:src="@drawable/ic_snack"
+            android:layout_marginStart="16dp" />
 
         <TextView
             android:id="@+id/snack_text"

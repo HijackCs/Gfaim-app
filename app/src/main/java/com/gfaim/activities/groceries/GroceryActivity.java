@@ -1,19 +1,23 @@
 package com.gfaim.activities.groceries;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.gfaim.R;
+import com.gfaim.activities.groceries.adapter.GroceriesViewPagerAdapter;
+import com.gfaim.activities.groceries.fragment.FridgeFragment;
+import com.gfaim.activities.groceries.fragment.ShoppingFragment;
 import com.gfaim.models.FoodItem;
 
 import java.util.ArrayList;
@@ -22,11 +26,12 @@ import java.util.List;
 public class GroceryActivity extends AppCompatActivity {
     private ViewPager2 viewPager;
     private TextView tvFridge, tvShopping;
-    private ViewPagerAdapter adapter;
+    GroceriesViewPagerAdapter adapter;
 
     private Button sendButton;
     private EditText searchEditText;
     private ShoppingFragment shoppingFragment;
+    private FridgeFragment fridgeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +44,7 @@ public class GroceryActivity extends AppCompatActivity {
         searchEditText = findViewById(R.id.searchEditText); // EditText pour la recherche
 
 
-        adapter = new ViewPagerAdapter(this);
+        adapter = new GroceriesViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
         tvFridge.setOnClickListener(v -> {
@@ -60,28 +65,39 @@ public class GroceryActivity extends AppCompatActivity {
             }
         });
 
-
         sendButton = findViewById(R.id.sendButton);
         sendButton.setOnClickListener(v -> sendSelectedItemsToFridge());
 
         shoppingFragment = (ShoppingFragment) adapter.getFragment(1); // Accéder au fragment Shopping
-// Ajouter un TextWatcher pour filtrer les éléments de la liste en fonction de la recherche
+        fridgeFragment = (FridgeFragment) adapter.getFragment(0); // Accéder au fragment Fridge
+
+        // Ajouter un TextWatcher pour la recherche
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-                Log.d("GroceryActivity", "Recherche : " + charSequence.toString());  // Ajout d'un log
-
-                if (shoppingFragment != null) {
+                int currentPosition = viewPager.getCurrentItem();
+                if (currentPosition == 0 && fridgeFragment != null) {
+                    fridgeFragment.filterItems(charSequence.toString());
+                } else if (currentPosition == 1 && shoppingFragment != null) {
                     shoppingFragment.filterItems(charSequence.toString());
                 }
             }
-
             @Override
             public void afterTextChanged(Editable editable) {}
         });
+
+        ImageView btnAdd = findViewById(R.id.addButton);
+        btnAdd.setOnClickListener(v -> {
+            int currentTab = viewPager.getCurrentItem(); // 0 = Fridge, 1 = Shopping
+            Intent intent = new Intent(getApplicationContext(), AddGroceriesActivity.class);
+            intent.putExtra("CURRENT_TAB", currentTab);
+            startActivityForResult(intent, 1);
+        });
+
+
         updateTabs(0);
     }
 
@@ -107,7 +123,6 @@ public class GroceryActivity extends AppCompatActivity {
         }
     }
 
-
     private void sendSelectedItemsToFridge() {
         ShoppingFragment shoppingFragment = (ShoppingFragment) adapter.getFragment(1);
         FridgeFragment fridgeFragment = (FridgeFragment) adapter.getFragment(0);
@@ -117,7 +132,7 @@ public class GroceryActivity extends AppCompatActivity {
             return;
         }
 
-        List<FoodItem> selectedItems = shoppingFragment.getSelectedItems();
+        List<FoodItem> selectedItems = new ArrayList<>(shoppingFragment.getSelectedItems());
         if (selectedItems.isEmpty()) {
             Toast.makeText(this, "Aucun élément sélectionné", Toast.LENGTH_SHORT).show();
             return;
@@ -125,9 +140,35 @@ public class GroceryActivity extends AppCompatActivity {
 
         fridgeFragment.addItemsToFridge(selectedItems);
 
-        shoppingFragment.removeSelectedItems(selectedItems);
+        for (FoodItem item : selectedItems) {
+            shoppingFragment.removeItem(item);
+        }
+
+        shoppingFragment.clearSelectedItems();
 
         toggleSendButtonVisibility(false);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            int targetTab = data.getIntExtra("CURRENT_TAB", 0);
+            ArrayList<FoodItem> receivedItems = (ArrayList<FoodItem>) data.getSerializableExtra("SELECTED_ITEMS");
+
+            if (receivedItems != null && !receivedItems.isEmpty()) {
+                if (targetTab == 0 && fridgeFragment != null) {
+                    fridgeFragment.addItemsToFridge(receivedItems);
+                } else if (targetTab == 1 && shoppingFragment != null) {
+                    shoppingFragment.addItemsToShopping(receivedItems);
+                }
+            }
+        }
+    }
+
+
 }
+

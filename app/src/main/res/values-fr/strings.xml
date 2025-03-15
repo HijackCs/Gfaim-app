@@ -40,5 +40,7 @@
     <string name="shopping">Courses</string>
     <string name="fridge">Frigo</string>
     <string name="send">Envoyer</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
 
 </resources>

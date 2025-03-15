@@ -44,16 +44,6 @@
         app:layout_constraintEnd_toStartOf="@id/itemCheckbox"
         app:layout_constraintHorizontal_bias="0.0"/>
 
-    <ImageView
-        android:id="@+id/itemDeleteButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:src="@drawable/ic_delete"
-        android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
-
     <!-- Checkbox -->
     <CheckBox
         android:id="@+id/itemCheckbox"

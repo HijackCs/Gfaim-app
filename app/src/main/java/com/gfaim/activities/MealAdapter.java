@@ -17,11 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
 import com.gfaim.activities.calendar.AddIngredientsCalendar;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
     private final List<String> mealList;
     private final Context context;
+    private final Map<Integer, String> snackMap = new HashMap<>();
 
     public MealAdapter(List<String> mealList, Context context) {
         this.mealList = mealList;
@@ -40,20 +43,25 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         String meal = mealList.get(position);
         holder.textTitle.setText(meal);
 
-        holder.snackImage.setImageResource(R.drawable.ic_add_green);
-
-        holder.snackImage.setOnClickListener(v -> {
-            showSnackPopup(holder);
-        });
-
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, AddIngredientsCalendar.class);
-            intent.putExtra("mealType", meal);
+            intent.putExtra("mealType", meal); // passer le type de repas
             context.startActivity(intent);
         });
+        // Récupère le snack s'il existe
+        if (snackMap.containsKey(position)) {
+            holder.snackText.setText(snackMap.get(position));
+            holder.snackImage.setImageResource(R.drawable.ic_snack);
+        } else {
+            holder.snackText.setText("Add a snack");
+            holder.snackImage.setImageResource(R.drawable.ic_add_green);
+        }
+
+        holder.snackImage.setOnClickListener(v -> showSnackPopup(holder, position));
     }
 
-    private void showSnackPopup(MealViewHolder holder) {
+
+    private void showSnackPopup(MealViewHolder holder, int position) {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle("Add a snack");
 
@@ -64,8 +72,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         builder.setPositiveButton("OK", (dialog, which) -> {
             String snack = input.getText().toString().trim();
             if (!snack.isEmpty()) {
-                holder.snackText.setText(snack);
-                holder.snackImage.setImageResource(R.drawable.ic_snack);
+                snackMap.put(position, snack); // Sauvegarde le snack pour ce repas
+                notifyItemChanged(position); // Met à jour la vue
             }
         });
 
@@ -73,6 +81,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
         builder.show();
     }
+
 
     @Override
     public int getItemCount() {

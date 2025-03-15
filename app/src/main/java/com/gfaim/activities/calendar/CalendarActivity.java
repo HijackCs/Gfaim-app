@@ -1,15 +1,14 @@
 package com.gfaim.activities.calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -17,11 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
-import com.gfaim.activities.Meal;
 import com.gfaim.activities.MealAdapter;
 import com.gfaim.activities.NavigationBar;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -62,6 +58,16 @@ public class CalendarActivity extends AppCompatActivity {
             MealAdapter adapter = new MealAdapter(mealList, CalendarActivity.this);
             recyclerView.setAdapter(adapter);
         });
+
+
+        Intent intent = getIntent();
+        String menuName = intent.getStringExtra("MENU_NAME");
+        int totalCalories = intent.getIntExtra("TOTAL_CALORIES", 0);
+        String selectedDate = intent.getStringExtra("SELECTED_DATE"); // Ex: "26 Mai"
+
+        if (menuName != null && selectedDate != null) {
+            updateMealCard(selectedDate, menuName, totalCalories);
+        }
         getWindow().getDecorView().setSystemUiVisibility(
                 View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                         | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -73,5 +79,27 @@ public class CalendarActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("MENU_NAME") && intent.hasExtra("TOTAL_CALORIES")) {
+            String menuName = intent.getStringExtra("MENU_NAME");
+            int totalCalories = intent.getIntExtra("TOTAL_CALORIES", 0);
+
+            TextView cardText = findViewById(R.id.cardText);
+            TextView caloriesText = findViewById(R.id.caloriesText);
+
+            cardText.setText(menuName);
+            caloriesText.setText(totalCalories + " kcal");
+        }
+    }
+
+    private void updateMealCard(String date, String menuName, int totalCalories) {
+        TextView cardText = findViewById(R.id.cardText);
+        TextView caloriesText = findViewById(R.id.caloriesText);
+        cardText.setText(menuName);
+        caloriesText.setText(totalCalories + " kcal");
+    }
 }

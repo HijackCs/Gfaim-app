@@ -2,8 +2,10 @@ package com.gfaim.activities.calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -43,8 +45,8 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         participantCountText = findViewById(R.id.participant_count);
         menuData = new MenuData();
         ingredientContainer = findViewById(R.id.ingredientContainer);
-        ImageButton addIngredientButton = findViewById(R.id.add_step_button);
-        addIngredientButton.setOnClickListener(v -> showAddIngredientDialog());
+        ImageButton addIngredientButton = findViewById(R.id.add_ingredient_button);
+        addIngredientButton.setOnClickListener(v -> popup());
         ImageButton addButton = findViewById(R.id.add_btn);
         ImageButton removeButton = findViewById(R.id.remove_btn);
         addButton.setOnClickListener(v -> {
@@ -65,11 +67,29 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         });
 
         ImageView back = findViewById(R.id.back);
-        back.setOnClickListener(view -> {
+        back.setOnClickListener(v -> {
             Intent intent = new Intent(AddIngredientsCalendar.this, CalendarActivity.class);
+            intent.putExtra("MENU_DATA", menuData);
             startActivity(intent);
+            finish();
         });
 
+        if (menuData != null && menuData.getIngredients() != null) {
+            for (String ingredient : menuData.getIngredients()) {
+                EditText ingredientEditText = new EditText(this);
+                ingredientEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
+                ingredientEditText.setText(ingredient);
+                ingredientEditText.setHint("Ingredient");
+                ingredientEditText.setPadding(16, 16, 16, 16);
+                ingredientEditText.setTextSize(16);
+                ingredientEditText.setTextColor(getResources().getColor(R.color.black));
+
+                ingredientContainer.addView(ingredientEditText);
+            }
+        }
 
         updateParticipantCount();
         Button nextButton = findViewById(R.id.next);
@@ -78,7 +98,7 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         nextButton.setOnClickListener(v -> {
             menuData.setMenuName(menuNameEditText.getText().toString().trim());
             menuData.setParticipantCount(participantCount);
-            menuData.addIngredient("Escalope de poulet");
+            //menuData.addIngredient(String.valueOf(ingredientList));
 
             Intent intent = new Intent(AddIngredientsCalendar.this, AddStepsCalendar.class);
             intent.putExtra("MENU_DATA", menuData);
@@ -96,13 +116,12 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         if (requestCode == REQUEST_CODE && resultCode == RESULT_OK && data != null) {
             String menuName = data.getStringExtra("MENU_NAME");
             if (menuName != null) {
-                menuNameEditText.setText(menuName); // Réinsère le texte dans l'EditText
+                menuNameEditText.setText(menuName);
             }
         }
     }
 
-    private void showAddIngredientDialog() {
-        // Affiche le pop-up
+    private void popup() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         LayoutInflater inflater = this.getLayoutInflater();
         View dialogView = inflater.inflate(R.layout.dialog_add_ingredient, null);
@@ -134,5 +153,10 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         ingredientView.setText(ingredientInfo);
         ingredientView.setTextSize(18);
         ingredientContainer.addView(ingredientView);
+    }
+
+    private void addIngredient(String ingredient) {
+        ingredientList.add(ingredient);
+        Log.d("Ingredients", "Ajouté: " + ingredient);
     }
 }

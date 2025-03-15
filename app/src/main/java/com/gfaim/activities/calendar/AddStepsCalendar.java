@@ -3,6 +3,7 @@ package com.gfaim.activities.calendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -33,25 +34,39 @@ public class AddStepsCalendar extends AppCompatActivity {
         addStepButton.setOnClickListener(v -> addNewStep());
 
         menuData = (MenuData) getIntent().getSerializableExtra("MENU_DATA");
+        if (menuData == null) {
+            menuData = new MenuData();
+        }
 
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(v -> {
             Intent intent = new Intent(AddStepsCalendar.this, AddIngredientsCalendar.class);
             intent.putExtra("MENU_DATA", menuData);
-            setResult(RESULT_OK, intent);
             startActivity(intent);
+            finish();
         });
 
+        if (menuData != null && menuData.getSteps() != null) {
+            for (String step : menuData.getSteps()) {
+                EditText stepEditText = new EditText(this);
+                stepEditText.setLayoutParams(new LinearLayout.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT,
+                        ViewGroup.LayoutParams.WRAP_CONTENT
+                ));
+                stepEditText.setText(step); // Mettre la valeur dans l'EditText
+                stepEditText.setHint("Step " + stepCount);
+                stepEditText.setPadding(16, 16, 16, 16);
+                stepEditText.setTextSize(16); // Applique le même style
+                stepEditText.setTextColor(getResources().getColor(R.color.black));
 
-        EditText stepEditText = findViewById(R.id.step); // Assure-toi que l'ID correspond à celui du XML
+                stepsContainer.addView(stepEditText);
+                stepCount++;
+            }
+        }
 
         Button nextButton = findViewById(R.id.next);
         nextButton.setOnClickListener(v -> {
-            String step = stepEditText.getText().toString().trim();
-            if (!step.isEmpty()) {
-                menuData.addStep(step); // Ajoute l'étape au menuData
-            }
-            // Passer au résumé
+            saveAllSteps();
             Intent intent = new Intent(AddStepsCalendar.this, SummaryCalendar.class);
             intent.putExtra("MENU_DATA", menuData);
             startActivity(intent);
@@ -59,11 +74,8 @@ public class AddStepsCalendar extends AppCompatActivity {
     }
 
     private void addNewStep() {
-        // Récupère le premier EditText pour copier le style
         EditText firstStep = findViewById(R.id.step);
         EditText newStep = new EditText(this);
-
-        // Copie les paramètres du premier EditText
         newStep.setLayoutParams(firstStep.getLayoutParams());
         newStep.setHint("Step " + stepCount);
         newStep.setPadding(
@@ -75,10 +87,21 @@ public class AddStepsCalendar extends AppCompatActivity {
         newStep.setTextSize(16);
         newStep.setBackground(firstStep.getBackground());
         newStep.setTextColor(firstStep.getCurrentTextColor());
-
-        // Ajoute le nouveau champ dans le container
         stepsContainer.addView(newStep);
         stepCount++;
     }
 
+    private void saveAllSteps() {
+        menuData.getSteps().clear();
+
+        for (int i = 0; i < stepsContainer.getChildCount(); i++) {
+            View view = stepsContainer.getChildAt(i);
+            if (view instanceof EditText) {
+                String step = ((EditText) view).getText().toString().trim();
+                if (!step.isEmpty()) {
+                    menuData.addStep(step);
+                }
+            }
+        }
+    }
 }

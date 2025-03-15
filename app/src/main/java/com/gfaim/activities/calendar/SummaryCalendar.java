@@ -2,6 +2,7 @@ package com.gfaim.activities.calendar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,36 +16,45 @@ import com.gfaim.R;
 import com.gfaim.activities.Ingredient;
 import com.gfaim.activities.MenuData;
 
+import java.util.HashMap;
+
 public class SummaryCalendar extends AppCompatActivity {
 
     private TextView menuNameText;
     private TextView participantCountText;
-    private TextView ingredientsText;
-    private TextView stepsText;
+    private LinearLayout ingredientsList;
+    private LinearLayout stepsList;
     private MenuData menuData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.summary_calendar);
-        MenuData menuData = (MenuData) getIntent().getSerializableExtra("MENU_DATA");
 
-        TextView menuNameTextView = findViewById(R.id.menu_name);
-        TextView participantCount = findViewById(R.id.participant_count);
-        LinearLayout ingredientsList = findViewById(R.id.ingredients_list);
-        LinearLayout stepsList = findViewById(R.id.steps_list);
+        // Initialisation des vues
+        menuNameText = findViewById(R.id.menu_name);
+        participantCountText = findViewById(R.id.participant_count);
+        ingredientsList = findViewById(R.id.ingredients_list);
+        stepsList = findViewById(R.id.steps_list);
+
+        // Récupération de l'objet MenuData passé par l'Intent
+        menuData = (MenuData) getIntent().getSerializableExtra("MENU_DATA");
 
         if (menuData != null) {
-            menuNameTextView.setText(menuData.getMenuName());
-            participantCount.setText("Number of participants: " + menuData.getParticipantCount());
+            // Affiche le nom du menu et le nombre de participants
+            menuNameText.setText(menuData.getMenuName());
+            participantCountText.setText("Number of participants: " + menuData.getParticipantCount());
 
-            for (String ingredientName : menuData.getIngredients()) {
+            // Affiche les ingrédients
+            ingredientsList.removeAllViews(); // Clear pour éviter des doublons si on revient sur l'activité
+            for (String ingredient : menuData.getIngredients()) {
                 TextView ingredientView = new TextView(this);
-                ingredientView.setText(ingredientName); // Affiche juste le nom
+                ingredientView.setText(ingredient);
                 ingredientsList.addView(ingredientView);
             }
 
-            // Ajouter les étapes
+            // Affiche les étapes
+            stepsList.removeAllViews(); // Pareil pour éviter les doublons
             int stepNumber = 1;
             for (String step : menuData.getSteps()) {
                 TextView stepView = new TextView(this);
@@ -52,30 +62,53 @@ public class SummaryCalendar extends AppCompatActivity {
                 stepsList.addView(stepView);
                 stepNumber++;
             }
+            Button finishButton = findViewById(R.id.finish);
+            finishButton.setOnClickListener(v -> {
+                int totalCalories = calculateTotalCalories();
+                Intent intent = new Intent(SummaryCalendar.this, CalendarActivity.class);
+                intent.putExtra("MENU_NAME", menuData.getMenuName());
+                intent.putExtra("TOTAL_CALORIES", totalCalories);
+                setResult(RESULT_OK, intent);
+                startActivity(intent);
+            });
         }
+
+        if (menuData == null) {
+            Log.e("SummaryCalendar", "menuData is null!");
+        } else {
+            Log.d("SummaryCalendar", "Menu Name: " + menuData.getMenuName());
+            Log.d("SummaryCalendar", "Ingredients: " + menuData.getIngredients());
+            Log.d("SummaryCalendar", "Steps: " + menuData.getSteps());
+        }
+
 
         ImageView back = findViewById(R.id.back);
         back.setOnClickListener(view -> {
-            Intent intent = new Intent(SummaryCalendar.this, AddStepsCalendar.class);
-            intent.putExtra("MENU_NAME", R.id.menu_name);
+            Intent intent = new Intent(SummaryCalendar.this, CalendarActivity.class);
+            intent.putExtra("MENU_DATA", menuData);
             startActivity(intent);
+            finish();
         });
 
+    }
 
-
-        // Récupérer le menuName de AddStepActivity
-        String menuName = getIntent().getStringExtra("MENU_NAME");
-        if (menuName != null && !menuName.isEmpty()) {
-            menuNameTextView.setText(menuName);
+    private int calculateTotalCalories() {
+        int totalCalories = 0;
+        for (String ingredientName : menuData.getIngredients()) {
+            int calories = getCaloriesFromDatabase(ingredientName);
+            totalCalories += calories;
         }
 
-        Button finishButton = findViewById(R.id.finish);
-        finishButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SummaryCalendar.this, CalendarActivity.class);
-                startActivity(intent);
-            }
-        });
+        return totalCalories;
     }
+    private int getCaloriesFromDatabase(String ingredientName) {
+        HashMap<String, Integer> fakeDB = new HashMap<>();
+        fakeDB.put("Tomato", 20);
+        fakeDB.put("Cheese", 100);
+        fakeDB.put("Bread", 80);
+
+        return fakeDB.getOrDefault(ingredientName, 0);
+    }
+
+
 }

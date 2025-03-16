@@ -3,7 +3,6 @@ package com.gfaim.activities.calendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -13,7 +12,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
-import com.gfaim.activities.Ingredient;
 import com.gfaim.activities.MenuData;
 
 import java.util.HashMap;
@@ -31,22 +29,18 @@ public class SummaryCalendar extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.summary_calendar);
 
-        // Initialisation des vues
         menuNameText = findViewById(R.id.menu_name);
         participantCountText = findViewById(R.id.participant_count);
         ingredientsList = findViewById(R.id.ingredients_list);
         stepsList = findViewById(R.id.steps_list);
 
-        // Récupération de l'objet MenuData passé par l'Intent
         menuData = (MenuData) getIntent().getSerializableExtra("MENU_DATA");
 
         if (menuData != null) {
-            // Affiche le nom du menu et le nombre de participants
             menuNameText.setText(menuData.getMenuName());
             participantCountText.setText("Number of participants: " + menuData.getParticipantCount());
 
-            // Affiche les ingrédients
-            ingredientsList.removeAllViews(); // Clear pour éviter des doublons si on revient sur l'activité
+            ingredientsList.removeAllViews();
             for (String ingredient : menuData.getIngredients()) {
                 TextView ingredientView = new TextView(this);
                 ingredientView.setText(ingredient);
@@ -66,9 +60,9 @@ public class SummaryCalendar extends AppCompatActivity {
             finishButton.setOnClickListener(v -> {
                 int totalCalories = calculateTotalCalories();
                 Intent intent = new Intent(SummaryCalendar.this, CalendarActivity.class);
-                intent.putExtra("MENU_NAME", menuData.getMenuName());
+                /*intent.putExtra("MENU_NAME", menuData.getMenuName());
                 intent.putExtra("TOTAL_CALORIES", totalCalories);
-                setResult(RESULT_OK, intent);
+                setResult(RESULT_OK, intent);*/
                 startActivity(intent);
             });
         }

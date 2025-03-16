@@ -1,0 +1,67 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.gfaim.activities.calendar.fragments.CalendarFragment"
+        android:label="Calendar" />
+
+    <fragment
+        android:id="@+id/addIngredientsFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddIngredientsFragment"
+        android:label="Add Ingredients" />
+
+    <action
+        android:id="@+id/action_calendar_to_addIngredients"
+        app:destination="@id/addIngredientsFragment" />
+
+    <fragment
+        android:id="@+id/addIngredientFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddIngredientFragment"
+        android:label="Add Ingredient" />
+
+    <!-- Actions de navigation -->
+    <action
+        android:id="@+id/action_addIngredient_to_addIngredients"
+        app:destination="@id/addIngredientsFragment" />
+
+    <fragment
+        android:id="@+id/addStepsFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddStepsFragment"
+        android:label="Add Steps" />
+
+    <fragment
+        android:id="@+id/summaryFragment"
+        android:name="com.gfaim.activities.calendar.fragments.SummaryFragment"
+        android:label="Summary" />
+
+    <!-- Définir les actions de navigation -->
+
+
+    <action
+        android:id="@+id/action_addIngredients_to_addIngredient"
+        app:destination="@id/addIngredientFragment" />
+
+    <action
+        android:id="@+id/action_addIngredients_to_addSteps"
+        app:destination="@id/addStepsFragment" />
+
+    <action
+        android:id="@+id/action_addSteps_to_summary"
+        app:destination="@id/summaryFragment" />
+
+    <action
+        android:id="@+id/action_addIngredientsFragment_to_addStepsFragment"
+        app:destination="@id/addStepsFragment" />
+
+    <action
+        android:id="@+id/action_summary_to_calendar"
+        app:destination="@id/calendarFragment" />
+
+    <action
+        android:id="@+id/action_addIngredientsFragment_to_addIngredientFragment"
+        app:destination="@id/addIngredientFragment" />
+
+</navigation>

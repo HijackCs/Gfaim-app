@@ -3,8 +3,6 @@ package com.gfaim.activities.calendar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,10 +11,10 @@ import android.widget.TextView;
 import android.widget.EditText;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
+import com.gfaim.activities.Ingredient;
 import com.gfaim.activities.MenuData;
 
 import android.widget.ImageButton;
@@ -36,6 +34,7 @@ public class AddIngredientsCalendar extends AppCompatActivity {
     private MenuData menuData;
     private LinearLayout ingredientContainer;
     private List<String> ingredientList = new ArrayList<>();
+    private Ingredient ingredient;
 
 
     @Override
@@ -46,7 +45,7 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         menuData = new MenuData();
         ingredientContainer = findViewById(R.id.ingredientContainer);
         ImageButton addIngredientButton = findViewById(R.id.add_ingredient_button);
-        addIngredientButton.setOnClickListener(v -> popup());
+        addIngredientButton.setOnClickListener(v -> openIngredientDialog());
         ImageButton addButton = findViewById(R.id.add_btn);
         ImageButton removeButton = findViewById(R.id.remove_btn);
         addButton.setOnClickListener(v -> {
@@ -98,7 +97,7 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         nextButton.setOnClickListener(v -> {
             menuData.setMenuName(menuNameEditText.getText().toString().trim());
             menuData.setParticipantCount(participantCount);
-            //menuData.addIngredient(String.valueOf(ingredientList));
+            //menuData.addIngredient(ingredient.getName());
 
             Intent intent = new Intent(AddIngredientsCalendar.this, AddStepsCalendar.class);
             intent.putExtra("MENU_DATA", menuData);
@@ -108,6 +107,13 @@ public class AddIngredientsCalendar extends AppCompatActivity {
 
     private void updateParticipantCount() {
         participantCountText.setText(String.valueOf(participantCount));
+    }
+
+    private void openIngredientDialog() {
+        DialogAddIngredient dialog = new DialogAddIngredient(this, this::addIngredientToList);
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
     }
 
     @Override
@@ -121,36 +127,11 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         }
     }
 
-    private void popup() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        LayoutInflater inflater = this.getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_add_ingredient, null);
-        builder.setView(dialogView);
-
-        EditText ingredientName = dialogView.findViewById(R.id.ingredient_name);
-        EditText calories = dialogView.findViewById(R.id.ingredient_calories);
-        EditText grams = dialogView.findViewById(R.id.ingredient_grams);
-
-        builder.setPositiveButton("Add", (dialog, which) -> {
-            String name = ingredientName.getText().toString().trim();
-            String kcal = calories.getText().toString().trim();
-            String g = grams.getText().toString().trim();
-
-            if (!name.isEmpty() && !kcal.isEmpty() && !g.isEmpty()) {
-                addIngredientToList(name, kcal, g);
-            }
-        });
-
-        builder.setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
-        builder.create().show();
-    }
-
-    private void addIngredientToList(String name, String kcal, String grams) {
-        String ingredientInfo = name + " - " + kcal + " kcal, " + grams + "g";
-        ingredientList.add(ingredientInfo);
+    private void addIngredientToList(Ingredient ingredient) {
+        ingredientList.add(String.valueOf(ingredient));
 
         TextView ingredientView = new TextView(this);
-        ingredientView.setText(ingredientInfo);
+        ingredientView.setText(ingredient.getName() + " - " + ingredient.getCalories() + " kcal");
         ingredientView.setTextSize(18);
         ingredientContainer.addView(ingredientView);
     }

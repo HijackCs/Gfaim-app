@@ -1,13 +1,17 @@
 package com.gfaim.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import lombok.Getter;
 import lombok.Setter;
 
 @Setter
 @Getter
 public class AuthResponse {
+    @SerializedName("access_token")
     private String accessToken;
-    private String refreshToken;
 
+    @SerializedName("refresh_token")
+    private String refreshToken;
 }
 

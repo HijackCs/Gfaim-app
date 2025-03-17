@@ -1,6 +1,6 @@
 <resources>
 
-    <!--Login-->
+    <!--Connexion-->
     <string name="app_name">GFaim</string>
     <string name="welcomeBack">Bienvenue !</string>
     <string name="password">Mot de passe</string>
@@ -9,29 +9,73 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="forgotPwd">Mot de passe oublié ?</string>
 
-    <!--Register-->
+    <!--Inscription-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
-    <string name="helloTxt">Hi, Salut 👋</string>
+    <string name="helloTxt">Salut 👋</string>
     <string name="name">Nom</string>
     <string name="firstName">Prénom</string>
     <string name="haveAccount">Tu as un compte ?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
 
-    <!--Check Mail-->
-    <string name="checkMail">Regarde tes mails</string>
+    <!--Vérification Email-->
+    <string name="checkMail">Vérifie tes mails</string>
     <string name="continueBtn">Continuer</string>
 
     <!--Forgot pwd-->
-    <string name="sendCode">Envoyer code</string>
-    <string name="resetPwd">Reinitialiser mots de passe</string>
-    <string name="remember">Tu te souviens de ton mots de passe ?</string>
-    <string name="goBackLogin">retour à la connexion</string>
     <string name="enter_code">enter code</string>
     <string name="new_password">new password</string>
     <string name="confirm_password">confirm password</string>
     <string name="reset_password">reset password\n</string>
+    <!--Mot de passe oublié-->
+    <string name="sendCode">Envoyer le code</string>
+    <string name="resetPwd">Réinitialiser le mot de passe</string>
+    <string name="remember">Tu te souviens de ton mot de passe ?</string>
+    <string name="goBackLogin">Retour à la connexion</string>
 
+    <!--Onboarding-->
+
+    <string name="skip">Passer</string>
+    <string name="previous">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="finish">Finish</string>
+
+    <string name="screen0">Profite de tes repas</string>
+    <string name="screen0Desc">Détends-toi et ne te prends pas la tête sur quoi manger. Nous nous en chargeons avec des plans repas personnalisés adaptés à tes besoins.</string>
+
+    <string name="screen1">As-tu des allergies alimentaires ?</string>
+    <string name="screen1Desc">Pour te proposer les meilleurs repas adaptés à toi et ta famille, tu dois rejoindre ou créer une famille.</string>
+
+    <string name="screen2">Suis-tu un régime alimentaire ?</string>
+    <string name="screen2Desc">Pour te proposer la meilleure expérience alimentaire adaptée, nous avons besoin de plus d\'informations sur toi.</string>
+
+    <string name="screen3">Rejoins ta famille</string>
+    <string name="screen3Desc">Pour te proposer la meilleure expérience alimentaire adaptée, nous avons besoin de plus d\'informations sur toi.</string>
+
+    <string name="allergieGluten">Gluten</string>
+    <string name="allergieDiary">Produits laitiers</string>
+    <string name="allergieEgg">Oeuf</string>
+    <string name="allergieSoy">Soja</string>
+    <string name="allergiePeanut">Cacahuète</string>
+    <string name="allergieWheat">Blé</string>
+    <string name="allergieMilk">Lait</string>
+    <string name="allergieFish">Poisson</string>
+
+    <string name="dietsVegan">Végétalien</string>
+    <string name="dietsPaleo">Paléo</string>
+    <string name="dietsDukan">Dukan</string>
+    <string name="dietsVegetarian">Végétarien</string>
+    <string name="dietsAktin">Atkins</string>
+    <string name="dietsInterFast">Jeûne intermittent</string>
+
+    <string name="familyCode">Code Famille</string>
+    <string name="joinFamilly">Rejoins ta famille</string>
+    <string name="createFamily">Crée une nouvelle famille</string>
+    <string name="tv_welcome_message">Bienvenue dans ta famille!</string>
+    <string name="familyName">Nom de famille</string>
+    <string name="createFamilly">Crée ta famille!</string>
+    <string name="new_fam">Nouvelle famille créé</string>
+    <string name="joinFamily">Rejoins la famille</string>
 
 </resources>

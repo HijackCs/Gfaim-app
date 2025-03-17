@@ -1,5 +1,5 @@
 <resources>
-    <!--Login-->
+    <!-- Logowanie -->
     <string name="app_name">GFaim</string>
     <string name="welcomeBack">Witamy z powrotem!</string>
     <string name="password">Hasło</string>
@@ -8,21 +8,63 @@
     <string name="or">lub</string>
     <string name="noAccount">Nie masz konta?</string>
     <string name="signUp">Zarejestruj się</string>
-    <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="forgotPwd">Zapomniałeś hasła?</string>
 
-
-    <!--Register-->
+    <!-- Rejestracja -->
     <string name="registerTxtView">Wprowadź swoje dane, aby uzyskać dostęp do konta</string>
     <string name="helloTxt">Cześć, Witaj 👋</string>
     <string name="name">Imię</string>
     <string name="firstName">Telefon</string>
     <string name="haveAccount">Masz już konto?</string>
-    <string name="terms">J\'accepte les termes d\'utilisation</string>
+    <string name="terms">Akceptuję warunki użytkowania</string>
 
-    <!--Check Mail-->
-    <string name="checkMail">Regarde tes mails</string>
-    <string name="continueBtn">Continuer</string>
+    <!-- Sprawdź e-mail -->
+    <string name="checkMail">Sprawdź swoją skrzynkę e-mail</string>
+    <string name="continueBtn">Kontynuuj</string>
 
+
+    <!-- Wprowadzenie -->
+    <string name="skip">Pomiń</string>
+    <string name="previous">Poprzedni</string>
+    <string name="next">Następny</string>
+    <string name="finish">Zakończ</string>
+
+    <string name="screen0">Ciesz się swoim posiłkiem</string>
+    <string name="screen0Desc">Zrelaksuj się i nie martw się o to, co zjeść. Zajmiemy się tym, oferując spersonalizowane plany posiłków dostosowane do Twoich potrzeb.</string>
+
+    <string name="screen1">Czy stosujesz którąś z tych diet?</string>
+    <string name="screen1Desc">Aby zaoferować Ci najlepsze dopasowane doświadczenie żywieniowe, potrzebujemy więcej informacji o Tobie.</string>
+
+    <string name="screen2">Dołącz do swojej rodziny</string>
+    <string name="screen2Desc">Aby zaoferować Ci najlepsze doświadczenie żywieniowe, potrzebujemy więcej informacji o Tobie.</string>
+
+    <string name="screen3">Masz jakieś alergie pokarmowe?</string>
+    <string name="screen3Desc">Aby zaproponować Ci najlepsze posiłki dostosowane do Ciebie i Twojej rodziny, musisz dołączyć do istniejącej rodziny lub utworzyć nową.</string>
+
+    <string name="allergieGluten">Gluten</string>
+    <string name="allergieDiary">Nabiał</string>
+    <string name="allergieEgg">Jajko</string>
+    <string name="allergieSoy">Soja</string>
+    <string name="allergiePeanut">Orzechy ziemne</string>
+    <string name="allergieWheat">Pszenica</string>
+    <string name="allergieMilk">Mleko</string>
+    <string name="allergieFish">Ryby</string>
+
+    <string name="dietsVegan">Wegańska</string>
+    <string name="dietsPaleo">Paleo</string>
+    <string name="dietsDukan">Dukan</string>
+    <string name="dietsVegetarian">Wegetariańska</string>
+    <string name="dietsAktin">Atkins</string>
+    <string name="dietsInterFast">Post przerywany</string>
+
+    <string name="familyCode">Kod rodziny</string>
+    <string name="joinFamilly">Dołącz do swojej rodziny</string>
+    <string name="createFamily">Utwórz nową grupę rodzinną</string>
+    <string name="tv_welcome_message">Witamy w Twojej rodzinie!</string>
+    <string name="familyName">Nazwa rodziny</string>
+    <string name="createFamilly">Utwórz swoją rodzinę!</string>
+    <string name="new_fam">Nowa rodzina została utworzona!</string>
+    <string name="joinFamily">Dołącz do rodziny</string>
     <!--Forgot pwd-->
     <string name="sendCode">Send code</string>
     <string name="resetPwd">Reset Password</string>

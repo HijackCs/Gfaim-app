@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("org.sonarqube")
 }
 
 android {
@@ -10,10 +11,17 @@ android {
         applicationId "com.gfaim"
         minSdk 28
         targetSdk 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 100
+        versionName "1.0.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    applicationVariants.configureEach { variant ->
+        variant.outputs.configureEach { output ->
+            def apkName = "gfaim-app-${variant.name}-${variant.versionCode}.apk"
+            outputFileName = apkName
+        }
     }
 
     buildTypes {
@@ -38,10 +46,22 @@ dependencies {
     // Facebook et Google
     implementation 'com.google.android.gms:play-services-auth:20.6.0'
     implementation 'com.google.android.material:material:1.4.0'
+    implementation 'com.google.android.flexbox:flexbox:3.0.0'
 
     implementation 'com.facebook.android:facebook-android-sdk:latest.release'
+
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core
+
+
+    implementation 'androidx.security:security-crypto:1.1.0-alpha03'
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.3'
+    
+    compileOnly 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
 }

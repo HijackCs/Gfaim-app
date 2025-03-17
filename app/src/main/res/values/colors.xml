@@ -4,9 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#303030</color>
     <color name="red">#FF0000</color>
-    <color name="darkGreen">#1D3431</color>
-    <color name="layout">#C8CAB8</color>
-
+    <color name="dark_green">#1E3A2A</color>
+    <color name="green">#A6CE96</color>
 
 
     <color name="appBackground">#D3D5C9</color>

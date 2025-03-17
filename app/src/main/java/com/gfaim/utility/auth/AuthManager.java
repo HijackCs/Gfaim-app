@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
 
-import com.gfaim.activities.auth.LoginActivity;
-
 import java.util.logging.Logger;
 
 public class AuthManager {
 
-    private final Logger log = Logger.getLogger(LoginActivity.class.getName()) ;
+    private final Logger log = Logger.getLogger(AuthManager.class.getName()) ;
 
     private final GoogleAuthManager googleAuthManager;
     private final FacebookAuthManager facebookAuthManager;
@@ -33,6 +31,6 @@ public class AuthManager {
 
     public void handleActivityResult(int requestCode, int resultCode, Intent data, Activity activity) {
         facebookAuthManager.getCallbackManager().onActivityResult(requestCode, resultCode, data);
-        googleAuthManager.handleActivityResult(requestCode, resultCode, data, activity);
+        googleAuthManager.handleActivityResult(requestCode, data, activity);
     }
 }

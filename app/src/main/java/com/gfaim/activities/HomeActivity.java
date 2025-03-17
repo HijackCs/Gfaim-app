@@ -55,7 +55,6 @@ public class HomeActivity extends AppCompatActivity {
             Button signOutBtn = findViewById(R.id.signOutBtn);
             signOutBtn.setOnClickListener(v -> signOut());
 
-            //gam.handleGoogleLogin(this);
             handleGoogleLogin();
             handleFacebookLogin();
 

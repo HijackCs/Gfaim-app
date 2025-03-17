@@ -1,0 +1,43 @@
+image: youcefmoukeut/gradle-8.9-android-ndk-35:1.0.0
+
+stages:
+  - build
+  - code-quality
+  - build-apk
+
+default:
+  tags:
+    - android
+
+build:
+  stage: build
+  script:
+    - gradle build
+
+sonar_analysis:
+  stage: code-quality
+  variables:
+    SONAR_HOST_URL: $SONAR_HOST_URL
+    SONAR_TOKEN: $SONAR_TOKEN
+    SONAR_KEY: $SONAR_KEY
+  script:
+    - gradle sonarqube -Dsonar.projectKey=$SONAR_KEY -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_TOKEN
+  allow_failure: true
+
+build_apk:
+  stage: build-apk
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'
+      when: on_success
+  script:
+    - gradle assembleDebug
+  artifacts:
+    paths:
+      - app/build/outputs/apk/debug/*.apk
+    expire_in: 1 day
+
+workflow:
+  name: '🏗️ Build & Scan Pipeline - $CI_COMMIT_REF_NAME'
+  rules:
+    - if: '$CI_MERGE_REQUEST_ID'
+    - if: '$CI_COMMIT_BRANCH == "main"'

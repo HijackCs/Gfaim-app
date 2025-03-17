@@ -37,6 +37,8 @@
         <activity android:name=".activities.auth.CheckMailActivity"></activity>
         <activity android:name=".activities.auth.ForgotPwdActivity"></activity>
         <activity android:name=".activities.auth.onboarding.OnBoardingActivity"></activity>
+        <activity android:name=".activities.settings.SettingsActivity"></activity>
+        <activity android:name=".activities.settings.UpdateProfileActivity"></activity>
 
 
         <activity

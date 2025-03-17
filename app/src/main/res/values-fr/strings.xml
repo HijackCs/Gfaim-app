@@ -33,6 +33,7 @@
     <string name="resetPwd">Réinitialiser le mot de passe</string>
     <string name="remember">Tu te souviens de ton mot de passe ?</string>
     <string name="goBackLogin">Retour à la connexion</string>
+    <string name="your_email">Ton Email</string>
 
     <!--Onboarding-->
 
@@ -77,5 +78,19 @@
     <string name="createFamilly">Crée ta famille!</string>
     <string name="new_fam">Nouvelle famille créé</string>
     <string name="joinFamily">Rejoins la famille</string>
+
+    <!--settings-->
+    <string name="delete_profile">Supprimer le profil</string>
+    <string name="update_profile">Mettre à jour le profil</string>
+    <string name="my_account">Mon compte</string>
+    <string name="manage_account_settings">Gérer les paramètres de votre compte</string>
+    <string name="family_group">Groupe familial</string>
+    <string name="manage_family_settings">Gérer les paramètres familiaux</string>
+    <string name="log_out">Déconnexion</string>
+    <string name="log_out_text">Sécurisez davantage votre compte</string>
+    <string name="more">Plus</string>
+    <string name="help_support">Aide et support</string>
+    <string name="about_app">À propos de l\'application</string>
+
 
 </resources>

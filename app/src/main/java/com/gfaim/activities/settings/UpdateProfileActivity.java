@@ -1,30 +1,74 @@
 package com.gfaim.activities.settings;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.utility.api.UtileProfile;
 
 public class UpdateProfileActivity extends AppCompatActivity {
+
+    private UtileProfile utileProfile;
+    private EditText firstName;
+    private EditText lastName;
+
+    private EditText passwordInput;
+    private TextView updateButton;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_profile);
 
+        utileProfile = new UtileProfile(this);
+
+        firstName = findViewById(R.id.firstName);
+        lastName = findViewById(R.id.lastName);
+        passwordInput = findViewById(R.id.password);
+        updateButton = findViewById(R.id.updateBtn);
+
+        getAllInfo();
+
         backBtnSetup();
         editPhotoBtnSetup();
 
+        setupTextWatchers();
+        checkIfFieldsAreFilled();
+        setupUpdateButton();
+
+    }
+
+    public void getAllInfo(){
+        String getCompleteName = utileProfile.getCompleteName();
+        TextView userName = findViewById(R.id.user_name);
+        userName.setText(getCompleteName);
+
+        String getFirstName = utileProfile.getFirstName();
+        firstName.setHint(getFirstName);
+
+        String getLastName = utileProfile.getLastName();
+        lastName.setHint(getLastName);
+
+        String getEmail = utileProfile.getUserEmail();
+        TextView email = findViewById(R.id.email);
+        email.setText(getEmail);
     }
 
     public void backBtnSetup(){
@@ -66,4 +110,49 @@ public class UpdateProfileActivity extends AppCompatActivity {
             passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
     }
+
+    private void setupTextWatchers() {
+        TextWatcher textWatcher = new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                checkIfFieldsAreFilled();
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        };
+
+        firstName.addTextChangedListener(textWatcher);
+        lastName.addTextChangedListener(textWatcher);
+        passwordInput.addTextChangedListener(textWatcher);
+    }
+
+    private void checkIfFieldsAreFilled() {
+        boolean isAnyFieldFilled = !firstName.getText().toString().trim().isEmpty() ||
+                !lastName.getText().toString().trim().isEmpty() ||
+                !passwordInput.getText().toString().trim().isEmpty();
+
+        updateButton.setEnabled(isAnyFieldFilled);
+        updateButton.setAlpha(isAnyFieldFilled ? 1.0f : 0.5f);
+    }
+
+    private void setupUpdateButton() {
+        updateButton.setOnClickListener(v -> {
+            String firstNameValue = firstName.getText().toString().trim().isEmpty() ? firstName.getHint().toString() : firstName.getText().toString().trim();
+            String lastNameValue = lastName.getText().toString().trim().isEmpty() ? lastName.getHint().toString() : lastName.getText().toString().trim();
+            String passwordValue = passwordInput.getText().toString().trim().isEmpty() ? "********" : passwordInput.getText().toString().trim(); // Pour éviter d'afficher un mot de passe vide
+
+
+            // Afficher les valeurs dans un Toast
+            System.out.println( "First Name: " + firstNameValue +
+                    "\nLast Name: " + lastNameValue +
+                    "\nPassword: " + passwordValue);
+    });
+    }
+
 }

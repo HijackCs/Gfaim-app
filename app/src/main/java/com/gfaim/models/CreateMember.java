@@ -16,8 +16,8 @@ public class CreateMember {
     private boolean hasAccount;
     @SerializedName("family_id")
     private Long familyId;
-    @SerializedName("user_id")
-    private String userId;
+    @SerializedName("user_email")
+    private String userEmail;
 
     private String role;
 

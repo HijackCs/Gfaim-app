@@ -27,6 +27,10 @@
     <string name="resetPwd">Reset password</string>
     <string name="remember">Remember your password?</string>
     <string name="goBackLogin">Go back to login</string>
+    <string name="your_email">Your Email</string>
+
+
+
 
     <!--OnBoarding-->
     <string name="skip">Skip</string>
@@ -70,6 +74,20 @@
     <string name="createFamilly">Create your family!</string>
     <string name="new_fam">A new family has been created!</string>
     <string name="joinFamily">Join the family</string>
+
+    <!--settings-->
+    <string name="update_profile">Update Profile</string>
+    <string name="delete_profile">Delete Profile</string>
+    <string name="my_account">My Account</string>
+    <string name="manage_account_settings">Manage your account settings</string>
+    <string name="family_group">Family Group</string>
+    <string name="manage_family_settings">Manage family settings</string>
+    <string name="log_out">Log Out</string>
+    <string name="log_out_text">Further secure your account for safety</string>
+    <string name="more">More</string>
+    <string name="help_support">Help and support</string>
+    <string name="about_app">About App</string>
+
 
     <!--Facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>

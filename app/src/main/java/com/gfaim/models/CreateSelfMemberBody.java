@@ -15,7 +15,7 @@ public class CreateSelfMemberBody {
     private boolean hasAccount;
     @SerializedName("family_code")
     private String familyCode;
-    @SerializedName("user_id")
-    private String userId;
+    @SerializedName("user_email")
+    private String userEmail;
 
 }

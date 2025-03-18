@@ -2,6 +2,7 @@ package com.gfaim.activities.auth;
 
 import static androidx.core.content.ContextCompat.startActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -47,6 +48,9 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView termsText;
     private AuthManager authManager;
     private TokenManager tokenManager;
+
+    private final Activity activity = this;
+
 
 
 
@@ -138,8 +142,11 @@ public class RegisterActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
                     log.info("token: " + response.body().getAccessToken());
+
+                    Intent intent = new Intent(activity, OnBoardingActivity.class);
+                    activity.startActivity(intent);
                     Toast.makeText(RegisterActivity.this, "Inscription réussie", Toast.LENGTH_SHORT).show();
-                    finish();
+                    activity.finish();
                 } else {
                     Toast.makeText(RegisterActivity.this, "Erreur lors de l'inscription", Toast.LENGTH_SHORT).show();
                 }

@@ -5,6 +5,8 @@ import com.gfaim.models.family.FamilyBody;
 
 public interface OnFamilyReceivedListener {
 
+    void onSuccess();
+
     void onSuccess(CreateFamilyBody family);
     void onSuccess(FamilyBody family);
     void onFailure(Throwable error);

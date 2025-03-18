@@ -171,7 +171,7 @@ public class UtileProfile {
     }
 
 
-    public void deleteMemberById(Long memberId) {
+    public void deleteMemberById(OnFamilyReceivedListener listener, Long memberId) {
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         Call<MemberSessionBody> call = memberService.deleteMember(memberId);
 
@@ -181,8 +181,10 @@ public class UtileProfile {
             public void onResponse(Call<MemberSessionBody> call, Response<MemberSessionBody> response) {
                 if (response.isSuccessful()) {
                     // Traitement du succès, le membre a bien été supprimé
+                    listener.onSuccess();
                     System.out.println("Membre supprimé avec succès.");
                 } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
                     // Gestion d'erreur si la réponse est invalides (code HTTP 4xx ou 5xx)
                     System.err.println("Erreur lors de la suppression : " + response.message());
                 }
@@ -191,6 +193,7 @@ public class UtileProfile {
             @Override
             public void onFailure(Call<MemberSessionBody> call, Throwable t) {
                 // Gestion des erreurs réseau (problèmes de connexion, etc.)
+                listener.onFailure(t);
                 System.err.println("Erreur réseau : " + t.getMessage());
             }
         });

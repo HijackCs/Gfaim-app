@@ -2,6 +2,7 @@ package com.gfaim.activities.settings.family;
 
 import static android.view.View.VISIBLE;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.auth.JoinFamilyActivity;
 import com.gfaim.activities.settings.family.ViewPagerFamilyAdapter;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
@@ -42,6 +44,9 @@ public class NewMemberActivity extends AppCompatActivity {
     Button cancelButton;
     TextView[] dots;
     ViewPagerFamilyAdapter viewPagerAdapter;
+
+    private final Activity activity = this;
+
 
     private final Logger log = Logger.getLogger(NewMemberActivity.class.getName());
     private UtileProfile utileProfile;
@@ -109,14 +114,15 @@ public class NewMemberActivity extends AppCompatActivity {
                 slideViewPager.setCurrentItem(getItem(1), true);
             else {
                 String name = viewPagerAdapter.getMemberName();
-                log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
                 if (!name.isEmpty()) {
 
                         utileProfile.createMember(new OnSessionReceivedListener() {
                             @Override
                             public void onSuccess(CreateMemberNoAccount session) {
-                                Intent i = new Intent(NewMemberActivity.this, FamilyActivity.class);
-                                finish();
+
+                                activity.finish();
+                                Intent intent = new Intent(activity, FamilyActivity.class);
+                                activity.startActivity(intent);
                                 log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
                             }
 
@@ -163,6 +169,11 @@ public class NewMemberActivity extends AppCompatActivity {
             public void onSuccess(MemberSessionBody session) {
                 member = session; // Stocke dans l'Activity
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
+                    @Override
+                    public void onSuccess() {
+
+                    }
+
                     @Override
                     public void onSuccess(CreateFamilyBody session) {
                     }

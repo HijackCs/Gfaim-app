@@ -19,8 +19,11 @@ import com.gfaim.api.MealService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.RefreshRequest;
 import com.gfaim.models.User;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.JwtDecoder;
+import com.gfaim.utility.callback.OnSessionReceivedListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -48,6 +51,26 @@ public class SettingsActivity extends AppCompatActivity {
         logOut.setOnClickListener(v -> utileProfile.logout());
 
 
+    }
+
+    public void setupUsername(){
+        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {
+
+            }
+
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                TextView userName = findViewById(R.id.user_name);
+                userName.setText(session.getFirstName()+" "+session.getLastName());
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+
+            }
+        });
     }
 
     public void accountBtnSetup(){

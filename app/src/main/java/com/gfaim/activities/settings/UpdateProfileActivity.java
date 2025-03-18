@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
+import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
@@ -201,10 +202,27 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
 
     private void setupDeleteButton() {
-        deleteButton.setOnClickListener(v -> {
-            utileProfile.deleteMemberById(member.getId());
-            utileProfile.logout();
-        });
+        deleteButton.setOnClickListener(v -> utileProfile.deleteMemberById(new OnFamilyReceivedListener() {
+            @Override
+            public void onSuccess() {
+                utileProfile.logout();
+            }
+
+            @Override
+            public void onSuccess(CreateFamilyBody family) {
+
+            }
+
+            @Override
+            public void onSuccess(FamilyBody family) {
+
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+
+            }
+        }, member.getId()));
     }
 
 }

@@ -47,10 +47,10 @@ public class FamilyActivity extends AppCompatActivity {
     private static final int REQUEST_ADD_MEMBER = 1;
     private GridLayout membersGrid;
     private ImageButton btnAddMember;
-    private final List<String> membersList = new ArrayList<>(); // Stocke les noms des membres
+    private final List<MemberSessionBody> membersList = new ArrayList<>(); // Stocke les noms des membres
 
     UtileProfile utileProfile;
-    private MemberSessionBody member;
+    private MemberSessionBody memberSession;
 
     Context context;
 
@@ -80,47 +80,32 @@ public class FamilyActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(MemberSessionBody session) {
-                member = session; // Stocke dans l'Activity
+                memberSession = session; // Stocke dans l'Activity
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
                     @Override
-                    public void onSuccess(CreateFamilyBody family) {
-                        System.out.println("on passe pas la");
+                    public void onSuccess() {
 
                     }
 
                     @Override
-                    public void onSuccess(FamilyBody family) {
-                        System.out.println("on passe  la");
+                    public void onSuccess(CreateFamilyBody family) {
+                    }
 
+                    @Override
+                    public void onSuccess(FamilyBody family) {
                         TextView familyName = findViewById(R.id.familyName);
                         familyName.setText(family.getName());
                         TextView familyCode = findViewById(R.id.familyCode);
                         familyCode.setText(family.getCode());
                         familyCode.setOnClickListener(v -> copyToClipboard(familyCode.getText().toString()));
                         List<MemberSessionBody> list = family.getMembers();
-                        btnAddMember = new ImageButton(context);
 
-
-
-                        if(Objects.equals(member.getRole(), "CHEF")){
-                            FrameLayout editName = findViewById(R.id.editName);
-                            editName.setVisibility(VISIBLE);
-
-                            TextView btnDeleteFamily = findViewById(R.id.btnDeleteFamily);
-                            btnDeleteFamily.setVisibility(VISIBLE);
-
-                            btnAddMember.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
-                            btnAddMember.setImageResource(R.drawable.ic_add);
-                            btnAddMember.setBackground(null);
-                            // Ajouter des membres initiaux
-
-                            updateAddButtonPosition();
+                        if(Objects.equals(memberSession.getRole(), "CHEF")){
                             initAddButton();
-                            setupEditBtn();
                         }
 
                         for(MemberSessionBody m : list){
-                            addMember(m.getFirstName());
+                            addMember(m);
                         }
                     }
 
@@ -128,7 +113,7 @@ public class FamilyActivity extends AppCompatActivity {
                     public void onFailure(Throwable error) {
                         System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
                     }
-                }, member.getFamilyId());
+                }, memberSession.getFamilyId());
             }
             @Override
             public void onFailure(Throwable error) {
@@ -154,14 +139,32 @@ public class FamilyActivity extends AppCompatActivity {
 
 
     private void initAddButton(){
+
+        btnAddMember = new ImageButton(context);
+
+        FrameLayout editName = findViewById(R.id.editName);
+        editName.setVisibility(VISIBLE);
+
+        TextView btnDeleteFamily = findViewById(R.id.btnDeleteFamily);
+        btnDeleteFamily.setVisibility(VISIBLE);
+
+        btnAddMember.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
+        btnAddMember.setImageResource(R.drawable.ic_add);
+        btnAddMember.setBackground(null);
+
+        updateAddButtonPosition();
+        setupEditBtn();
+
         btnAddMember.setOnClickListener(v -> {
-            Intent intent = new Intent(FamilyActivity.this, NewMemberActivity.class);
-            startActivityForResult(intent, REQUEST_ADD_MEMBER);
+
+            finish();
+            Intent intent = new Intent(this, NewMemberActivity.class);
+            startActivity(intent);
         });
     }
 
-    private void addMember(String name) {
-        membersList.add(name);
+    private void addMember(MemberSessionBody member) {
+        membersList.add(member);
 
         LinearLayout memberLayout = new LinearLayout(this);
         memberLayout.setOrientation(LinearLayout.VERTICAL);
@@ -186,15 +189,20 @@ public class FamilyActivity extends AppCompatActivity {
         imageView.setLayoutParams(imageParams);
         imageView.setImageResource(R.drawable.avatar);
 
-        if(Objects.equals(member.getRole(), "CHEF")) {
-            ImageButton deleteButton = new ImageButton(this);
-            FrameLayout.LayoutParams deleteParams = new FrameLayout.LayoutParams(80, 80);
-            deleteParams.gravity = Gravity.TOP | Gravity.END;
-            deleteButton.setLayoutParams(deleteParams);
-            deleteButton.setImageResource(R.drawable.ic_delete);
-            deleteButton.setBackground(null);
-            deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog(name, memberLayout));
-            frameLayout.addView(deleteButton);
+        frameLayout.addView(imageView);
+
+        if(Objects.equals(memberSession.getRole(), "CHEF")) {
+            if(!Objects.equals(member.getRole(), "CHEF")){
+                ImageButton deleteButton = new ImageButton(this);
+                FrameLayout.LayoutParams deleteParams = new FrameLayout.LayoutParams(80, 80);
+                deleteParams.gravity = Gravity.TOP | Gravity.END;
+                deleteButton.setLayoutParams(deleteParams);
+                deleteButton.setImageResource(R.drawable.ic_delete);
+                deleteButton.setBackground(null);
+                deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog(member, memberLayout));
+                frameLayout.addView(deleteButton);
+            }
+
         }
 
         TextView textView = new TextView(this);
@@ -203,12 +211,11 @@ public class FamilyActivity extends AppCompatActivity {
         textView.setSingleLine(false);
         textView.setEllipsize(null);
         textView.setMaxLines(Integer.MAX_VALUE);
-        textView.setText(name);
+        textView.setText(member.getFirstName());
         textView.setGravity(Gravity.CENTER);
         textView.setPadding(8, 8, 8, 8);
 
 
-        frameLayout.addView(imageView);
 
         memberLayout.addView(frameLayout);
         memberLayout.addView(textView);
@@ -218,29 +225,50 @@ public class FamilyActivity extends AppCompatActivity {
     }
 
 
-    private void showDeleteConfirmationDialog(String name, LinearLayout memberLayout) {
+    private void showDeleteConfirmationDialog(MemberSessionBody member, LinearLayout memberLayout) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Delete Member")
-                .setMessage("Are you sure you want to remove " + name + " from the family?")
+                .setMessage("Are you sure you want to remove " + member.getFirstName() + " from the family?")
                 .setPositiveButton("Yes", (dialog, which) -> {
-                    membersGrid.removeView(memberLayout);
-                    membersList.remove(name);
-                    updateAddButtonPosition();
+
+                    utileProfile.deleteMemberById(new OnFamilyReceivedListener() {
+                        @Override
+                        public void onSuccess() {
+                            membersGrid.removeView(memberLayout);
+                            membersList.remove(member);
+                            updateAddButtonPosition();
+                            System.out.println("la liste" +membersList);
+                            System.out.println("la liste" +membersList);
+
+                        }
+
+                        @Override
+                        public void onSuccess(CreateFamilyBody family) {
+
+                        }
+
+                        @Override
+                        public void onSuccess(FamilyBody family) {
+
+                        }
+
+                        @Override
+                        public void onFailure(Throwable error) {
+
+                        }
+                    }, member.getId());
+
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss());
 
         AlertDialog alertDialog = builder.create();
 
-        // 🌟 Changer la couleur de fond
         alertDialog.setOnShowListener(dialog -> alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(
                 ContextCompat.getColor(this, R.color.appBackground)
         )));
 
         alertDialog.show();
     }
-
-
-
 
 
     private void updateAddButtonPosition() {
@@ -266,10 +294,6 @@ public class FamilyActivity extends AppCompatActivity {
         btnAddMember.setLayoutParams(params);
         membersGrid.addView(btnAddMember);
     }
-
-
-
-
 
     private void setupEditBtn(){
         EditText familyName = findViewById(R.id.familyName);
@@ -325,14 +349,38 @@ public class FamilyActivity extends AppCompatActivity {
             }else{
                 utileProfile.updateFamily(new OnFamilyReceivedListener() {
                     @Override
+                    public void onSuccess() {
+
+                    }
+
+                    @Override
                     public void onSuccess(CreateFamilyBody family) {
-                        System.out.println("on passe la");
-                        familyName.setText(family.getFamilyName());
+
+                        utileProfile.getFamily(new OnFamilyReceivedListener() {
+                            @Override
+                            public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(CreateFamilyBody family) {
+                            }
+
+                            @Override
+                            public void onSuccess(FamilyBody family) {
+                                TextView familyName = findViewById(R.id.familyName);
+                                familyName.setText(family.getName());
+                            }
+
+                            @Override
+                            public void onFailure(Throwable error) {
+
+                            }
+                        }, memberSession.getFamilyId());
                     }
 
                     @Override
                     public void onSuccess(FamilyBody family) {
-                        System.out.println("on passe pas la");
 
                     }
 
@@ -340,7 +388,7 @@ public class FamilyActivity extends AppCompatActivity {
                     public void onFailure(Throwable error) {
                         System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
                     }
-                }, member.getFamilyId(), newName);
+                }, memberSession.getFamilyId(), newName);
 
                 familyName.setFocusable(false);
                 familyName.setCursorVisible(false);

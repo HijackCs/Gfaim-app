@@ -146,6 +146,33 @@ public class UtileProfile {
     }
 
 
+    public void deleteMemberById(Long memberId) {
+        MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
+        Call<MemberSessionBody> call = memberService.deleteMember(memberId);
+
+        // Appel asynchrone
+        call.enqueue(new Callback<MemberSessionBody>() {
+            @Override
+            public void onResponse(Call<MemberSessionBody> call, Response<MemberSessionBody> response) {
+                if (response.isSuccessful()) {
+                    // Traitement du succès, le membre a bien été supprimé
+                    System.out.println("Membre supprimé avec succès.");
+                } else {
+                    // Gestion d'erreur si la réponse est invalides (code HTTP 4xx ou 5xx)
+                    System.err.println("Erreur lors de la suppression : " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MemberSessionBody> call, Throwable t) {
+                // Gestion des erreurs réseau (problèmes de connexion, etc.)
+                System.err.println("Erreur réseau : " + t.getMessage());
+            }
+        });
+    }
+
+
+
 
 
 

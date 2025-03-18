@@ -26,7 +26,12 @@ import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.AuthResponse;
 import com.gfaim.models.LoginRequest;
+import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
+import com.gfaim.utility.callback.OnFamilyReceivedListener;
+import com.gfaim.utility.callback.OnSessionReceivedListener;
 
 import java.util.logging.Logger;
 
@@ -45,10 +50,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordInput;
 
     private Activity activity = this;
+    UtileProfile utileProfile;
+
+    private MemberSessionBody member;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         try {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
@@ -59,6 +68,8 @@ public class LoginActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
+            utileProfile = new UtileProfile(this);
+
         } catch (Exception e) {
             log.warning("[LoginActivity][onCreate] Problem on MainActivity launch");
         }
@@ -74,6 +85,31 @@ public class LoginActivity extends AppCompatActivity {
         setupRegister();
         setupForgotPwd();
         setupHidePwd();
+    }
+
+
+    public void doesheHaveAFamily(Response<AuthResponse> response){
+        tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
+
+        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+                if(member.getFamilyId() == null){
+                    activity.finish();
+                    Intent intent = new Intent(activity, JoinFamilyActivity.class);
+                    activity.startActivity(intent);
+                }else{
+                    activity.finish();
+                    Intent intent = new Intent(activity, HomeActivity.class);
+                    activity.startActivity(intent);
+                }
+            }
+            @Override
+            public void onFailure(Throwable error) {
+                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+            }
+        });
     }
 
 
@@ -103,10 +139,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
-                    activity.finish();
-                    Intent intent = new Intent(activity, HomeActivity.class);
-                    activity.startActivity(intent);
+                    doesheHaveAFamily(response);
                 } else {
                     if (email.isEmpty()) {
                         Toast.makeText(LoginActivity.this, "Incorrect email.", Toast.LENGTH_SHORT).show();

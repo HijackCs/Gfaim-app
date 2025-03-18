@@ -321,7 +321,6 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onFailure(Call<FamilyBody> call, Throwable t) {
-                System.out.println("erreur " +t.getMessage());
                 Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -501,7 +500,6 @@ public class ViewPagerAdapter extends PagerAdapter {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("Copied Text", text); // Création du ClipData
         clipboard.setPrimaryClip(clip);
-
     }
 
 

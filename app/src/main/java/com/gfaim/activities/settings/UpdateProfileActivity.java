@@ -31,6 +31,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     private EditText passwordInput;
     private TextView updateButton;
+    private TextView deleteButton;
+
 
     private MemberSessionBody member;
 
@@ -64,6 +66,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         lastName = findViewById(R.id.lastName);
         passwordInput = findViewById(R.id.password);
         updateButton = findViewById(R.id.updateBtn);
+        deleteButton = findViewById(R.id.deleteBtn);
 
 
         backBtnSetup();
@@ -72,11 +75,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setupTextWatchers();
         checkIfFieldsAreFilled();
         setupUpdateButton();
+        setupDeleteButton();
 
     }
 
     public void getAllInfo(){
-
 
         String firstNameS =  member.getFirstName();
         String lastNameS = member.getLastName();
@@ -188,9 +191,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             utileProfile.getSessionMember(new OnSessionReceivedListener() {
                 @Override
                 public void onSuccess(MemberSessionBody session) {
-                    System.out.println("ok");
-                    System.out.println(member);
-                    member = session; // Stocke dans l'Activity
+                    member = session;
                     getAllInfo();
                 }
                 @Override
@@ -198,12 +199,15 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
                 }
             });
-
-            // Afficher les valeurs dans un Toast
-            System.out.println( "First Name: " + firstNameValue +
-                    "\nLast Name: " + lastNameValue +
-                    "\nPassword: " /*+ passwordValue*/);
     });
+    }
+
+
+    private void setupDeleteButton() {
+        deleteButton.setOnClickListener(v -> {
+            utileProfile.deleteMemberById(member.getId());
+            utileProfile.logout();
+        });
     }
 
 }

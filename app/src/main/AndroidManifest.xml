@@ -33,6 +33,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.auth.LoginActivity"></activity>
+        <activity android:name=".activities.auth.JoinFamilyActivity"></activity>
         <activity android:name=".activities.auth.RegisterActivity"></activity>
         <activity android:name=".activities.auth.CheckMailActivity"></activity>
         <activity android:name=".activities.auth.ForgotPwdActivity"></activity>

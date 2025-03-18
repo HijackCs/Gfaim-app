@@ -194,6 +194,7 @@
         android:textSize="18sp" />
 
     <TextView
+        android:id="@+id/deleteBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/delete_profile"

@@ -98,7 +98,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
         utileProfile.getFamily(new OnFamilyReceivedListener() {
             @Override
             public void onSuccess(FamilyBody family) {
-                System.out.println("Famille récupérée : " + family);
                 TextView familyName = findViewById(R.id.family_name);
                 familyName.setText(family.getName());
             }

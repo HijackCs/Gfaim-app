@@ -72,6 +72,8 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Getter
     private Long familyId;
 
+    private String bearer = "Bearer ";
+
     private boolean displayFamilyJoin = true;
 
     @Getter
@@ -174,7 +176,7 @@ public class ViewPagerAdapter extends PagerAdapter {
     public void fetchDietOrAllergy(boolean isDiet, FetchCallback callback) {
         DietAllergyService service = ApiClient.getClient(context).create(DietAllergyService.class);
         tokenManager = new TokenManager(context);
-        String token = "Bearer " + tokenManager.getAccessToken();
+        String token = bearer + tokenManager.getAccessToken();
 
         Call<List<DietAllergy>> call = isDiet ? service.getDiets(token) : service.getAllergies(token);
 
@@ -282,7 +284,7 @@ public class ViewPagerAdapter extends PagerAdapter {
         //create member
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         String email = getUserEmail();
-        Call<CreateMember> call = memberService.createMember("Bearer " + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
+        Call<CreateMember> call = memberService.createMember(bearer + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
         call.enqueue(new Callback<CreateMember>() {
             @Override
             public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {

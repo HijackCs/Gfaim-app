@@ -20,17 +20,14 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
-import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.AuthResponse;
 import com.gfaim.models.LoginRequest;
-import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
-import com.gfaim.utility.callback.OnFamilyReceivedListener;
 import com.gfaim.utility.callback.OnSessionReceivedListener;
 
 import java.util.logging.Logger;
@@ -41,7 +38,7 @@ import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private Logger log = Logger.getLogger(LoginActivity.class.getName());
+    private final Logger log = Logger.getLogger(LoginActivity.class.getName());
 
     private AuthManager authManager;
     private AuthService authService;
@@ -49,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText emailInput;
     private EditText passwordInput;
 
-    private Activity activity = this;
+    private final Activity activity = this;
     UtileProfile utileProfile;
 
     private MemberSessionBody member;
@@ -107,7 +104,7 @@ public class LoginActivity extends AppCompatActivity {
             }
             @Override
             public void onFailure(Throwable error) {
-                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+              log.info("Erreur lors de la récupération de la session : " + error.getMessage());
             }
         });
     }

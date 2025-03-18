@@ -50,9 +50,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
     private TokenManager tokenManager;
 
-    private boolean displayFamilyJoin = true;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,8 +112,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
             public void onResponse(Call<FamilyBody> call, Response<FamilyBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     tvFamilyName.setText( response.body().getName());
-
-                } else {
                 }
             }
 
@@ -174,7 +169,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
                     if (response.isSuccessful() && response.body() != null) {
                         setMemberId(response.body().getId());
                         familyId = response.body().getFamilyId();
-                        displayFamilyJoin = false;
                         joinFamily.setVisibility(View.GONE);
                         familyCode.setVisibility(View.GONE);
                         tvFamilyName.setVisibility(View.VISIBLE);
@@ -245,7 +239,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
 
         createFamily2.setOnClickListener(v -> {
-            displayFamilyJoin = false;
             String familyNameStr = familyName.getText().toString();
             codeFamily = "0000000";
             createFamily2.setVisibility(View.GONE);

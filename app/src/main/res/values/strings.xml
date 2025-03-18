@@ -88,16 +88,11 @@
     <string name="help_support">Help and support</string>
     <string name="about_app">About App</string>
 
-
-    <!--Facebook-->
+    <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-    <string name="enter_code">enter code</string>
-    <string name="new_password">new password</string>
-    <string name="confirm_password">confirm password</string>
-    <string name="reset_password">reset password\n</string>
-    <string name="JoinOrCreate">Join or Create a Family</string>
+    <string name="your_email">Your Email</string>
 
 
 </resources>

@@ -1,0 +1,133 @@
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/appBackground"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_back"
+            android:layout_marginBottom="16dp" />
+
+        <ImageView
+            android:id="@+id/familyImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="16dp"
+            android:src="@raw/family" />
+
+        <LinearLayout
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:baselineAligned="false"
+            android:layout_marginTop="8dp">
+
+            <EditText
+                android:id="@+id/familyName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/familyName"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:focusable="false"
+                android:cursorVisible="false"
+                android:background="@android:color/transparent"/>
+
+            <FrameLayout
+                android:id="@+id/editName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="4dp"
+                android:layout_gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/circle_bg_orange" />
+
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_edit" />
+            </FrameLayout>
+
+            <ImageView
+                android:id="@+id/checkName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_check"
+                android:visibility="gone"
+                android:layout_marginStart="4dp"/>
+
+            <ImageView
+                android:id="@+id/cancelName"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_cancel"
+                android:visibility="gone"
+                android:layout_marginStart="4dp"/>
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:id="@+id/familyCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/familyCode"
+            android:textSize="16sp"
+            android:textColor="@color/grey"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="24dp" />
+
+        <GridLayout
+            android:id="@+id/membersGrid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:columnCount="2"
+            android:layout_gravity="center"
+            android:horizontalSpacing="32dp"
+            android:verticalSpacing="32dp"
+            android:padding="16dp"/>
+
+
+        <ImageButton
+            android:id="@+id/btnAddMember"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:src="@drawable/ic_add"
+            android:background="@null"
+            android:visibility="gone"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/btnDeleteFamily"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="@string/delete_family"
+            android:textColor="@color/red"
+            android:background="@drawable/button_delete_rounded"
+            android:textAllCaps="false"
+            android:gravity="center"
+            android:padding="16dp"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+</ScrollView>

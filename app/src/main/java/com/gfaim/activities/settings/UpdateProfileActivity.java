@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
 import com.gfaim.utility.callback.OnSessionReceivedListener;
@@ -32,7 +33,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private EditText passwordInput;
     private TextView updateButton;
     private TextView deleteButton;
-
+    private String getEmail;
 
     private MemberSessionBody member;
 
@@ -43,8 +44,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.update_profile);
 
         utileProfile = new UtileProfile(this);
+         getEmail = utileProfile.getUserEmail();
 
         utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {
+
+            }
+
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session; // Stocke dans l'Activity
@@ -91,22 +98,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         lastName.setHint(lastNameS);
 
-        String getEmail = utileProfile.getUserEmail();
         TextView email = findViewById(R.id.email);
         email.setText(getEmail);
-
-        utileProfile.getFamily(new OnFamilyReceivedListener() {
-            @Override
-            public void onSuccess(FamilyBody family) {
-                TextView familyName = findViewById(R.id.family_name);
-                familyName.setText(family.getName());
-            }
-
-            @Override
-            public void onFailure(Throwable error) {
-                System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
-            }
-        }, member.getFamilyId());
 
     }
 
@@ -188,6 +181,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             utileProfile.updateMember(member.getId(),  firstNameValue,  lastNameValue);
             utileProfile.getSessionMember(new OnSessionReceivedListener() {
+                @Override
+                public void onSuccess(CreateMemberNoAccount session) {
+
+                }
+
                 @Override
                 public void onSuccess(MemberSessionBody session) {
                     member = session;

@@ -2,6 +2,7 @@ package com.gfaim.api;
 
 import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.CreateSelfMemberBody;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.models.member.UpdateMember;
@@ -22,6 +23,8 @@ public interface MemberService {
     @POST("/members")
     Call<CreateMember> createMember(@Header("Authorization") String token, @Body CreateSelfMemberBody request);
 
+    @POST("/members")
+    Call<CreateMemberNoAccount> createMember(@Header("Authorization") String token, @Body CreateMemberNoAccount request);
     @POST("members/{memberId}/allergies")
     Call<Void> postAllergies(
             @Path("memberId") Long memberId,

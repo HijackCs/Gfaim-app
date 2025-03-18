@@ -58,43 +58,7 @@
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"/>
-
-    <TextView
-        android:id="@+id/sliderTitle2"
-        android:text="@string/alreadyAccount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/placeHolder2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:text="@string/memberMail"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="30dp"
-        android:textSize="14sp"
-        android:textColor="@color/black"
-        android:layout_marginBottom="4dp" />
-
-    <EditText
-        android:id="@+id/mail"
-        android:layout_width="362dp"
-        android:layout_height="61dp"
-        android:layout_marginHorizontal="27dp"
-        android:drawablePadding="16dp"
-        android:padding="16dp"
-        android:hint="@string/email"
-        android:drawableStart="@drawable/ic_mail"
-        android:background="@drawable/edittext_rounded"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
-
+<!--
     <LinearLayout
         android:id="@+id/role_display"
         android:layout_marginTop="30dp"
@@ -168,5 +132,5 @@
                     android:textSize="16sp" />
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
+    </LinearLayout>-->
 </LinearLayout>

@@ -11,9 +11,12 @@ import com.gfaim.api.AuthService;
 import com.gfaim.api.FamilyService;
 import com.gfaim.api.MemberService;
 import com.gfaim.auth.TokenManager;
+import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
-import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.RefreshRequest;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.CreateSelfMemberBody;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.models.member.UpdateMember;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
@@ -101,6 +104,28 @@ public class UtileProfile {
         });
     }
 
+    public void updateFamily(OnFamilyReceivedListener listener, Long id, String familyName){
+        FamilyService familyService = ApiClient.getClient(context).create(FamilyService.class);
+        Call<CreateFamilyBody> call = familyService.updateFamily(id,"Bearer " + tokenManager.getAccessToken(), new CreateFamilyBody(familyName));
+        call.enqueue(new Callback<CreateFamilyBody>() {
+            @Override
+            public void onResponse(Call<CreateFamilyBody> call, Response<CreateFamilyBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(context, "Profil mis à jour avec succès", Toast.LENGTH_SHORT).show();
+                    System.out.println("la");
+                    System.out.println(response.body());
+                    listener.onSuccess(response.body());
+
+                } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
+                }
+            }
+            @Override
+            public void onFailure(Call<CreateFamilyBody> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
 
     public void getSessionMember(OnSessionReceivedListener listener) {
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
@@ -168,6 +193,26 @@ public class UtileProfile {
                 // Gestion des erreurs réseau (problèmes de connexion, etc.)
                 System.err.println("Erreur réseau : " + t.getMessage());
             }
+        });
+    }
+
+    public void createMember(OnSessionReceivedListener listener, String codeFamily, String name ,String familyName) {
+        //create member
+        MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
+        Call<CreateMemberNoAccount> call = memberService.createMember("bearer " + tokenManager.getAccessToken(), new CreateMemberNoAccount(false, codeFamily, name, familyName));
+        call.enqueue(new Callback<CreateMemberNoAccount>() {
+            @Override
+            public void onResponse(Call<CreateMemberNoAccount> call, Response<CreateMemberNoAccount> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    listener.onSuccess(response.body());
+                } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CreateMemberNoAccount> call, Throwable t) {
+                listener.onFailure(t);            }
         });
     }
 

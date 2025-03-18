@@ -21,6 +21,11 @@
     <!--Check Mail-->
     <string name="checkMail">Check your mailbox</string>
     <string name="continueBtn">Continue</string>
+    <string name="enter_code">enter code</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="reset_password">reset password\n</string>
+
 
     <!--Forgot pwd-->
     <string name="sendCode">Send code</string>
@@ -87,12 +92,26 @@
     <string name="more">More</string>
     <string name="help_support">Help and support</string>
     <string name="about_app">About App</string>
+    <string name="JoinOrCreate">Join or Create a Family</string>
+
+
+    <!--Famille-->
+    <string name="screen0Family">Données générales</string>
+    <string name="screen1Family">Rôle des membres</string>
+    <string name="screen2Family">Des allergies alimentaires ?</string>
+    <string name="screen3Family">Suivez-vous un de ces régimes ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="role_chef">Chef cuisinier</string>
+    <string name="role_consumer">Consommateur</string>
+    <string name="memberMail">Email du membre</string>
+    <string name="alreadyAccount">Vous avez déjà un compte ?</string>
+    <string name="notEmpty">Le nom ne peut pas être vide</string>
+    <string name="delete_family">Supprimer la famille</string>
 
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-    <string name="your_email">Your Email</string>
 
 
 </resources>

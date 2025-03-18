@@ -31,7 +31,7 @@ public class LoadingActivity extends AppCompatActivity {
         setContentView(R.layout.loading);
 
         Runnable runnable = () -> {
-            Class<?> targetActivity = checkSession() ? HomeActivity.class : FamilyActivity.class;
+            Class<?> targetActivity = checkSession() ? HomeActivity.class : LoginActivity.class;
             Intent intent = new Intent(getApplicationContext(), targetActivity);
             startActivity(intent);
             finish();

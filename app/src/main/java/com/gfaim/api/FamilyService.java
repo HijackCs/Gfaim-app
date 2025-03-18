@@ -1,11 +1,9 @@
 package com.gfaim.api;
 
-import com.gfaim.models.Meal;
 import com.gfaim.models.family.CreateFamily;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
-
-import java.util.List;
+import com.gfaim.models.member.UpdateMember;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -22,4 +20,12 @@ public interface FamilyService {
     @GET("/families/{id}")
     Call<FamilyBody> getFamily(@Path("id") Long id,
                                @Header("Authorization") String token);
+
+    @PATCH("families/{id}")
+    Call<CreateFamilyBody> updateFamily(
+            @Path("id") Long families_id,
+            @Header("Authorization") String token,
+            @Body CreateFamilyBody updateFamily
+    );
+
 }

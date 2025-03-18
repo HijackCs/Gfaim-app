@@ -122,13 +122,6 @@ public class RegisterActivity extends AppCompatActivity {
         String firstName = firstNameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
-        Intent intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
-        intent.putExtra("SURNAME", name);
-        intent.putExtra("NAME", firstName);
-        intent.putExtra("EMAIL", email);
-        intent.putExtra("PASSWORD", password);
-
-        startActivity(intent);
         tokenManager = new TokenManager(this);
         AuthService authService = ApiClient.getClient(this).create(AuthService.class);
 

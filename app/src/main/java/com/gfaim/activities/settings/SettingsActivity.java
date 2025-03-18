@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gfaim.R;
 import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.api.MealService;
@@ -41,6 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         accountBtnSetup();
         logOutBtnSetup();
+        familyBtnSetup();
 
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(v -> utileProfile.logout());
@@ -52,6 +54,14 @@ public class SettingsActivity extends AppCompatActivity {
         LinearLayout myAccount = findViewById(R.id.my_account);
         myAccount.setOnClickListener(view -> {
             Intent intent = new Intent(SettingsActivity.this, UpdateProfileActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    public void familyBtnSetup(){
+        LinearLayout myAccount = findViewById(R.id.my_family);
+        myAccount.setOnClickListener(view -> {
+            Intent intent = new Intent(SettingsActivity.this, FamilyActivity.class);
             startActivity(intent);
         });
     }

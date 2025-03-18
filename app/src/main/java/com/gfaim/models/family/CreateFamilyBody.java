@@ -12,4 +12,15 @@ import lombok.Setter;
 public class CreateFamilyBody {
     @SerializedName("family_name")
     private String familyName;
+
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateFamilyBody{" +
+                "familyName='" + familyName + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,12 @@
 package com.gfaim.models.family;
 
 
+import com.gfaim.models.member.MemberSessionBody;
+
+import java.lang.reflect.Member;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,6 +34,9 @@ public class FamilyBody {
         return id;
     }
 
+    private List<MemberSessionBody> members = new ArrayList<>();
+
+
     @Override
     public String toString() {
         return "FamilyBody{" +
@@ -38,4 +47,7 @@ public class FamilyBody {
     }
 
 
+    public List<MemberSessionBody> getMembers() {
+        return members;
+    }
 }

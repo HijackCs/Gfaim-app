@@ -25,6 +25,7 @@ import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.AuthResponse;
 import com.gfaim.models.LoginRequest;
+import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
@@ -89,6 +90,11 @@ public class LoginActivity extends AppCompatActivity {
         tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
 
         utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {
+
+            }
+
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;

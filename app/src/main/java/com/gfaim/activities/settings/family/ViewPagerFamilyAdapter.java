@@ -27,8 +27,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
     private final Context context;
     String name;
-    String email;
-    private String selectedRole = "";
+   // private String selectedRole = "";
 
     private final List<String> selectedAllergiesItems = new ArrayList<>();
     private final List<String> selectedDietsItems = new ArrayList<>();
@@ -37,7 +36,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
     private final int[] sliderAllTitle = {
             R.string.screen0Family,
-            R.string.screen1Family,
             R.string.screen2Family,
             R.string.screen3Family,
     };
@@ -64,34 +62,28 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.slider_new_member, container, false);
 
         TextView sliderTitle = view.findViewById(R.id.sliderTitle);
-        TextView sliderTitle2 = view.findViewById(R.id.sliderTitle2);
         TextView placeHolder1 = view.findViewById(R.id.placeHolder1);
-        TextView placeHolder2 = view.findViewById(R.id.placeHolder2);
 
 
         FlexboxLayout allergyContainer = view.findViewById(R.id.diet_container);
         sliderTitle.setText(this.sliderAllTitle[position]);
-        EditText mail = view.findViewById(R.id.mail);
         EditText memberName = view.findViewById(R.id.memberName);
-        LinearLayout roleDisplay = view.findViewById(R.id.role_display);
+        //LinearLayout roleDisplay = view.findViewById(R.id.role_display);
 
         if(position == 0){
-            handleEditText(mail, memberName);
+            handleEditText(memberName);
         }else{
-            sliderTitle2.setVisibility(View.GONE);
             placeHolder1.setVisibility(View.GONE);
-            placeHolder2.setVisibility(View.GONE);
-            mail.setVisibility(View.GONE);
             memberName.setVisibility(View.GONE);
         }
 
-        if(position ==1){
+        /*if(position ==1){
             initRoleSelect(view);
         }else{
             roleDisplay.setVisibility(View.GONE);
-        }
+        }*/
 
-        if (position == 2 || position == 3) {
+        if (position == 1 || position == 2) {
             generateAllergyButtons(allergyContainer, position);
         } else {
             allergyContainer.setVisibility(View.GONE);
@@ -99,26 +91,12 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
         container.addView(view);
         memberName.setText(name);
-        mail.setText(email);
 
         return view;
     }
 
-    private void handleEditText(EditText mail, EditText memberName){
-        mail.setVisibility(View.VISIBLE);
+    private void handleEditText(EditText memberName){
         memberName.setVisibility(View.VISIBLE);
-
-        memberName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {}
-        });
 
 
         // Bloquer l'autre champ lors de la saisie
@@ -133,9 +111,8 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
                     memberName.setError("Maximum 30 caractères");
                     memberName.setText(s.subSequence(0, 30));
                     memberName.setSelection(30);
-                } else {
+                }else{
                     name = s.toString();
-                    mail.setEnabled(s.toString().isEmpty());
                 }
             }
 
@@ -143,25 +120,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
             public void afterTextChanged(Editable s) {
                 if (!s.toString().matches("^[a-zA-ZÀ-ÿ\\s]+$")) {
                     memberName.setError("Seulement des lettres autorisées");
-                }
-            }
-        });
-
-        mail.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                email = s.toString();
-                memberName.setEnabled(s.toString().isEmpty()); // Désactiver memberName si mail est rempli
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                if (!Patterns.EMAIL_ADDRESS.matcher(s.toString()).matches()) {
-                    mail.setError("Format d'email invalide");
                 }
             }
         });
@@ -174,12 +132,12 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         int[] items;
         List<String> selectedItems;
 
-        if (position == 2) { // Allergies
+        if (position == 1) { // Allergies
             items = new int[]{R.string.allergieGluten, R.string.allergieDiary, R.string.allergieEgg,
                     R.string.allergieSoy, R.string.allergiePeanut, R.string.allergieWheat,
                     R.string.allergieMilk, R.string.allergieFish};
             selectedItems = selectedAllergiesItems;
-        } else if (position == 3) { // Diets
+        } else if (position == 2) { // Diets
             items = new int[]{R.string.dietsVegan, R.string.dietsPaleo,
                     R.string.dietsDukan, R.string.dietsVegetarian,
                     R.string.dietsAktin, R.string.dietsInterFast};
@@ -229,6 +187,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         }
     }
 
+    /*
     private void initRoleSelect(View view) {
         LinearLayout roleChef = view.findViewById(R.id.role_chef);
         LinearLayout roleConsumer = view.findViewById(R.id.role_consumer);
@@ -270,7 +229,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
             iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.white));
             textConsumer.setTextColor(ContextCompat.getColor(context, R.color.white));
         }
-    }
+    }*/
 
 
     private GradientDrawable getRoundedBorder(int backgroundColor, int borderColor) {

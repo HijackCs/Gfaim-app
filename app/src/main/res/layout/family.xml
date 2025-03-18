@@ -52,7 +52,8 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:layout_marginStart="4dp"
-                android:layout_gravity="center_vertical">
+                android:layout_gravity="center_vertical"
+                android:visibility="gone">
 
                 <ImageView
                     android:layout_width="24dp"
@@ -127,6 +128,7 @@
             android:textAllCaps="false"
             android:gravity="center"
             android:padding="16dp"
+            android:visibility="gone"
             android:textSize="18sp" />
 
     </LinearLayout>

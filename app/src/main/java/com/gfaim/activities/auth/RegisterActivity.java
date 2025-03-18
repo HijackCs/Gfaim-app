@@ -209,26 +209,28 @@ public class RegisterActivity extends AppCompatActivity {
             emailInput.setBackgroundResource(R.drawable.rounded_border);
         }
 
-        if (passwordInput.getText().toString().trim().isEmpty()) {
+        if (!isValidPassword(passwordInput.getText().toString())) {
             passwordInput.setBackgroundResource(R.drawable.rounded_border_error);
         } else {
             passwordInput.setBackgroundResource(R.drawable.rounded_border);
         }
-
 
         if (!termsAccepted) {
             termsCheckBox.setButtonTintList(ContextCompat.getColorStateList(this, R.color.red));
         } else {
             termsCheckBox.setButtonTintList(ContextCompat.getColorStateList(this, R.color.black));
         }
-
     }
 
     private boolean isFormValid() {
         return isValidName(nameInput.getText().toString())
                 && isValidName(firstNameInput.getText().toString())
                 && isValidEmail(emailInput.getText().toString())
-                && !passwordInput.getText().toString().trim().isEmpty();
+                && isValidPassword(passwordInput.getText().toString());
+    }
+
+    private boolean isValidPassword(String password) {
+        return password != null && password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
     }
 
     private boolean isValidName(String name) {

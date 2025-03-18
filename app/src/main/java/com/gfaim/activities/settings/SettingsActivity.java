@@ -41,8 +41,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         accountBtnSetup();
         logOutBtnSetup();
-        TextView userName = findViewById(R.id.user_name);
-        userName.setText(utileProfile.getCompleteName());
 
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(v -> utileProfile.logout());

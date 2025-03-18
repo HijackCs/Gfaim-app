@@ -41,10 +41,11 @@ import com.gfaim.api.FamilyService;
 import com.gfaim.api.FetchCallback;
 import com.gfaim.api.MemberService;
 import com.gfaim.auth.TokenManager;
-import com.gfaim.models.CreateFamily;
-import com.gfaim.models.CreateFamilyBody;
-import com.gfaim.models.CreateMember;
-import com.gfaim.models.CreateSelfMemberBody;
+import com.gfaim.models.family.CreateFamily;
+import com.gfaim.models.family.CreateFamilyBody;
+import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateSelfMemberBody;
 import com.gfaim.models.DietAllergy;
 import com.gfaim.utility.auth.JwtDecoder;
 import com.google.android.flexbox.FlexboxLayout;
@@ -67,6 +68,9 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Getter
     private String codeFamily;
+
+    @Getter
+    private Long familyId;
 
     private boolean displayFamilyJoin = true;
 
@@ -284,6 +288,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     setMemberId(response.body().getId());
+                    familyId = response.body().getFamilyId();
                 } else {
                     Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
                 }
@@ -291,6 +296,32 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onFailure(Call<CreateMember> call, Throwable t) {
+                Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void getFamillyName(View view) {
+        //create member
+        FamilyService familyService = ApiClient.getClient(context).create(FamilyService.class);
+        Call<FamilyBody> call = familyService.getFamily(familyId, tokenManager.getAccessToken());
+        TextView tvFamilyName = view.findViewById(R.id.tv_family_name);
+
+        call.enqueue(new Callback<FamilyBody>() {
+            @Override
+            public void onResponse(Call<FamilyBody> call, Response<FamilyBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    tvFamilyName.setText( response.body().getName());
+
+                } else {
+                    Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FamilyBody> call, Throwable t) {
+                System.out.println("erreur " +t.getMessage());
                 Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -304,10 +335,8 @@ public class ViewPagerAdapter extends PagerAdapter {
         Button createFamily = view.findViewById(R.id.createFamily);
         Button joinFamily2 = view.findViewById(R.id.joinFamily);
         ImageView check = view.findViewById(R.id.check);
-
-
-        TextView tvWelcomeMessage = view2.findViewById(R.id.tv_welcome_message);
         TextView tvFamilyName = view2.findViewById(R.id.tv_family_name);
+        TextView tvWelcomeMessage = view2.findViewById(R.id.tv_welcome_message);
         Button joinFamily = view2.findViewById(R.id.joinFamily);
         EditText familyCode = view2.findViewById(R.id.familyCode);
 
@@ -335,24 +364,39 @@ public class ViewPagerAdapter extends PagerAdapter {
         tvWelcomeMessage.setVisibility(View.GONE);
 
         joinFamily.setOnClickListener(v -> {
-            displayFamilyJoin = false;
-            joinFamily.setVisibility(View.GONE);
-            familyCode.setVisibility(View.GONE);
-            tvFamilyName.setVisibility(View.VISIBLE);
-            tvWelcomeMessage.setVisibility(View.VISIBLE);
 
             codeFamily = familyCode.getText().toString();
+            MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
+            String email = getUserEmail();
+            Call<CreateMember> call = memberService.createMember("Bearer " + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
+            call.enqueue(new Callback<CreateMember>() {
+                @Override
+                public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        setMemberId(response.body().getId());
+                        familyId = response.body().getFamilyId();
+                        displayFamilyJoin = false;
+                        joinFamily.setVisibility(View.GONE);
+                        familyCode.setVisibility(View.GONE);
+                        tvFamilyName.setVisibility(View.VISIBLE);
+                        tvWelcomeMessage.setVisibility(View.VISIBLE);
+                        tokenManager = new TokenManager(context);
+                        getFamillyName(view2);
+                        //Supprime les boutons parents
+                        createFamily.setVisibility(View.GONE);
+                        joinFamily2.setVisibility(View.GONE);
+                        check.setVisibility(View.VISIBLE);
+                        ((Animatable) check.getDrawable()).start();
+                    } else {
+                        Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
+                    }
+                }
 
-            tokenManager = new TokenManager(context);
-
-
-            createMember(codeFamily);
-
-            //Supprime les boutons parents
-            createFamily.setVisibility(View.GONE);
-            joinFamily2.setVisibility(View.GONE);
-            check.setVisibility(View.VISIBLE);
-            ((Animatable) check.getDrawable()).start();
+                @Override
+                public void onFailure(Call<CreateMember> call, Throwable t) {
+                    Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         });
 
         bottomSheetDialog.setContentView(view2);

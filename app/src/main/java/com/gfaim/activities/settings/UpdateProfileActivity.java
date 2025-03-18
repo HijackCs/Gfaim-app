@@ -1,6 +1,5 @@
 package com.gfaim.activities.settings;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,12 +13,14 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.callback.OnFamilyReceivedListener;
+import com.gfaim.utility.callback.OnSessionReceivedListener;
 import com.gfaim.utility.api.UtileProfile;
 
 public class UpdateProfileActivity extends AppCompatActivity {
@@ -31,6 +32,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private EditText passwordInput;
     private TextView updateButton;
 
+    private MemberSessionBody member;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +42,29 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         utileProfile = new UtileProfile(this);
 
+        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session; // Stocke dans l'Activity
+                getAllInfo();
+            }
+            @Override
+            public void onFailure(Throwable error) {
+                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+            }
+        });
+
+
+
+
+
+
+
         firstName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
         passwordInput = findViewById(R.id.password);
         updateButton = findViewById(R.id.updateBtn);
 
-        getAllInfo();
 
         backBtnSetup();
         editPhotoBtnSetup();
@@ -56,19 +76,36 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     public void getAllInfo(){
-        String getCompleteName = utileProfile.getCompleteName();
+
+
+        String firstNameS =  member.getFirstName();
+        String lastNameS = member.getLastName();
+
         TextView userName = findViewById(R.id.user_name);
-        userName.setText(getCompleteName);
+        userName.setText(firstNameS + " " + lastNameS);
 
-        String getFirstName = utileProfile.getFirstName();
-        firstName.setHint(getFirstName);
+        firstName.setHint(firstNameS);
 
-        String getLastName = utileProfile.getLastName();
-        lastName.setHint(getLastName);
+        lastName.setHint(lastNameS);
 
         String getEmail = utileProfile.getUserEmail();
         TextView email = findViewById(R.id.email);
         email.setText(getEmail);
+
+        utileProfile.getFamily(new OnFamilyReceivedListener() {
+            @Override
+            public void onSuccess(FamilyBody family) {
+                System.out.println("Famille récupérée : " + family);
+                TextView familyName = findViewById(R.id.family_name);
+                familyName.setText(family.getName());
+            }
+
+            @Override
+            public void onFailure(Throwable error) {
+                System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
+            }
+        }, member.getFamilyId());
+
     }
 
     public void backBtnSetup(){
@@ -145,13 +182,27 @@ public class UpdateProfileActivity extends AppCompatActivity {
         updateButton.setOnClickListener(v -> {
             String firstNameValue = firstName.getText().toString().trim().isEmpty() ? firstName.getHint().toString() : firstName.getText().toString().trim();
             String lastNameValue = lastName.getText().toString().trim().isEmpty() ? lastName.getHint().toString() : lastName.getText().toString().trim();
-            String passwordValue = passwordInput.getText().toString().trim().isEmpty() ? "********" : passwordInput.getText().toString().trim(); // Pour éviter d'afficher un mot de passe vide
+            //String passwordValue = passwordInput.getText().toString().trim().isEmpty() ? "********" : passwordInput.getText().toString().trim(); // Pour éviter d'afficher un mot de passe vide
 
+            utileProfile.updateMember(member.getId(),  firstNameValue,  lastNameValue);
+            utileProfile.getSessionMember(new OnSessionReceivedListener() {
+                @Override
+                public void onSuccess(MemberSessionBody session) {
+                    System.out.println("ok");
+                    System.out.println(member);
+                    member = session; // Stocke dans l'Activity
+                    getAllInfo();
+                }
+                @Override
+                public void onFailure(Throwable error) {
+                    System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                }
+            });
 
             // Afficher les valeurs dans un Toast
             System.out.println( "First Name: " + firstNameValue +
                     "\nLast Name: " + lastNameValue +
-                    "\nPassword: " + passwordValue);
+                    "\nPassword: " /*+ passwordValue*/);
     });
     }
 

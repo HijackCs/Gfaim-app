@@ -1,4 +1,4 @@
-package com.gfaim.models;
+package com.gfaim.models.member;
 
 
 import com.google.gson.annotations.SerializedName;
@@ -10,7 +10,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class CreateSelfMemberBody {
+public class UpdateSelfMemberBody {
+
     @SerializedName("has_account")
     private boolean hasAccount;
     @SerializedName("family_code")

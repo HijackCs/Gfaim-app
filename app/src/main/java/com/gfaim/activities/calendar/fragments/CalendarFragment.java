@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CalendarView;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -55,6 +58,14 @@ public class CalendarFragment extends Fragment {
             recyclerView.setAdapter(adapter);
         });
 
+        /*LinearLayout addStepLayout = view.findViewById(R.id.add_snack);
+
+        addStepLayout.setOnClickListener(v -> {
+            // Créer le popup avec un champ de texte et les boutons
+            showPopup();
+        });*/
+
+
         view.post(() -> {
             try {
                 navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
@@ -66,4 +77,31 @@ public class CalendarFragment extends Fragment {
 
         return view;
     }
+
+    private void showPopup() {
+        // Créer un EditText pour saisir du texte
+        EditText editText = new EditText(getContext());
+        editText.setHint("Enter snack name"); // Indication dans le champ de texte
+
+        // Créer un AlertDialog
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Add a Snack");
+        builder.setView(editText); // Ajouter le champ de texte au dialog
+
+        // Ajouter le bouton "Add"
+        builder.setPositiveButton("Add", (dialog, which) -> {
+            String snack = editText.getText().toString(); // Récupérer le texte saisi
+            // Faites quelque chose avec le snack (par exemple, l'ajouter à une liste)
+            Log.d("Popup", "Snack added: " + snack);
+        });
+
+        // Ajouter le bouton "Decline"
+        builder.setNegativeButton("Decline", (dialog, which) -> {
+            dialog.dismiss(); // Fermer le popup sans faire d'action
+        });
+
+        // Créer et afficher le dialog
+        builder.create().show();
+    }
+
 }

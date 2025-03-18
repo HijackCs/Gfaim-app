@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -12,21 +13,30 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 
+import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.R;
+
+import java.util.List;
 
 public class AddIngredientsFragment extends Fragment {
 
     private LinearLayout ingredientContainer;
     private NavController navController;
+    private TextView participantCountText;
+    private int participantCount = 1;
+    private static final int MIN_COUNT = 1;
+    private static final int MAX_COUNT = 10;
+    private SharedStepsViewModel sharedStepsViewModel;
+    private TextView participantCountTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.add_ingredients_calendar, container, false);
 
-        // Initialiser le conteneur des ingrédients
         ingredientContainer = view.findViewById(R.id.ingredientContainer);
 
         return view;
@@ -39,42 +49,88 @@ public class AddIngredientsFragment extends Fragment {
         // Initialiser le NavController
         navController = Navigation.findNavController(view);
 
-        LinearLayout addIngredientLayout = view.findViewById(R.id.add_ingredient_layout);
+        // Initialiser le ViewModel
+        sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
 
-        // Gérer le clic sur le LinearLayout
+        // Charger et afficher les ingrédients stockés
+        updateIngredientList(sharedStepsViewModel.getIngredients().getValue());
+
+        // Observer les mises à jour des ingrédients
+        sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), this::updateIngredientList);
+
+        // Ajouter un ingrédient via le bouton
+        LinearLayout addIngredientLayout = view.findViewById(R.id.add_ingredient_layout);
         addIngredientLayout.setOnClickListener(v -> {
             navController.navigate(R.id.action_addIngredientsFragment_to_addIngredientFragment);
         });
 
-        // Récupérer l'ingrédient sélectionné depuis les arguments
-        Bundle args = getArguments();
-        if (args != null) {
-            String selectedIngredient = args.getString("selectedIngredient");
-            if (selectedIngredient != null) {
-                addIngredientToContainer(selectedIngredient);
+        participantCountText = view.findViewById(R.id.participant_count);
+        ImageButton removeBtn = view.findViewById(R.id.remove_btn);
+        ImageButton addBtn = view.findViewById(R.id.add_btn);
+
+        updateParticipantCount();
+
+        // Gérer le changement du nombre de participants
+        removeBtn.setOnClickListener(v -> {
+            if (participantCount > MIN_COUNT) {
+                participantCount--;
+                updateParticipantCount();
+            }
+        });
+
+        addBtn.setOnClickListener(v -> {
+            if (participantCount < MAX_COUNT) {
+                participantCount++;
+                updateParticipantCount();
+            }
+        });
+
+        // Restaurer le nom du menu et le nombre de participants
+        TextView menuNameEditText = view.findViewById(R.id.menuName);
+        menuNameEditText.setText(sharedStepsViewModel.getMenuName());
+
+        participantCountTextView = view.findViewById(R.id.participant_count);
+        participantCountTextView.setText(String.valueOf(sharedStepsViewModel.getParticipantCount()));
+
+        // Sauvegarde du menuName
+        menuNameEditText.setOnFocusChangeListener((v, hasFocus) -> {
+            if (!hasFocus) {
+                sharedStepsViewModel.setMenuName(menuNameEditText.getText().toString());
+            }
+        });
+
+        // Sauvegarde du nombre de participants
+        participantCountTextView.addOnLayoutChangeListener((v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            sharedStepsViewModel.setParticipantCount(Integer.parseInt(participantCountTextView.getText().toString()));
+        });
+
+        // Bouton retour
+        ImageView backButton = view.findViewById(R.id.back);
+        backButton.setOnClickListener(v -> navController.navigateUp());
+
+        // Bouton suivant
+        Button nextButton = view.findViewById(R.id.next);
+        nextButton.setOnClickListener(v -> navController.navigate(R.id.action_addIngredientsFragment_to_addStepsFragment));
+    }
+
+    private void updateIngredientList(List<String> ingredients) {
+        if (ingredients != null) {
+            ingredientContainer.removeAllViews(); // Nettoyer avant d'ajouter les nouveaux ingrédients
+            for (String ingredient : ingredients) {
+                addIngredientToContainer(ingredient);
             }
         }
-
-        ImageView backButton = view.findViewById(R.id.back);
-        backButton.setOnClickListener(v -> {
-            navController.navigateUp(); // Revient au fragment précédent
-        });
-
-        // Gérer le clic sur le bouton "Next"
-        Button nextButton = view.findViewById(R.id.next);
-        nextButton.setOnClickListener(v -> {
-            navController.navigate(R.id.action_addIngredientsFragment_to_addStepsFragment);
-        });
     }
 
     private void addIngredientToContainer(String ingredient) {
-        // Créer un TextView pour afficher l'ingrédient
         TextView textView = new TextView(getContext());
         textView.setText(ingredient);
         textView.setTextSize(16);
         textView.setPadding(16, 8, 16, 8);
-
-        // Ajouter le TextView au LinearLayout
         ingredientContainer.addView(textView);
+    }
+
+    private void updateParticipantCount() {
+        participantCountText.setText(String.valueOf(participantCount));
     }
 }

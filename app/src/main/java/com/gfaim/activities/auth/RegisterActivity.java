@@ -1,5 +1,7 @@
 package com.gfaim.activities.auth;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
@@ -46,6 +49,7 @@ public class RegisterActivity extends AppCompatActivity {
     private TokenManager tokenManager;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +59,7 @@ public class RegisterActivity extends AppCompatActivity {
         setupTextWatchers();
         setupAuthButtons();
         setupLoginBtn();
-        signUpBtn.setOnClickListener(v -> signup());
+        signUpBtn.setOnClickListener(v -> signUp());
 
         setupTermsTextLink();
 
@@ -69,7 +73,6 @@ public class RegisterActivity extends AppCompatActivity {
 
         signUpBtn = findViewById(R.id.SignUpBtn);
         loginBtn = findViewById(R.id.loginBtn);
-
         termsCheckBox = findViewById(R.id.termsCheckBox);
         termsText = findViewById(R.id.termsText);
         termsCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> checkFields());
@@ -113,12 +116,19 @@ public class RegisterActivity extends AppCompatActivity {
         authManager.setupFacebookLogin(facebookBtn, this);
     }
 
-    private void signup() {
+    private void signUp() {
         String name = nameInput.getText().toString();
         String email = emailInput.getText().toString();
         String firstName = firstNameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
+        Intent intent = new Intent(getApplicationContext(), OnBoardingActivity.class);
+        intent.putExtra("SURNAME", name);
+        intent.putExtra("NAME", firstName);
+        intent.putExtra("EMAIL", email);
+        intent.putExtra("PASSWORD", password);
+
+        startActivity(intent);
         tokenManager = new TokenManager(this);
         AuthService authService = ApiClient.getClient(this).create(AuthService.class);
 
@@ -134,6 +144,7 @@ public class RegisterActivity extends AppCompatActivity {
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
+                    log.info("token: " + response.body().getAccessToken());
                     Toast.makeText(RegisterActivity.this, "Inscription réussie", Toast.LENGTH_SHORT).show();
                     finish();
                 } else {
@@ -144,14 +155,15 @@ public class RegisterActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
                 Toast.makeText(RegisterActivity.this, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            }});
+
+
     }
+
 
 
     protected void setupLoginBtn() {
         log.info("[RegisterActivity][setupLoginBtn] setup login button ");
-
         loginBtn.setOnClickListener(v -> {
             log.info("[RegisterActivity][setupLoginBtn] go back to login page ");
             Intent intent = new Intent(getApplicationContext(), LoginActivity.class);

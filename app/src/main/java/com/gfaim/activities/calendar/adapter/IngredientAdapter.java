@@ -20,7 +20,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     private OnIngredientClickListener onIngredientClickListener;
 
     public interface OnIngredientClickListener {
-        void onIngredientClick(String ingredient);
+        void onItemClick(String ingredient);
+    }
+
+    public void setOnItemClickListener(OnIngredientClickListener onIngredientClickListener) {
+        this.onIngredientClickListener = onIngredientClickListener;
     }
 
     public IngredientAdapter(List<String> ingredients, OnIngredientClickListener listener) {
@@ -31,7 +35,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_ingredient, parent, false);
         return new ViewHolder(view);
     }
 
@@ -43,7 +47,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
         // Ajoute l'événement de clic
         holder.itemView.setOnClickListener(v -> {
             if (onIngredientClickListener != null) {
-                onIngredientClickListener.onIngredientClick(ingredient);
+                onIngredientClickListener.onItemClick(ingredient);
             }
         });
     }
@@ -65,5 +69,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.Vi
             super(itemView);
             ingredientName = itemView.findViewById(R.id.itemName);
         }
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(String ingredient);
     }
 }

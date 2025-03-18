@@ -46,12 +46,12 @@ public class AddIngredientFragment extends Fragment {
 
         IngredientAdapter adapter = new IngredientAdapter(ingredients, ingredient -> {
             selectedIngredients.add(ingredient);
+            System.out.println("je suis la");
             sendSelectedIngredients();
         });
-        String selectedIngredient = sharedStepsViewModel.getIngredients().toString(); // Récupère l'ingrédient sélectionné
-        if (!selectedIngredient.isEmpty()) {
-            sharedStepsViewModel.addIngredient(selectedIngredient);
-        }
+        String selectedIngredient = String.valueOf(ingredients);
+        sharedStepsViewModel.addIngredient(selectedIngredient);
+
         ImageView backButton = view.findViewById(R.id.back);
         backButton.setOnClickListener(v -> {
             navController.navigateUp();
@@ -66,6 +66,7 @@ public class AddIngredientFragment extends Fragment {
 
     private void sendSelectedIngredients() {
         Bundle result = new Bundle();
+        System.out.println("test");
         result.putStringArrayList("selectedIngredients", new ArrayList<>(selectedIngredients));
         getParentFragmentManager().setFragmentResult("requestKey", result);
     }

@@ -1,6 +1,7 @@
 package com.gfaim.activities.calendar.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
@@ -56,7 +58,9 @@ public class AddIngredientsFragment extends Fragment {
         updateIngredientList(sharedStepsViewModel.getIngredients().getValue());
 
         // Observer les mises à jour des ingrédients
-        sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), this::updateIngredientList);
+        sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), ingredients -> {
+            updateIngredientList(ingredients);
+        });
 
         // Ajouter un ingrédient via le bouton
         LinearLayout addIngredientLayout = view.findViewById(R.id.add_ingredient_layout);
@@ -114,13 +118,19 @@ public class AddIngredientsFragment extends Fragment {
     }
 
     private void updateIngredientList(List<String> ingredients) {
-        if (ingredients != null) {
-            ingredientContainer.removeAllViews(); // Nettoyer avant d'ajouter les nouveaux ingrédients
-            for (String ingredient : ingredients) {
-                addIngredientToContainer(ingredient);
-            }
+        LinearLayout ingredientContainer = requireView().findViewById(R.id.ingredientContainer);
+        ingredientContainer.removeAllViews(); // Nettoie l'affichage avant de le reconstruire
+
+        for (String ingredient : ingredients) {
+            TextView textView = new TextView(requireContext());
+            textView.setText(ingredient);
+            textView.setTextSize(18);
+            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
+            ingredientContainer.addView(textView);
         }
     }
+
+
 
     private void addIngredientToContainer(String ingredient) {
         TextView textView = new TextView(getContext());

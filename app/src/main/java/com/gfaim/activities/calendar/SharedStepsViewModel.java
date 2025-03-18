@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SharedStepsViewModel extends ViewModel {
     private String menuName = "";
     private int participantCount = 1;
-    private final MutableLiveData<List<String>> ingredients = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<String>> _ingredients = new MutableLiveData<>(new ArrayList<>());
+    public LiveData<List<String>> ingredients = _ingredients; // Exposition en lecture seule
+
     private final List<String> steps = new ArrayList<>();
 
     // Getter et Setter pour le nom du menu
@@ -37,9 +40,11 @@ public class SharedStepsViewModel extends ViewModel {
     }
 
     public void addIngredient(String ingredient) {
-        List<String> currentIngredients = new ArrayList<>(ingredients.getValue()); // Copie de la liste actuelle
-        currentIngredients.add(ingredient);
-        ingredients.setValue(currentIngredients); // Mise à jour du LiveData avec une nouvelle liste
+        List<String> currentIngredients = _ingredients.getValue();
+        if (currentIngredients != null) {
+            currentIngredients.add(ingredient);
+            _ingredients.setValue(currentIngredients); // Mise à jour du LiveData
+        }
     }
 
 
@@ -54,4 +59,5 @@ public class SharedStepsViewModel extends ViewModel {
         }
         steps.set(index, stepText);
     }
+
 }

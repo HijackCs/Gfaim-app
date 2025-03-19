@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -21,6 +22,8 @@ public class NavigationBar {
     private final List<ImageButton> navButtons;
     private final List<TextView> navTexts;
     private final Context context;
+    private final View bottomBar;
+
 
     public NavigationBar(Activity activity) {
         this.context = activity;
@@ -37,7 +40,7 @@ public class NavigationBar {
                 activity.findViewById(R.id.txt_recipes),
                 activity.findViewById(R.id.txt_calendar)
         );
-
+        bottomBar = activity.findViewById(R.id.bottom_bar);
         initNavBar();
     }
 
@@ -89,4 +92,15 @@ public class NavigationBar {
         }
     }
 
+    public void hide() {
+        if (bottomBar != null) {
+            bottomBar.setVisibility(View.GONE);
+        }
+    }
+
+    public void show() {
+        if (bottomBar != null) {
+            bottomBar.setVisibility(View.VISIBLE);
+        }
+    }
 }

@@ -1,8 +1,11 @@
 package com.gfaim.activities.calendar.adapter;
 
+import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
@@ -37,15 +40,51 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
         String meal = mealList.get(position);
 
-        // Configurer les données du CardView ici (si nécessaire)
+        TextView textTitle = holder.itemView.findViewById(R.id.textTitle);
+
+        // Définir le titre en fonction du type de repas
+        switch (meal) {
+            case "Breakfast":
+                textTitle.setText(R.string.breakfast);
+                break;
+            case "Lunch":
+                textTitle.setText(R.string.lunch);
+                break;
+            case "Dinner":
+                textTitle.setText(R.string.dinner);
+                break;
+            default:
+                textTitle.setText(meal);
+        }
 
         // Ajouter un OnClickListener au CardView
-        holder.cardView.setOnClickListener(v -> {
+        holder.cardView.setOnClickListener(v -> showRecipeOptionsDialog(v.getContext()));
+
+        // Gérer le clic sur "Add a snack"
+        View addSnackLayout = holder.itemView.findViewById(R.id.add_snack);
+        addSnackLayout.setOnClickListener(v -> showRecipeOptionsDialog(v.getContext()));
+    }
+
+    private void showRecipeOptionsDialog(android.content.Context context) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle("Choose an option");
+
+        // Créer les boutons
+        builder.setPositiveButton("Create a recipe", (dialog, which) -> {
             if (navController != null) {
                 // Naviguer vers AddIngredientsFragment
                 navController.navigate(R.id.action_calendar_to_addIngredients);
             }
         });
+
+        builder.setNegativeButton("Choose a recipe", (dialog, which) -> {
+            if (navController != null) {
+                navController.navigate(R.id.action_calendar_to_chooseRecipe);
+            }
+        });
+
+        // Créer et afficher le dialog
+        builder.create().show();
     }
 
     @Override

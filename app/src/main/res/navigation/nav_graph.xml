@@ -37,6 +37,11 @@
         android:name="com.gfaim.activities.calendar.fragments.SummaryFragment"
         android:label="Summary" />
 
+    <fragment
+        android:id="@+id/chooseRecipeFragment"
+        android:name="com.gfaim.activities.calendar.fragments.ChooseRecipeFragment"
+        android:label="Choose Recipe" />
+
     <!-- Définir les actions de navigation -->
 
 
@@ -63,5 +68,9 @@
     <action
         android:id="@+id/action_addIngredientsFragment_to_addIngredientFragment"
         app:destination="@id/addIngredientFragment" />
+
+    <action
+        android:id="@+id/action_calendar_to_chooseRecipe"
+        app:destination="@id/chooseRecipeFragment" />
 
 </navigation>

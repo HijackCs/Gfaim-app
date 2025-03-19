@@ -14,13 +14,20 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
 import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.calendar.fragments.CalendarFragment;
+import com.gfaim.activities.calendar.fragments.AddIngredientFragment;
+import com.gfaim.activities.calendar.fragments.AddIngredientsFragment;
+import com.gfaim.activities.calendar.fragments.AddStepsFragment;
+import com.gfaim.activities.calendar.fragments.SummaryFragment;
 
 public class CalendarActivity extends AppCompatActivity {
+
+    private NavigationBar navigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +41,31 @@ public class CalendarActivity extends AppCompatActivity {
             return insets;
         });
 
-        NavigationBar navigationBar = new NavigationBar(this);
+        navigationBar = new NavigationBar(this);
         int activeButtonId = getIntent().getIntExtra("activeButtonId", -1);
         if (activeButtonId != -1) {
             navigationBar.setActiveButton(activeButtonId);
         }
 
+        // Configurer le NavController pour observer les changements de destination
+        new Handler(Looper.getMainLooper()).post(() -> {
+            NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+            if (navHostFragment != null) {
+                NavController navController = navHostFragment.getNavController();
+
+                navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+                    // Vérifier si nous sommes dans un des fragments où la barre doit être masquée
+                    if (destination.getId() == R.id.addIngredientFragment ||
+                            destination.getId() == R.id.addIngredientsFragment ||
+                            destination.getId() == R.id.addStepsFragment ||
+                            destination.getId() == R.id.summaryFragment) {
+                        navigationBar.hide();
+                    } else {
+                        navigationBar.show();
+                    }
+                });
+            }
+        });
 
 
         getWindow().getDecorView().setSystemUiVisibility(

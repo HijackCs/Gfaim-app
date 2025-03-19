@@ -39,6 +39,8 @@
     <string name="Recipes">Recette</string>
     <string name="Calendar">Calendrier</string>
     <string name="breakfast">Petit Déjeuner</string>
+    <string name="lunch">Déjeuner</string>
+    <string name="dinner">Dinner</string>
     <string name="no_meal_planned">No meal planned</string>
 
 </resources>

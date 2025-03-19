@@ -58,7 +58,8 @@ public class CalendarActivity extends AppCompatActivity {
                     if (destination.getId() == R.id.addIngredientFragment ||
                             destination.getId() == R.id.addIngredientsFragment ||
                             destination.getId() == R.id.addStepsFragment ||
-                            destination.getId() == R.id.summaryFragment) {
+                            destination.getId() == R.id.summaryFragment ||
+                            destination.getId() == R.id.chooseRecipeFragment) {
                         navigationBar.hide();
                     } else {
                         navigationBar.show();

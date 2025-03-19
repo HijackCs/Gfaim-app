@@ -6,7 +6,11 @@
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.gfaim.activities.calendar.fragments.CalendarFragment"
-        android:label="Calendar" />
+        android:label="Calendar" >
+        <action
+            android:id="@+id/action_calendarFragment_to_chooseRecipeFragment"
+            app:destination="@id/chooseRecipeFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/addIngredientsFragment"

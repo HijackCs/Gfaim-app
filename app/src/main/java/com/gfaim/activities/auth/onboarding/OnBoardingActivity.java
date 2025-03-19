@@ -44,8 +44,6 @@ public class OnBoardingActivity extends AppCompatActivity {
 
     private static final String ALLERGIES = "allergies";
 
-
-
     ViewPager.OnPageChangeListener viewPagerListener = new ViewPager.OnPageChangeListener() {
         @Override
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {

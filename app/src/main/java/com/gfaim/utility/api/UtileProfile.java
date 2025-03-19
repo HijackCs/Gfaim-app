@@ -16,11 +16,10 @@ import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.RefreshRequest;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
-import com.gfaim.models.member.CreateSelfMemberBody;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.models.member.UpdateMember;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.auth.JwtDecoder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -127,7 +126,7 @@ public class UtileProfile {
         });
     }
 
-    public void getSessionMember(OnSessionReceivedListener listener) {
+    public void getSessionMember(OnMemberReceivedListener listener) {
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         Call<MemberSessionBody> call = memberService.getMemberSession();
 
@@ -199,13 +198,13 @@ public class UtileProfile {
         });
     }
 
-    public void createMember(OnSessionReceivedListener listener, String codeFamily, String name ,String familyName) {
+    public void createMember(OnMemberReceivedListener listener, String codeFamily, String name , String familyName) {
         //create member
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
-        Call<CreateMemberNoAccount> call = memberService.createMember("bearer " + tokenManager.getAccessToken(), new CreateMemberNoAccount(false, codeFamily, name, familyName));
-        call.enqueue(new Callback<CreateMemberNoAccount>() {
+        Call<CreateMember> call = memberService.createMember("bearer " + tokenManager.getAccessToken(), new CreateMemberNoAccount(false, codeFamily, name, familyName));
+        call.enqueue(new Callback<CreateMember>() {
             @Override
-            public void onResponse(Call<CreateMemberNoAccount> call, Response<CreateMemberNoAccount> response) {
+            public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     listener.onSuccess(response.body());
                 } else {
@@ -214,8 +213,9 @@ public class UtileProfile {
             }
 
             @Override
-            public void onFailure(Call<CreateMemberNoAccount> call, Throwable t) {
-                listener.onFailure(t);            }
+            public void onFailure(Call<CreateMember> call, Throwable t) {
+                listener.onFailure(t);
+            }
         });
     }
 

@@ -25,11 +25,12 @@ import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.AuthResponse;
 import com.gfaim.models.LoginRequest;
+import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.logging.Logger;
 
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
     public void doesheHaveAFamily(Response<AuthResponse> response){
         tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
 
-        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
 
@@ -111,6 +112,11 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable error) {
               log.info("Erreur lors de la récupération de la session : " + error.getMessage());
+            }
+
+            @Override
+            public void onSuccess(CreateMember body) {
+
             }
         });
     }

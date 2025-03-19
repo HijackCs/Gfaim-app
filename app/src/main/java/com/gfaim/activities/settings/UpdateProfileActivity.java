@@ -19,10 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gfaim.R;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.api.UtileProfile;
 
 public class UpdateProfileActivity extends AppCompatActivity {
@@ -47,7 +48,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         utileProfile = new UtileProfile(this);
          getEmail = utileProfile.getUserEmail();
 
-        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
 
@@ -61,6 +62,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable error) {
                 System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+            }
+
+            @Override
+            public void onSuccess(CreateMember body) {
+
             }
         });
 
@@ -181,7 +187,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
             //String passwordValue = passwordInput.getText().toString().trim().isEmpty() ? "********" : passwordInput.getText().toString().trim(); // Pour éviter d'afficher un mot de passe vide
 
             utileProfile.updateMember(member.getId(),  firstNameValue,  lastNameValue);
-            utileProfile.getSessionMember(new OnSessionReceivedListener() {
+            utileProfile.getSessionMember(new OnMemberReceivedListener() {
                 @Override
                 public void onSuccess(CreateMemberNoAccount session) {
 
@@ -195,6 +201,11 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(Throwable error) {
                     System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                }
+
+                @Override
+                public void onSuccess(CreateMember body) {
+
                 }
             });
     });

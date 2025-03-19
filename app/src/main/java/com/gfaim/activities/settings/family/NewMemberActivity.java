@@ -1,39 +1,46 @@
 package com.gfaim.activities.settings.family;
 
-import static android.view.View.VISIBLE;
-
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
-import com.gfaim.activities.auth.JoinFamilyActivity;
-import com.gfaim.activities.settings.family.ViewPagerFamilyAdapter;
+import com.gfaim.activities.auth.onboarding.ViewPagerAdapter;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.MemberService;
+import com.gfaim.auth.TokenManager;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
+import java.util.Map;
 import java.util.logging.Logger;
+
+import lombok.Getter;
+import lombok.Setter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class NewMemberActivity extends AppCompatActivity {
 
@@ -44,6 +51,13 @@ public class NewMemberActivity extends AppCompatActivity {
     Button cancelButton;
     TextView[] dots;
     ViewPagerFamilyAdapter viewPagerAdapter;
+
+    @Getter
+    @Setter
+    private static Long memberId;
+
+    private static final String ALLERGIES = "allergies";
+
 
     private final Activity activity = this;
 
@@ -79,6 +93,7 @@ public class NewMemberActivity extends AppCompatActivity {
             //empty
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,14 +131,9 @@ public class NewMemberActivity extends AppCompatActivity {
                 String name = viewPagerAdapter.getMemberName();
                 if (!name.isEmpty()) {
 
-                        utileProfile.createMember(new OnSessionReceivedListener() {
+                        utileProfile.createMember(new OnMemberReceivedListener() {
                             @Override
                             public void onSuccess(CreateMemberNoAccount session) {
-
-                                activity.finish();
-                                Intent intent = new Intent(activity, FamilyActivity.class);
-                                activity.startActivity(intent);
-                                log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
                             }
 
                             @Override
@@ -135,7 +145,22 @@ public class NewMemberActivity extends AppCompatActivity {
                             public void onFailure(Throwable error) {
 
                             }
+
+                            @Override
+                            public void onSuccess(CreateMember session) {
+                                setMemberId(session.getId());  // Stocke l'ID du membre nouvellement créé
+
+                                postSelections(activity, ALLERGIES,viewPagerAdapter.getSelectedAllergiesItems());
+                                postSelections(activity,"diets",viewPagerAdapter.getSelectedDietsItems());
+
+                                activity.finish();
+                                Intent intent = new Intent(activity, FamilyActivity.class);
+                                activity.startActivity(intent);
+                                log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
+                            }
                         },family.getCode(), name, family.getName());
+
+
                     }
             }
         });
@@ -159,7 +184,7 @@ public class NewMemberActivity extends AppCompatActivity {
 
 
     public void getAndSetInfo(){
-        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
 
@@ -192,6 +217,11 @@ public class NewMemberActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable error) {
                 System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+            }
+
+            @Override
+            public void onSuccess(CreateMember body) {
+
             }
         });
     }
@@ -238,6 +268,46 @@ public class NewMemberActivity extends AppCompatActivity {
 
             dotIndicator.addView(dots[i]);
         }
+    }
+
+    private void postSelections(Context context, String type, HashMap<Integer, String> selectedItems) {
+        if (selectedItems == null || selectedItems.isEmpty()) {
+            return;
+        }
+
+        MemberService service = ApiClient.getClient(this).create(MemberService.class);
+        TokenManager tokenManager = new TokenManager(this);
+        String token = "Bearer " + tokenManager.getAccessToken();
+
+        List<Map<String, Integer>> body = new ArrayList<>();
+        for (Integer id : selectedItems.keySet()) {
+            Map<String, Integer> item = new HashMap<>();
+            item.put(type.equals(ALLERGIES) ? "allergy_id" : "diet_id", id);
+            body.add(item);
+        }
+
+        Call<Void> call = type.equals(ALLERGIES) ?
+                service.postAllergies(memberId, token, body) :
+                service.postDiets(memberId, token, body);
+
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
+                if (response.isSuccessful()) {
+                    log.info("Données envoyées avec succès");
+                    Toast.makeText(context, "Données envoyées avec succès", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    Toast.makeText(context, "Erreur lors de l'envoi", Toast.LENGTH_SHORT).show();
+                    log.info("Erreur lors de l'envoi");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                log.info("Erreur: " + t.getMessage());
+            }
+        });
     }
 
     private int getItem(int i) {

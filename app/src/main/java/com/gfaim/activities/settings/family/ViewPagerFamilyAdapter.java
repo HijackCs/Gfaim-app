@@ -14,14 +14,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.PagerAdapter;
 import com.gfaim.R;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.DietAllergyService;
+import com.gfaim.api.FetchCallback;
+import com.gfaim.auth.TokenManager;
+import com.gfaim.models.DietAllergy;
 import com.google.android.flexbox.FlexboxLayout;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import lombok.Getter;
+import lombok.Setter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ViewPagerFamilyAdapter extends PagerAdapter {
 
@@ -29,8 +44,17 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
     String name;
    // private String selectedRole = "";
 
-    private final List<String> selectedAllergiesItems = new ArrayList<>();
-    private final List<String> selectedDietsItems = new ArrayList<>();
+    @Getter
+    private final HashMap<Integer, String> selectedAllergiesItems = new HashMap<>();
+    @Getter
+    private final HashMap<Integer, String> selectedDietsItems = new HashMap<>();
+
+    @Getter
+    @Setter
+    private static Long memberId;
+
+    private TokenManager tokenManager;
+
 
     //private final String memberName = null;
 
@@ -125,8 +149,101 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         });
     }
 
-
     private void generateAllergyButtons(FlexboxLayout container, int position) {
+        container.removeAllViews();
+
+        HashMap<Integer, String> selectedItems;
+
+        boolean isDiet = (position == 2);
+        selectedItems = isDiet ? selectedDietsItems : selectedAllergiesItems;
+
+        fetchDietOrAllergy(isDiet, new FetchCallback() {
+            @Override
+            public void onSuccess(HashMap<Integer, String> items) {
+                for (Map.Entry<Integer, String> entry : items.entrySet()) {
+                    int itemId = entry.getKey();
+                    String itemName = entry.getValue();
+
+                    TextView button = new TextView(context);
+                    button.setText(itemName);
+                    button.setTextSize(16);
+                    button.setTextColor(Color.BLACK);
+                    button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
+                    button.setGravity(Gravity.CENTER);
+                    button.setMaxLines(2);
+                    button.setWidth(250);
+                    button.setHeight(100);
+
+                    if (selectedItems.containsKey(itemId)) {
+                        button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
+                        button.setTextColor(Color.WHITE);
+                    }
+
+                    button.setOnClickListener(v -> {
+                        if (selectedItems.containsKey(itemId)) {
+                            // Désélectionner
+                            selectedItems.remove(itemId);
+                            button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
+                            button.setTextColor(Color.BLACK);
+                        } else {
+                            // Sélectionner
+                            selectedItems.put(itemId, itemName);
+                            button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
+                            button.setTextColor(Color.WHITE);
+                        }
+                    });
+
+                    FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(15, 15, 15, 15);
+                    button.setLayoutParams(params);
+                    container.addView(button);
+                }
+            }
+
+            @Override
+            public void onFailure() {
+                Toast.makeText(context, "Impossible de récupérer les données", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void fetchDietOrAllergy(boolean isDiet, FetchCallback callback) {
+        DietAllergyService service = ApiClient.getClient(context).create(DietAllergyService.class);
+        tokenManager = new TokenManager(context);
+        String token = "bearer "+ tokenManager.getAccessToken();
+
+        Call<List<DietAllergy>> call = isDiet ? service.getDiets(token) : service.getAllergies(token);
+
+        call.enqueue(new Callback<List<DietAllergy>>() {
+            @Override
+            public void onResponse(Call<List<DietAllergy>> call, Response<List<DietAllergy>> response) {
+                HashMap<Integer, String> res = new HashMap<>();
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DietAllergy> items = response.body();
+
+                    for (DietAllergy item : items) {
+                        res.put(item.getId(), item.getName());
+                    }
+                    callback.onSuccess(res);
+                } else {
+                    Toast.makeText(context, "Erreur lors de la récupération des données", Toast.LENGTH_SHORT).show();
+                    callback.onFailure();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<DietAllergy>> call, Throwable t) {
+                Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                callback.onFailure();
+            }
+        });
+    }
+
+
+   /* private void generateAllergyButtons(FlexboxLayout container, int position) {
         container.removeAllViews();
 
         int[] items;
@@ -185,7 +302,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
             button.setLayoutParams(params);
             container.addView(button);
         }
-    }
+    }*/
 
     /*
     private void initRoleSelect(View view) {
@@ -247,14 +364,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout) object);
-    }
-
-    public List<String> getSelectedAllergiesItems() {
-        return selectedAllergiesItems;
-    }
-
-    public List<String> getSelectedDietsItems() {
-        return selectedDietsItems;
     }
 
 

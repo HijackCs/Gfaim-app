@@ -10,10 +10,8 @@ import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -29,14 +27,14 @@ import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
 import com.gfaim.activities.settings.SettingsActivity;
-import com.gfaim.activities.settings.UpdateProfileActivity;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public class FamilyActivity extends AppCompatActivity {
     }
 
     public void getAndSetInfo(){
-        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
 
@@ -119,6 +117,11 @@ public class FamilyActivity extends AppCompatActivity {
             public void onFailure(Throwable error) {
                 System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
             }
+
+            @Override
+            public void onSuccess(CreateMember body) {
+
+            }
         });
     }
 
@@ -145,8 +148,8 @@ public class FamilyActivity extends AppCompatActivity {
         FrameLayout editName = findViewById(R.id.editName);
         editName.setVisibility(VISIBLE);
 
-        TextView btnDeleteFamily = findViewById(R.id.btnDeleteFamily);
-        btnDeleteFamily.setVisibility(VISIBLE);
+        //TextView btnDeleteFamily = findViewById(R.id.btnDeleteFamily);
+        //btnDeleteFamily.setVisibility(VISIBLE);
 
         btnAddMember.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
         btnAddMember.setImageResource(R.drawable.ic_add);
@@ -221,7 +224,9 @@ public class FamilyActivity extends AppCompatActivity {
         memberLayout.addView(textView);
 
         membersGrid.addView(memberLayout);
-        updateAddButtonPosition();
+        if(Objects.equals(memberSession.getRole(), "CHEF")) {
+            updateAddButtonPosition();
+        }
     }
 
 
@@ -237,9 +242,6 @@ public class FamilyActivity extends AppCompatActivity {
                             membersGrid.removeView(memberLayout);
                             membersList.remove(member);
                             updateAddButtonPosition();
-                            System.out.println("la liste" +membersList);
-                            System.out.println("la liste" +membersList);
-
                         }
 
                         @Override

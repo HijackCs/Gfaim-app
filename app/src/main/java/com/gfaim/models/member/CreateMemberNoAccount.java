@@ -11,6 +11,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class CreateMemberNoAccount {
+
     @SerializedName("has_account")
     private boolean hasAccount;
     @SerializedName("family_code")

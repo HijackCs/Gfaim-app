@@ -2,34 +2,19 @@ package com.gfaim.activities.settings;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
-import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.activities.auth.LoginActivity;
 import com.gfaim.activities.settings.family.FamilyActivity;
-import com.gfaim.api.ApiClient;
-import com.gfaim.api.AuthService;
-import com.gfaim.api.MealService;
-import com.gfaim.auth.TokenManager;
-import com.gfaim.models.RefreshRequest;
-import com.gfaim.models.User;
+import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
-import com.gfaim.utility.auth.JwtDecoder;
-import com.gfaim.utility.callback.OnSessionReceivedListener;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -46,7 +31,7 @@ public class SettingsActivity extends AppCompatActivity {
         accountBtnSetup();
         logOutBtnSetup();
         familyBtnSetup();
-
+        setupUsername();
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(v -> utileProfile.logout());
 
@@ -54,7 +39,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public void setupUsername(){
-        utileProfile.getSessionMember(new OnSessionReceivedListener() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
 
@@ -68,6 +53,11 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Throwable error) {
+
+            }
+
+            @Override
+            public void onSuccess(CreateMember body) {
 
             }
         });

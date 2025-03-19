@@ -24,7 +24,7 @@ public interface MemberService {
     Call<CreateMember> createMember(@Header("Authorization") String token, @Body CreateSelfMemberBody request);
 
     @POST("/members")
-    Call<CreateMemberNoAccount> createMember(@Header("Authorization") String token, @Body CreateMemberNoAccount request);
+    Call<CreateMember> createMember(@Header("Authorization") String token, @Body CreateMemberNoAccount request);
     @POST("members/{memberId}/allergies")
     Call<Void> postAllergies(
             @Path("memberId") Long memberId,

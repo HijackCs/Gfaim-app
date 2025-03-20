@@ -5,18 +5,26 @@ import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 
-public class FoodItem implements Parcelable {
-    private String name;
-    private int id;
+import java.util.Locale;
 
-    public FoodItem(String name, int id) {
-        this.name = name;
-        this.id=id;
+public class FoodItem implements Parcelable {
+    private String nameFr;
+    private String nameEn;
+    private String ingredientName;
+    private Long id;
+
+    public FoodItem(String nameFr, String nameEn, String ingredientName, Long id) {
+        this.nameFr = nameFr;
+        this.nameEn = nameEn;
+        this.ingredientName = ingredientName;
+        this.id = id;
     }
 
     protected FoodItem(Parcel in) {
-        name = in.readString();
-        id = in.readInt();
+        nameFr = in.readString();
+        nameEn = in.readString();
+        ingredientName = in.readString();
+        id = (long) in.readInt();
     }
 
     public static final Creator<FoodItem> CREATOR = new Creator<FoodItem>() {
@@ -31,16 +39,25 @@ public class FoodItem implements Parcelable {
         }
     };
 
-    public String getName() { return name; }
+    public String getName() {
+        String currentLanguage = Locale.getDefault().getLanguage();
+        return currentLanguage.equals("fr") ? nameFr : nameEn;
+    }
+
+    public String getIngredientName() {
+        return ingredientName;
+    }
 
     @Override
     public String toString() {
         return "FoodItem{" +
-                "name='" + name + '\'' +
+                "nameFr='" + nameFr + '\'' +
+                ", nameEn='" + nameEn + '\'' +
+                ", ingredientName='" + ingredientName + '\'' +
                 '}';
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
@@ -51,7 +68,9 @@ public class FoodItem implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
-        dest.writeString(name);
-        dest.writeInt(id);
+        dest.writeString(nameFr);
+        dest.writeString(nameEn);
+        dest.writeString(ingredientName);
+        dest.writeInt(Math.toIntExact(id));
     }
 }

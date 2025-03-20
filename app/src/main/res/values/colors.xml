@@ -12,7 +12,6 @@
     <color name="unselected_text">#A5C689</color> <!-- Texte vert pour l'onglet inactif -->
 
     <color name="dark_green">#1E3A2A</color>
-    <color name="green">#A6CE96</color>
 
 
     <color name="appBackground">#D3D5C9</color>

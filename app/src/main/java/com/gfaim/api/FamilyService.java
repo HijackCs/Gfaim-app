@@ -3,6 +3,7 @@ package com.gfaim.api;
 import com.gfaim.models.family.CreateFamily;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.UpdateMember;
 
 import retrofit2.Call;
@@ -29,11 +30,11 @@ public interface FamilyService {
     );
 
 
-    @POST("{id}/leave")
-    Call<CreateFamilyBody> leaveFamily(
+    @POST("/families/{id}/leave")
+    Call<LeaveFamilyBody> leaveFamily(
             @Path("id") Long families_id,
             @Header("Authorization") String token,
-            @Body CreateFamilyBody updateFamily
+            @Body LeaveFamilyBody leaveFamilyBody
     );
 
 }

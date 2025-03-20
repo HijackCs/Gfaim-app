@@ -1,5 +1,6 @@
 package com.gfaim.utility.api;
 
+import android.accounts.OnAccountsUpdateListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,17 +11,22 @@ import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.api.FamilyService;
 import com.gfaim.api.MemberService;
+import com.gfaim.api.UserService;
 import com.gfaim.auth.TokenManager;
+import com.gfaim.models.UpdateUserBody;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.RefreshRequest;
+import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.models.member.UpdateMember;
+import com.gfaim.models.user.UpdateUserPassword;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.auth.JwtDecoder;
+import com.gfaim.utility.callback.OnUserReceivedListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -126,6 +132,27 @@ public class UtileProfile {
         });
     }
 
+    public void leaveFamily(OnFamilyReceivedListener listener, Long id, Long memberId){
+        FamilyService familyService = ApiClient.getClient(context).create(FamilyService.class);
+        Call<LeaveFamilyBody> call = familyService.leaveFamily(id,"Bearer " + tokenManager.getAccessToken(), new LeaveFamilyBody(memberId));
+        call.enqueue(new Callback<LeaveFamilyBody>() {
+            @Override
+            public void onResponse(Call<LeaveFamilyBody> call, Response<LeaveFamilyBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(context, "membre supprimé de la famille", Toast.LENGTH_SHORT).show();
+                    listener.onSuccess(response.body());
+
+                } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
+                }
+            }
+            @Override
+            public void onFailure(Call<LeaveFamilyBody> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+
     public void getSessionMember(OnMemberReceivedListener listener) {
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         Call<MemberSessionBody> call = memberService.getMemberSession();
@@ -219,6 +246,51 @@ public class UtileProfile {
         });
     }
 
+
+    public void updateUser(OnUserReceivedListener listener, Long id, String email, String firstName, String lastName){
+        UserService userService = ApiClient.getClient(context).create(UserService.class);
+        Call<UpdateUserBody> call = userService.updateUser("Bearer " + tokenManager.getAccessToken(),id, new UpdateUserBody(email, firstName, lastName));
+        call.enqueue(new Callback<UpdateUserBody>() {
+            @Override
+            public void onResponse(Call<UpdateUserBody> call, Response<UpdateUserBody> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(context, "Profil mis à jour avec succès", Toast.LENGTH_SHORT).show();
+                    listener.onSuccess(response.body());
+
+                } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
+                }
+            }
+            @Override
+            public void onFailure(Call<UpdateUserBody> call, Throwable t) {
+                listener.onFailure(t);
+            }
+        });
+    }
+
+
+    public void updateUserPassword(OnUserReceivedListener listener, Long id, String password){
+        UserService userService = ApiClient.getClient(context).create(UserService.class);
+        Call<UpdateUserPassword> call = userService.updateUserPassword("Bearer " + tokenManager.getAccessToken(),id, new UpdateUserPassword(password));
+        call.enqueue(new Callback<UpdateUserPassword>() {
+            @Override
+            public void onResponse(Call<UpdateUserPassword> call, Response<UpdateUserPassword> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Toast.makeText(context, "password mis à jour avec succès", Toast.LENGTH_SHORT).show();
+                    listener.onSuccess(response.body());
+
+                } else {
+                    listener.onFailure(new Exception("Réponse invalide"));
+                }
+            }
+            @Override
+            public void onFailure(Call<UpdateUserPassword> call, Throwable t) {
+                listener.onFailure(new Exception("pb"));
+
+                listener.onFailure(t);
+            }
+        });
+    }
 
 
 

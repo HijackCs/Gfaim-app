@@ -17,14 +17,19 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
+import com.gfaim.models.UpdateUserBody;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.models.user.UpdateUserPassword;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnUserReceivedListener;
+import java.util.Objects;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
@@ -32,10 +37,13 @@ public class UpdateProfileActivity extends AppCompatActivity {
     private EditText firstName;
     private EditText lastName;
 
+    private EditText email;
+
     private EditText passwordInput;
     private TextView updateButton;
     private TextView deleteButton;
     private String getEmail;
+    private String emailValue;
 
     private MemberSessionBody member;
 
@@ -46,7 +54,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         setContentView(R.layout.update_profile);
 
         utileProfile = new UtileProfile(this);
-         getEmail = utileProfile.getUserEmail();
+
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
@@ -70,14 +78,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-
-
-
         firstName = findViewById(R.id.firstName);
         lastName = findViewById(R.id.lastName);
+        email = findViewById(R.id.email);
         passwordInput = findViewById(R.id.password);
         updateButton = findViewById(R.id.updateBtn);
         deleteButton = findViewById(R.id.deleteBtn);
@@ -105,8 +108,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         lastName.setHint(lastNameS);
 
-        TextView email = findViewById(R.id.email);
-        email.setText(getEmail);
+        getEmail = utileProfile.getUserEmail();
+        email.setHint(getEmail);
 
     }
 
@@ -169,48 +172,112 @@ public class UpdateProfileActivity extends AppCompatActivity {
         firstName.addTextChangedListener(textWatcher);
         lastName.addTextChangedListener(textWatcher);
         passwordInput.addTextChangedListener(textWatcher);
+        email.addTextChangedListener(textWatcher);
     }
+
 
     private void checkIfFieldsAreFilled() {
-        boolean isAnyFieldFilled = !firstName.getText().toString().trim().isEmpty() ||
-                !lastName.getText().toString().trim().isEmpty() ||
-                !passwordInput.getText().toString().trim().isEmpty();
+        String firstNameText = firstName.getText().toString().trim();
+        String lastNameText = lastName.getText().toString().trim();
+        String passwordText = passwordInput.getText().toString().trim();
+        String emailText = email.getText().toString().trim();
 
-        updateButton.setEnabled(isAnyFieldFilled);
-        updateButton.setAlpha(isAnyFieldFilled ? 1.0f : 0.5f);
+        boolean isAnyFieldFilled = !firstNameText.isEmpty() ||
+                !lastNameText.isEmpty() ||
+                !passwordText.isEmpty() ||
+                !emailText.isEmpty();
+
+        boolean isEmailValid = emailText.isEmpty() || android.util.Patterns.EMAIL_ADDRESS.matcher(emailText).matches();
+        if (!emailText.isEmpty() && !isEmailValid) {
+            email.setError("Adresse email invalide");
+        } else {
+            email.setError(null);
+        }
+
+        boolean isPasswordValid = passwordText.isEmpty() || (passwordText.length() > 8 &&
+                passwordText.matches(".*[A-Z].*") && // Majuscule
+                passwordText.matches(".*[0-9].*") && // Chiffre
+                passwordText.matches(".*[!@#$%^&*(),.?\":{}|<>].*"));
+
+        if (!passwordText.isEmpty() && !isPasswordValid) {
+            passwordInput.setError("Mot de passe invalide : 8+ caractères, 1 chiffre, 1 majuscule, 1 caractère spécial");
+        } else {
+            passwordInput.setError(null);
+        }
+
+        boolean shouldEnableButton = isAnyFieldFilled && (emailText.isEmpty() || isEmailValid) && (passwordText.isEmpty() || isPasswordValid);
+
+        updateButton.setEnabled(shouldEnableButton);
+        updateButton.setAlpha(shouldEnableButton ? 1.0f : 0.5f);
     }
+
+
+
+
+
 
     private void setupUpdateButton() {
         updateButton.setOnClickListener(v -> {
             String firstNameValue = firstName.getText().toString().trim().isEmpty() ? firstName.getHint().toString() : firstName.getText().toString().trim();
             String lastNameValue = lastName.getText().toString().trim().isEmpty() ? lastName.getHint().toString() : lastName.getText().toString().trim();
-            //String passwordValue = passwordInput.getText().toString().trim().isEmpty() ? "********" : passwordInput.getText().toString().trim(); // Pour éviter d'afficher un mot de passe vide
+            String passwordValue = passwordInput.getText().toString().trim();
 
-            utileProfile.updateMember(member.getId(),  firstNameValue,  lastNameValue);
-            utileProfile.getSessionMember(new OnMemberReceivedListener() {
-                @Override
-                public void onSuccess(CreateMemberNoAccount session) {
+            emailValue = email.getText().toString().trim();
+            if (emailValue.isEmpty()) {
+                emailValue = getEmail;
+            }
 
-                }
+            if (passwordValue.isEmpty() || passwordValue.length() <= 8 ||
+                    !passwordValue.matches(".*[A-Z].*") ||
+                    !passwordValue.matches(".*[0-9].*") ||
+                    !passwordValue.matches(".*[!@#$%^&*(),.?\":{}|<>].*")) {
+                updateUser( firstNameValue, lastNameValue);
 
-                @Override
-                public void onSuccess(MemberSessionBody session) {
-                    member = session;
-                    getAllInfo();
-                }
-                @Override
-                public void onFailure(Throwable error) {
-                    System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
-                }
-
-                @Override
-                public void onSuccess(CreateMember body) {
-
-                }
-            });
+            }else{
+                System.out.println("pass "+passwordValue );
+                utileProfile.updateUserPassword(new OnUserReceivedListener() {
+                    @Override
+                    public void onSuccess(UpdateUserBody session) {
+                    }
+                    @Override
+                    public void onSuccess(UpdateUserPassword session) {}
+                    @Override
+                    public void onFailure(Throwable error) {
+                        updateUser( firstNameValue, lastNameValue);
+                    }
+                }, member.getUserId(), passwordValue);
+            }
     });
     }
 
+    public void updateUser(String firstNameValue,String lastNameValue){
+        utileProfile.updateUser(new OnUserReceivedListener() {
+            @Override
+            public void onSuccess(UpdateUserBody session) {
+                utileProfile.getSessionMember(new OnMemberReceivedListener() {
+                    @Override
+                    public void onSuccess(CreateMemberNoAccount session) {}
+                    @Override
+                    public void onSuccess(MemberSessionBody session) {
+                        member = session;
+                        getAllInfo();
+                    }
+                    @Override
+                    public void onFailure(Throwable error) {
+                        utileProfile.logout();
+                        System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                    }
+                    @Override
+                    public void onSuccess(CreateMember body) {
+                    }
+                });
+            }
+            @Override
+            public void onSuccess(UpdateUserPassword session) {}
+            @Override
+            public void onFailure(Throwable error) {}
+        },member.getUserId(), emailValue, firstNameValue, lastNameValue);
+    }
 
     private void setupDeleteButton() {
         deleteButton.setOnClickListener(v -> utileProfile.deleteMemberById(new OnFamilyReceivedListener() {
@@ -218,21 +285,14 @@ public class UpdateProfileActivity extends AppCompatActivity {
             public void onSuccess() {
                 utileProfile.logout();
             }
-
             @Override
-            public void onSuccess(CreateFamilyBody family) {
-
-            }
-
+            public void onSuccess(LeaveFamilyBody family) {}
             @Override
-            public void onSuccess(FamilyBody family) {
-
-            }
-
+            public void onSuccess(CreateFamilyBody family) {}
             @Override
-            public void onFailure(Throwable error) {
-
-            }
+            public void onSuccess(FamilyBody family) {}
+            @Override
+            public void onFailure(Throwable error) {}
         }, member.getId()));
     }
 

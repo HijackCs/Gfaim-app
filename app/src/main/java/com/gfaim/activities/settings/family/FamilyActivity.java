@@ -30,6 +30,7 @@ import com.gfaim.R;
 import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
@@ -52,7 +53,7 @@ public class FamilyActivity extends AppCompatActivity {
 
     UtileProfile utileProfile;
     private MemberSessionBody memberSession;
-
+    private FamilyBody family;
     Context context;
 
 
@@ -74,7 +75,7 @@ public class FamilyActivity extends AppCompatActivity {
 
     public void setupLeaveFamily(){
         TextView leave = findViewById(R.id.btnLeaveFamily);
-        leave.setOnClickListener(v -> copyToClipboard(leave.getText().toString()));
+        leave.setOnClickListener(v -> showLeaveConfirmationDialog());
     }
 
     public void getAndSetInfo(){
@@ -89,32 +90,27 @@ public class FamilyActivity extends AppCompatActivity {
                 memberSession = session; // Stocke dans l'Activity
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
                     @Override
-                    public void onSuccess() {
-
-                    }
-
+                    public void onSuccess() {}
                     @Override
-                    public void onSuccess(CreateFamilyBody family) {
-                    }
-
+                    public void onSuccess(LeaveFamilyBody family) {}
                     @Override
-                    public void onSuccess(FamilyBody family) {
+                    public void onSuccess(CreateFamilyBody family) {}
+                    @Override
+                    public void onSuccess(FamilyBody session) {
+                        family = session;
                         TextView familyName = findViewById(R.id.familyName);
                         familyName.setText(family.getName());
                         TextView familyCode = findViewById(R.id.familyCode);
                         familyCode.setText(family.getCode());
                         familyCode.setOnClickListener(v -> copyToClipboard(familyCode.getText().toString()));
                         List<MemberSessionBody> list = family.getMembers();
-
                         if(Objects.equals(memberSession.getRole(), "CHEF")){
                             initAddButton();
                         }
-
                         for(MemberSessionBody m : list){
                             addMember(m);
                         }
                     }
-
                     @Override
                     public void onFailure(Throwable error) {
                         System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
@@ -125,11 +121,8 @@ public class FamilyActivity extends AppCompatActivity {
             public void onFailure(Throwable error) {
                 System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
             }
-
             @Override
-            public void onSuccess(CreateMember body) {
-
-            }
+            public void onSuccess(CreateMember body) {}
         });
     }
 
@@ -138,6 +131,7 @@ public class FamilyActivity extends AppCompatActivity {
         myAccount.setOnClickListener(view -> {
             Intent intent = new Intent(FamilyActivity.this, SettingsActivity.class);
             startActivity(intent);
+            finish();
         });
     }
     private void copyToClipboard(String text) {
@@ -252,29 +246,22 @@ public class FamilyActivity extends AppCompatActivity {
                 .setMessage("Are you sure you want to remove " + member.getFirstName() + " from the family?")
                 .setPositiveButton("Yes", (dialog, which) -> {
 
-                    utileProfile.deleteMemberById(new OnFamilyReceivedListener() {
+                    utileProfile.leaveFamily(new OnFamilyReceivedListener() {
                         @Override
-                        public void onSuccess() {
+                        public void onSuccess() {}
+                        @Override
+                        public void onSuccess(LeaveFamilyBody family) {}
+                        @Override
+                        public void onSuccess(CreateFamilyBody family) {}
+                        @Override
+                        public void onSuccess(FamilyBody family) {}
+                        @Override
+                        public void onFailure(Throwable error) {
                             membersGrid.removeView(memberLayout);
                             membersList.remove(member);
                             updateAddButtonPosition();
                         }
-
-                        @Override
-                        public void onSuccess(CreateFamilyBody family) {
-
-                        }
-
-                        @Override
-                        public void onSuccess(FamilyBody family) {
-
-                        }
-
-                        @Override
-                        public void onFailure(Throwable error) {
-
-                        }
-                    }, member.getId());
+                    }, memberSession.getFamilyId(), member.getId());
 
                 })
                 .setNegativeButton("No", (dialog, which) -> dialog.dismiss());
@@ -288,6 +275,37 @@ public class FamilyActivity extends AppCompatActivity {
         alertDialog.show();
     }
 
+    private void showLeaveConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Delete Member")
+                .setMessage("Are you sure you want to Leave the family" + family.getName())
+                .setPositiveButton("Yes", (dialog, which) -> {
+
+                    utileProfile.leaveFamily(new OnFamilyReceivedListener() {
+                        @Override
+                        public void onSuccess() {}
+                        @Override
+                        public void onSuccess(LeaveFamilyBody family) {}
+                        @Override
+                        public void onSuccess(CreateFamilyBody family) {}
+                        @Override
+                        public void onSuccess(FamilyBody family) {}
+                        @Override
+                        public void onFailure(Throwable error) {
+                            Intent intent = new Intent(FamilyActivity.this, SettingsActivity.class);
+                            startActivity(intent);
+                        }
+                    }, memberSession.getFamilyId(), memberSession.getId());
+                })
+                .setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog alertDialog = builder.create();
+
+        alertDialog.setOnShowListener(dialog -> alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(
+                ContextCompat.getColor(this, R.color.appBackground)
+        )));
+        alertDialog.show();
+    }
 
     private void updateAddButtonPosition() {
         membersGrid.removeView(btnAddMember);
@@ -372,11 +390,21 @@ public class FamilyActivity extends AppCompatActivity {
                     }
 
                     @Override
+                    public void onSuccess(LeaveFamilyBody family) {
+
+                    }
+
+                    @Override
                     public void onSuccess(CreateFamilyBody family) {
 
                         utileProfile.getFamily(new OnFamilyReceivedListener() {
                             @Override
                             public void onSuccess() {
+
+                            }
+
+                            @Override
+                            public void onSuccess(LeaveFamilyBody family) {
 
                             }
 

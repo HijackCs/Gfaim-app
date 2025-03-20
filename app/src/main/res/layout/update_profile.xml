@@ -86,7 +86,6 @@
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:drawablePadding="16dp"
-        android:hint="Your Email"
         android:drawableStart="@drawable/ic_mail"
         android:background="@drawable/edittext_rounded"
         android:layout_marginBottom="16dp"

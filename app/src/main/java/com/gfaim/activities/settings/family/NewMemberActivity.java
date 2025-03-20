@@ -23,6 +23,7 @@ import com.gfaim.api.MemberService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
@@ -195,19 +196,15 @@ public class NewMemberActivity extends AppCompatActivity {
                 member = session; // Stocke dans l'Activity
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
                     @Override
-                    public void onSuccess() {
-
-                    }
-
+                    public void onSuccess() {}
                     @Override
-                    public void onSuccess(CreateFamilyBody session) {
-                    }
-
+                    public void onSuccess(LeaveFamilyBody family) {}
+                    @Override
+                    public void onSuccess(CreateFamilyBody session) {}
                     @Override
                     public void onSuccess(FamilyBody session) {
                         family = session;
                     }
-
                     @Override
                     public void onFailure(Throwable error) {
                         System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());

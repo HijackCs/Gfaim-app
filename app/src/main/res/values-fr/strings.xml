@@ -106,5 +106,7 @@
     <string name="notEmpty">Le nom ne peut pas être vide</string>
     <string name="delete_family">Supprimer la famille</string>
     <string name="leave_family">Quitter la famille</string>
+    <string name="no">non</string>
+    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
 
 </resources>

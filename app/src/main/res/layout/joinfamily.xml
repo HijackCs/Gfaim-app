@@ -8,11 +8,11 @@
 
     <!-- Titre -->
     <TextView
-        android:id="@+id/JoinOrCreate"
+        android:id="@+id/joinorno"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="@string/JoinOrCreate"
+        android:text="@string/joinorno"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -31,17 +31,6 @@
         android:textColor="@color/white"
         android:textSize="16sp" />
 
-    <Button
-        android:id="@+id/createFamily"
-        android:layout_width="300dp"
-        android:layout_height="61dp"
-        android:layout_marginTop="30dp"
-        android:backgroundTint="@color/greenBtn"
-        android:padding="16dp"
-        android:text="@string/createFamily"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="16sp" />
 
     <!-- Image centrée -->
     <ImageView
@@ -52,9 +41,20 @@
         android:visibility="visible"
         app:srcCompat="@drawable/animated_check" />
 
-    <!-- Bouton Next -->
     <Button
-        android:id="@+id/nextButton"
+        android:id="@+id/Non"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:backgroundTint="@color/green"
+        android:padding="12dp"
+        android:text="@string/no"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/next"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -63,5 +63,6 @@
         android:text="@string/next"
         android:textAllCaps="false"
         android:textColor="@color/white"
+        android:visibility="visible"
         android:textSize="18sp" />
 </LinearLayout>

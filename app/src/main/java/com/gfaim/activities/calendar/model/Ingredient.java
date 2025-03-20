@@ -1,4 +1,4 @@
-package com.gfaim.activities;
+package com.gfaim.activities.calendar.model;
 
 import java.io.Serializable;
 

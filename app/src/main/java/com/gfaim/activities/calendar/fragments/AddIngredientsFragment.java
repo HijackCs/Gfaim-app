@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.R;
+import com.gfaim.activities.calendar.model.Ingredient;
 
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class AddIngredientsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // Initialiser le NavController
-        navController = Navigation.findNavController(view);
+        navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
 
         // Initialiser le ViewModel
         sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
@@ -58,14 +59,20 @@ public class AddIngredientsFragment extends Fragment {
         updateIngredientList(sharedStepsViewModel.getIngredients().getValue());
 
         // Observer les mises à jour des ingrédients
-        sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), ingredients -> {
-            updateIngredientList(ingredients);
-        });
+        sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), this::updateIngredientList);
+
 
         // Ajouter un ingrédient via le bouton
-        LinearLayout addIngredientLayout = view.findViewById(R.id.add_ingredient_layout);
-        addIngredientLayout.setOnClickListener(v -> {
-            navController.navigate(R.id.action_addIngredientsFragment_to_addIngredientFragment);
+        ImageButton addIngredientButton = view.findViewById(R.id.add_ingredient_button);
+        addIngredientButton.setOnClickListener(v -> {
+            // Créer un bundle avec les informations nécessaires
+            Bundle bundle = new Bundle();
+            bundle.putString("selectedDate", getArguments().getString("selectedDate"));
+            bundle.putString("mealType", getArguments().getString("mealType"));
+            bundle.putInt("cardPosition", getArguments().getInt("cardPosition"));
+
+            // Naviguer vers AddIngredientFragment
+            navController.navigate(R.id.action_addIngredientsFragment_to_addIngredientFragment, bundle);
         });
 
         participantCountText = view.findViewById(R.id.participant_count);
@@ -114,30 +121,55 @@ public class AddIngredientsFragment extends Fragment {
 
         // Bouton suivant
         Button nextButton = view.findViewById(R.id.next);
-        nextButton.setOnClickListener(v -> navController.navigate(R.id.action_addIngredientsFragment_to_addStepsFragment));
-    }
+        nextButton.setOnClickListener(v -> {
+            // Récupérer les arguments actuels
+            Bundle currentArgs = getArguments();
+            if (currentArgs != null) {
+                // Créer un nouveau bundle avec les mêmes informations
+                Bundle args = new Bundle();
+                args.putString("selectedDate", currentArgs.getString("selectedDate"));
+                args.putString("mealType", currentArgs.getString("mealType"));
+                args.putInt("cardPosition", currentArgs.getInt("cardPosition"));
 
-    private void updateIngredientList(List<String> ingredients) {
-        LinearLayout ingredientContainer = requireView().findViewById(R.id.ingredientContainer);
-        ingredientContainer.removeAllViews(); // Nettoie l'affichage avant de le reconstruire
+                // Naviguer vers AddStepsFragment avec les arguments
+                navController.navigate(R.id.action_addIngredients_to_addSteps, args);
+            } else {
+                // Si pas d'arguments, naviguer sans arguments
+                navController.navigate(R.id.action_addIngredients_to_addSteps);
+            }
+        });    }
 
-        for (String ingredient : ingredients) {
-            TextView textView = new TextView(requireContext());
-            textView.setText(ingredient);
-            textView.setTextSize(18);
-            textView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black));
-            ingredientContainer.addView(textView);
+    private void updateIngredientList(List<Ingredient> ingredients) {
+        ingredientContainer.removeAllViews();
+        if (ingredients != null) {
+            for (Ingredient ingredient : ingredients) {
+                addIngredientView(ingredient);
+            }
         }
     }
 
 
+    private void addIngredientView(Ingredient ingredient) {
+        LinearLayout ingredientLayout = new LinearLayout(getContext());
+        ingredientLayout.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        ingredientLayout.setOrientation(LinearLayout.HORIZONTAL);
+        ingredientLayout.setPadding(16, 8, 16, 8);
 
-    private void addIngredientToContainer(String ingredient) {
-        TextView textView = new TextView(getContext());
-        textView.setText(ingredient);
-        textView.setTextSize(16);
-        textView.setPadding(16, 8, 16, 8);
-        ingredientContainer.addView(textView);
+        // Texte de l'ingrédient
+        TextView ingredientText = new TextView(getContext());
+        LinearLayout.LayoutParams textParams = new LinearLayout.LayoutParams(
+                0,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                1.0f);
+        ingredientText.setLayoutParams(textParams);
+        ingredientText.setText(ingredient.getName() + " (" + ingredient.getCalories() + " kcal)");
+        ingredientText.setTextSize(16);
+        ingredientText.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey));
+
+        ingredientLayout.addView(ingredientText);
+        ingredientContainer.addView(ingredientLayout);
     }
 
     private void updateParticipantCount() {

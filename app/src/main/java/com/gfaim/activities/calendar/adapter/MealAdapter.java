@@ -1,103 +1,120 @@
 package com.gfaim.activities.calendar.adapter;
 
-import android.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.navigation.NavController;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder> {
 
-    private List<String> mealList;
-    private NavController navController;
-
-    public MealAdapter(List<String> mealList, NavController navController) {
-        this.mealList = mealList;
-        this.navController = navController;
+    public interface OnMealClickListener {
+        void onMealClick(String mealType, int position);
     }
 
-    public MealAdapter(List<String> mealList) {
-        this.mealList = mealList;
+    private final List<String> meals;
+    private final OnMealClickListener listener;
+    private String selectedDate;
+    private final Map<String, Map<String, MealInfo>> mealsByDate = new HashMap<>();
+
+    public static class MealInfo {
+        public String menuName;
+        public int calories;
+        public int duration;
+
+        public MealInfo(String menuName, int calories, int duration) {
+            this.menuName = menuName;
+            this.calories = calories;
+            this.duration = duration;
+        }
+    }
+
+    public MealAdapter(List<String> meals, OnMealClickListener listener) {
+        this.meals = meals;
+        this.listener = listener;
+    }
+
+    public void setSelectedDate(String date) {
+        this.selectedDate = date;
+        notifyDataSetChanged();
+    }
+
+    public void updateMealInfo(String date, String mealType, String menuName, int calories, int duration) {
+        mealsByDate.computeIfAbsent(date, k -> new HashMap<>())
+                .put(mealType, new MealInfo(menuName, calories, duration));
+        if (date.equals(selectedDate)) {
+            notifyDataSetChanged();
+        }
     }
 
     @NonNull
     @Override
     public MealViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.meal_card, parent, false);
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.meal_card, parent, false);
         return new MealViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MealViewHolder holder, int position) {
-        String meal = mealList.get(position);
+        String mealType = meals.get(position);
+        holder.mealTypeText.setText(mealType);
 
-        TextView textTitle = holder.itemView.findViewById(R.id.textTitle);
-
-        // Définir le titre en fonction du type de repas
-        switch (meal) {
-            case "Breakfast":
-                textTitle.setText(R.string.breakfast);
-                break;
-            case "Lunch":
-                textTitle.setText(R.string.lunch);
-                break;
-            case "Dinner":
-                textTitle.setText(R.string.dinner);
-                break;
-            default:
-                textTitle.setText(meal);
+        // Récupérer les informations du repas pour la date sélectionnée
+        MealInfo mealInfo = null;
+        if (selectedDate != null && mealsByDate.containsKey(selectedDate)) {
+            mealInfo = mealsByDate.get(selectedDate).get(mealType);
         }
 
-        // Ajouter un OnClickListener au CardView
-        holder.cardView.setOnClickListener(v -> showRecipeOptionsDialog(v.getContext()));
+        // Toujours afficher les TextView
+        holder.menuNameText.setVisibility(View.VISIBLE);
+        holder.caloriesText.setVisibility(View.VISIBLE);
+        holder.timeText.setVisibility(View.VISIBLE);
 
-        // Gérer le clic sur "Add a snack"
-        View addSnackLayout = holder.itemView.findViewById(R.id.add_snack);
-        addSnackLayout.setOnClickListener(v -> showRecipeOptionsDialog(v.getContext()));
-    }
+        if (mealInfo != null) {
+            // Afficher les informations du repas
+            holder.menuNameText.setText(mealInfo.menuName);
+            holder.caloriesText.setText(mealInfo.calories + " kcal");
+            holder.timeText.setText(mealInfo.duration + " min");
+        } else {
+            // Afficher les valeurs par défaut
+            holder.menuNameText.setText(R.string.no_meal_planned);
+            holder.caloriesText.setText("0 kcal");
+            holder.timeText.setText("0 min");
+        }
 
-    private void showRecipeOptionsDialog(android.content.Context context) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("Choose an option");
-
-        // Créer les boutons
-        builder.setPositiveButton("Create a recipe", (dialog, which) -> {
-            if (navController != null) {
-                // Naviguer vers AddIngredientsFragment
-                navController.navigate(R.id.action_calendar_to_addIngredients);
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onMealClick(mealType, position);
             }
         });
-
-        builder.setNegativeButton("Choose a recipe", (dialog, which) -> {
-            if (navController != null) {
-                navController.navigate(R.id.action_calendar_to_chooseRecipe);
-            }
-        });
-
-        // Créer et afficher le dialog
-        builder.create().show();
     }
 
     @Override
     public int getItemCount() {
-        return mealList.size();
+        return meals.size();
     }
 
     static class MealViewHolder extends RecyclerView.ViewHolder {
-        CardView cardView;
+        TextView mealTypeText;
+        TextView menuNameText;
+        TextView caloriesText;
+        TextView timeText;
 
-        public MealViewHolder(@NonNull View itemView) {
+        MealViewHolder(View itemView) {
             super(itemView);
-            cardView = itemView.findViewById(R.id.cardView);
+            mealTypeText = itemView.findViewById(R.id.textTitle);
+            menuNameText = itemView.findViewById(R.id.cardText);
+            caloriesText = itemView.findViewById(R.id.caloriesText);
+            timeText = itemView.findViewById(R.id.timeText);
         }
     }
 }

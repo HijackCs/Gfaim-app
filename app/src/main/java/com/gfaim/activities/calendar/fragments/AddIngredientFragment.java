@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.adapter.IngredientAdapter;
+import com.gfaim.activities.calendar.model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class AddIngredientFragment extends Fragment {
 
-    private List<String> selectedIngredients = new ArrayList<>();
+    private List<Ingredient> selectedIngredients = new ArrayList<>();
     private SharedStepsViewModel sharedStepsViewModel;
 
     @Override
@@ -37,12 +38,14 @@ public class AddIngredientFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.mealRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<String> ingredients = new ArrayList<>();
-        ingredients.add("Tomato");
-        ingredients.add("Cheese");
-        ingredients.add("Lettuce");
-        ingredients.add("Chicken");
-        ingredients.add("Onion");
+        // Liste des ingrédients avec leurs calories
+        List<Ingredient> ingredients = Arrays.asList(
+                new Ingredient("Tomato", 22),
+                new Ingredient("Cheese", 402),
+                new Ingredient("Lettuce", 15),
+                new Ingredient("Chicken", 165),
+                new Ingredient("Onion", 44)
+        );
 
         IngredientAdapter adapter = new IngredientAdapter(ingredients, ingredient -> {
             if (!selectedIngredients.contains(ingredient)) {

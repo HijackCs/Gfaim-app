@@ -14,7 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
-import com.gfaim.activities.Ingredient;
+import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.MenuData;
 
 import android.widget.ImageButton;

@@ -1,77 +1,70 @@
 package com.gfaim.activities.calendar.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
-import com.gfaim.activities.Ingredient;
+import com.gfaim.activities.calendar.model.Ingredient;
 
 import java.util.List;
 
-public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.ViewHolder> {
-    private List<String> ingredients;
-    private OnIngredientClickListener onIngredientClickListener;
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
+    private final List<Ingredient> ingredients;
+    private final OnIngredientClickListener listener;
 
     public interface OnIngredientClickListener {
-        void onItemClick(String ingredient);
+        void onIngredientClick(Ingredient ingredient);
     }
 
-    public void setOnItemClickListener(OnIngredientClickListener onIngredientClickListener) {
-        this.onIngredientClickListener = onIngredientClickListener;
-    }
 
-    public IngredientAdapter(List<String> ingredients, OnIngredientClickListener listener) {
+    public IngredientAdapter(List<Ingredient> ingredients, OnIngredientClickListener listener) {
         this.ingredients = ingredients;
-        this.onIngredientClickListener = listener;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout_ingredient, parent, false);
-        return new ViewHolder(view);
+    public IngredientViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_ingredient, parent, false);
+        return new IngredientViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String ingredient = ingredients.get(position);
-        holder.ingredientName.setText(ingredient);
-
-        // Ajoute l'événement de clic
-        holder.itemView.setOnClickListener(v -> {
-            if (onIngredientClickListener != null) {
-                onIngredientClickListener.onItemClick(ingredient);
-            }
-        });
+    public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
+        Ingredient ingredient = ingredients.get(position);
+        holder.bind(ingredient, listener);
     }
 
     @Override
     public int getItemCount() {
-        return ingredients != null ? ingredients.size() : 0;
+        return ingredients.size();
     }
 
-    public void updateData(List<String> newIngredients) {
-        this.ingredients = newIngredients;
-        notifyDataSetChanged();
-    }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView ingredientName;
+    static class IngredientViewHolder extends RecyclerView.ViewHolder {
+        private final TextView nameTextView;
+        private final TextView caloriesTextView;
 
-        public ViewHolder(View itemView) {
+        public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
-            ingredientName = itemView.findViewById(R.id.itemName);
+            nameTextView = itemView.findViewById(R.id.ingredient_name);
+            caloriesTextView = itemView.findViewById(R.id.ingredient_calories);
         }
-    }
 
-    public interface OnItemClickListener {
-        void onItemClick(String ingredient);
+        public void bind(final Ingredient ingredient, final OnIngredientClickListener listener) {
+            nameTextView.setText(ingredient.getName());
+            caloriesTextView.setText(String.valueOf(ingredient.getCalories()) + " kcal");
+            itemView.setOnClickListener(v -> {
+                if (listener != null) {
+                    listener.onIngredientClick(ingredient);
+                }
+            });
+        }
     }
 }

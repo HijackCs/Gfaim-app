@@ -3,15 +3,13 @@ package com.gfaim.activities.calendar;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
-import com.gfaim.activities.Ingredient;
-import com.gfaim.activities.calendar.adapter.IngredientAdapter;
+import com.gfaim.activities.calendar.model.Ingredient;
 
 import java.util.ArrayList;
 import java.util.List;

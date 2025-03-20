@@ -20,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
@@ -30,7 +31,10 @@ import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
+import com.gfaim.utility.auth.JwtDecoder;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import java.util.logging.Logger;
 
@@ -86,9 +90,29 @@ public class LoginActivity extends AppCompatActivity {
         setupHidePwd();
     }
 
+    private String getUserEmail() {
+        String accessToken = tokenManager.getAccessToken();
+        if (accessToken != null) {
+            String decodedToken = JwtDecoder.decodeJWT(accessToken);
+            assert decodedToken != null;
+            JsonObject jsonObject = JsonParser.parseString(decodedToken).getAsJsonObject();
+            if (jsonObject.has("upn")) {
+                System.out.println(jsonObject);
+                return jsonObject.get("upn").getAsString();
+            }
+        }
+        return "";
+    }
 
     public void doesheHaveAFamily(Response<AuthResponse> response){
+
+        System.out.println("go");
+
         tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
+        System.out.println("passe2");
+
+        System.out.println("passe" +getUserEmail());
+        System.out.println("passe1");
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
@@ -99,18 +123,16 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
-                if(member.getFamilyId() == null){
-                    activity.finish();
-                    Intent intent = new Intent(activity, JoinFamilyActivity.class);
-                    activity.startActivity(intent);
-                }else{
                     activity.finish();
                     Intent intent = new Intent(activity, HomeActivity.class);
                     activity.startActivity(intent);
-                }
+
             }
             @Override
             public void onFailure(Throwable error) {
+                activity.finish();
+                Intent intent = new Intent(activity, OnBoardingActivity.class);
+                activity.startActivity(intent);
               log.info("Erreur lors de la récupération de la session : " + error.getMessage());
             }
 
@@ -148,6 +170,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
+                    System.out.println("test" +response);
                     doesheHaveAFamily(response);
                 } else {
                     if (email.isEmpty()) {

@@ -1,6 +1,7 @@
 package com.gfaim.activities.settings;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,11 +33,23 @@ public class SettingsActivity extends AppCompatActivity {
         logOutBtnSetup();
         familyBtnSetup();
         setupUsername();
+        setupAboutBtn();
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(v -> utileProfile.logout());
 
 
     }
+
+    public void setupAboutBtn() {
+        LinearLayout aboutApp = findViewById(R.id.aboutApp);
+
+        aboutApp.setOnClickListener(v -> {
+            String url = "https://streamable.com/lf027o"; // Remplace avec ton lien
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            v.getContext().startActivity(intent);
+        });
+    }
+
 
     public void setupUsername(){
         utileProfile.getSessionMember(new OnMemberReceivedListener() {

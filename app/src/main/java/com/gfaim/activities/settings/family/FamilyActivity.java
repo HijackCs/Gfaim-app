@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -35,6 +36,8 @@ import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnFamilyReceivedListener;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,8 +68,13 @@ public class FamilyActivity extends AppCompatActivity {
         context = this;
 
         getAndSetInfo();
-
+        setupLeaveFamily();
         setupBackBtn();
+    }
+
+    public void setupLeaveFamily(){
+        TextView leave = findViewById(R.id.btnLeaveFamily);
+        leave.setOnClickListener(v -> copyToClipboard(leave.getText().toString()));
     }
 
     public void getAndSetInfo(){
@@ -204,6 +212,14 @@ public class FamilyActivity extends AppCompatActivity {
                 deleteButton.setBackground(null);
                 deleteButton.setOnClickListener(v -> showDeleteConfirmationDialog(member, memberLayout));
                 frameLayout.addView(deleteButton);
+            }else{
+                ImageView grandPrince = new ImageView(this);
+                FrameLayout.LayoutParams princeParams = new FrameLayout.LayoutParams(80, 80);
+                princeParams.gravity = Gravity.TOP | Gravity.END;
+                grandPrince.setLayoutParams(princeParams);
+                grandPrince.setImageResource(R.drawable.chess_king);
+                grandPrince.setBackground(null);
+                frameLayout.addView(grandPrince);
             }
 
         }

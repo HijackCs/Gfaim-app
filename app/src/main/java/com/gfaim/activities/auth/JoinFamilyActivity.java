@@ -60,6 +60,8 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
         Button joinFamily = findViewById(R.id.joinFamily);
         Button createFamily = findViewById(R.id.createFamily);
+        ImageView check = findViewById(R.id.check);
+        check.setVisibility(View.GONE);
 
         joinFamily.setOnClickListener(v -> showJoinFamilyDialog());
 

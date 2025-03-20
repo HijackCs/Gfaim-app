@@ -28,4 +28,12 @@ public interface FamilyService {
             @Body CreateFamilyBody updateFamily
     );
 
+
+    @POST("{id}/leave")
+    Call<CreateFamilyBody> leaveFamily(
+            @Path("id") Long families_id,
+            @Header("Authorization") String token,
+            @Body CreateFamilyBody updateFamily
+    );
+
 }

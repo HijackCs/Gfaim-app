@@ -242,68 +242,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         });
     }
 
-
-   /* private void generateAllergyButtons(FlexboxLayout container, int position) {
-        container.removeAllViews();
-
-        int[] items;
-        List<String> selectedItems;
-
-        if (position == 1) { // Allergies
-            items = new int[]{R.string.allergieGluten, R.string.allergieDiary, R.string.allergieEgg,
-                    R.string.allergieSoy, R.string.allergiePeanut, R.string.allergieWheat,
-                    R.string.allergieMilk, R.string.allergieFish};
-            selectedItems = selectedAllergiesItems;
-        } else if (position == 2) { // Diets
-            items = new int[]{R.string.dietsVegan, R.string.dietsPaleo,
-                    R.string.dietsDukan, R.string.dietsVegetarian,
-                    R.string.dietsAktin, R.string.dietsInterFast};
-            selectedItems = selectedDietsItems;
-        } else {
-            return;
-        }
-
-
-        for (int item : items) {
-            TextView button = new TextView(context);
-            button.setText(context.getString(item));
-            button.setTextSize(16);
-            button.setTextColor(Color.BLACK);
-            button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
-            button.setGravity(Gravity.CENTER);
-            button.setMaxLines(2);
-            button.setWidth(250);
-            button.setHeight(100);
-
-            String itemText = context.getString(item);
-            if (selectedItems.contains(itemText)) {
-                button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
-                button.setTextColor(Color.WHITE);
-            }
-
-            button.setOnClickListener(v -> {
-                if (selectedItems.contains(itemText)) {
-                    selectedItems.remove(itemText);
-                    button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
-                    button.setTextColor(Color.BLACK);
-                } else {
-                    selectedItems.add(itemText);
-                    button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
-                    button.setTextColor(Color.WHITE);
-                }
-            });
-
-            FlexboxLayout.LayoutParams params = new FlexboxLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
-            );
-
-            params.setMargins(15, 15, 15, 15);
-            button.setLayoutParams(params);
-            container.addView(button);
-        }
-    }*/
-
     /*
     private void initRoleSelect(View view) {
         LinearLayout roleChef = view.findViewById(R.id.role_chef);

@@ -117,19 +117,18 @@
             android:visibility="gone"
             android:layout_marginTop="16dp" />
 
-        <!--<TextView
-            android:id="@+id/btnDeleteFamily"
+        <TextView
+            android:id="@+id/btnLeaveFamily"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/delete_family"
+            android:text="@string/leave_family"
             android:textColor="@color/red"
             android:background="@drawable/button_delete_rounded"
             android:textAllCaps="false"
             android:gravity="center"
             android:padding="16dp"
-            android:visibility="gone"
-            android:textSize="18sp" />-->
+            android:textSize="18sp" />
 
     </LinearLayout>
 </ScrollView>

@@ -12,6 +12,7 @@ import com.gfaim.R;
 import com.gfaim.activities.auth.LoginActivity;
 import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.activities.settings.family.NewMemberActivity;
+import com.gfaim.activities.groceries.GroceryActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 

@@ -9,7 +9,7 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mot de passe oublié ?</string>
+    <string name="forgotPwd">Mots de passe oublié ?</string>
 
     <!--Inscription-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
@@ -110,5 +110,22 @@
     <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
     <string name="change_family">Changer de famille</string>
     <string name="back">retour</string>
+    <string name="familyCode">Code Famille</string>
+    <string name="joinFamilly">Rejoins ta famille</string>
+    <string name="createFamily">Crée une nouvelle famille</string>
+    <string name="tv_welcome_message">Bienvenue dans ta famille!</string>
+    <string name="familyName">Nom de famille</string>
+    <string name="createFamilly">Crée ta famille!</string>
+    <string name="new_fam">Nouvelle famille créé</string>
+    <string name="joinFamily">Rejoins la famille</string>
+    <!--Frigo-->
+    <string name="confirm">Confirmer</string>
+    <string name="groceries">Courses</string>
+    <string name="search">Rechercher</string>
+    <string name="shopping">Courses</string>
+    <string name="fridge">Frigo</string>
+    <string name="send">Envoyer</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
 
 </resources>

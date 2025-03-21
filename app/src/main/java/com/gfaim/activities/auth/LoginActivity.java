@@ -21,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
 import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
+import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
@@ -60,7 +62,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         try {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);

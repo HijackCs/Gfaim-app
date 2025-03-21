@@ -25,8 +25,8 @@ public class MemberSessionBody {
     private String lastName;
 
     private String role;
-    @SerializedName("family_id")
 
+    @SerializedName("family_id")
     private Long familyId;
 
     @SerializedName("user_id")

@@ -15,13 +15,13 @@
 
     <!-- Cercle principal -->
     <path
-        android:fillColor="#A6CE96"
+        android:fillColor="@color/orangeBtn"
         android:pathData="M12,2A10,10 0,1 1 2,12A10,10 0,0 1 12,2z"/>
 
-    <!-- Symbole "+" -->
+    <!-- Symbole "-" -->
     <path
         android:fillColor="#FFFFFF"
         android:strokeWidth="1.5"
         android:strokeColor="#FFFFFF"
-        android:pathData="M12,7 L12,17 M7,12 L17,12"/>
+        android:pathData="M7,12 L17,12"/>
 </vector>

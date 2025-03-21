@@ -129,7 +129,6 @@ public class HomeActivity extends AppCompatActivity {
             gsc.signOut().addOnCompleteListener(task -> {
                 Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
                 log.info("[acceuil][signOut] Signed out from Google ");
-                goToLoginScreen();
             });
         }
 

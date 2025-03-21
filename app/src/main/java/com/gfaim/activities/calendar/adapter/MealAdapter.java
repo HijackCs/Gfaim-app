@@ -4,6 +4,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +31,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         public String menuName;
         public int calories;
         public int duration;
+        public Map<String, MealInfo> snacks;  // Map pour stocker les snacks associés à ce repas
 
         public MealInfo(String menuName, int calories, int duration) {
             this.menuName = menuName;
             this.calories = calories;
             this.duration = duration;
+            this.snacks = new HashMap<>();
         }
     }
 
@@ -47,9 +51,23 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         notifyDataSetChanged();
     }
 
-    public void updateMealInfo(String date, String mealType, String menuName, int calories, int duration) {
-        mealsByDate.computeIfAbsent(date, k -> new HashMap<>())
-                .put(mealType, new MealInfo(menuName, calories, duration));
+    public void updateMealInfo(String date, String mealType, String menuName, int calories, int duration, String parentMeal) {
+        Map<String, MealInfo> dateMap = mealsByDate.computeIfAbsent(date, k -> new HashMap<>());
+
+        if ("Snack".equals(mealType) && parentMeal != null) {
+            // Mettre à jour le snack pour le repas parent
+            MealInfo parentMealInfo = dateMap.get(parentMeal);
+            if (parentMealInfo == null) {
+                parentMealInfo = new MealInfo("No meal planned", 0, 0);
+                dateMap.put(parentMeal, parentMealInfo);
+            }
+            parentMealInfo.snacks.put("Snack", new MealInfo(menuName, calories, duration));
+        } else {
+            // Mettre à jour le repas normal
+            MealInfo mealInfo = new MealInfo(menuName, calories, duration);
+            dateMap.put(mealType, mealInfo);
+        }
+
         if (date.equals(selectedDate)) {
             notifyDataSetChanged();
         }
@@ -68,32 +86,51 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         String mealType = meals.get(position);
         holder.mealTypeText.setText(mealType);
 
-        // Récupérer les informations du repas pour la date sélectionnée
-        MealInfo mealInfo = null;
         if (selectedDate != null && mealsByDate.containsKey(selectedDate)) {
-            mealInfo = mealsByDate.get(selectedDate).get(mealType);
-        }
+            Map<String, MealInfo> dateMap = mealsByDate.get(selectedDate);
+            MealInfo mealInfo = dateMap.get(mealType);
 
-        // Toujours afficher les TextView
-        holder.menuNameText.setVisibility(View.VISIBLE);
-        holder.caloriesText.setVisibility(View.VISIBLE);
-        holder.timeText.setVisibility(View.VISIBLE);
+            if (mealInfo != null) {
+                // Afficher les informations du repas
+                holder.menuNameText.setText(mealInfo.menuName);
+                holder.caloriesText.setText(mealInfo.calories + " kcal");
+                holder.timeText.setText(mealInfo.duration + " min");
 
-        if (mealInfo != null) {
-            // Afficher les informations du repas
-            holder.menuNameText.setText(mealInfo.menuName);
-            holder.caloriesText.setText(mealInfo.calories + " kcal");
-            holder.timeText.setText(mealInfo.duration + " min");
+                // Vérifier s'il y a un snack pour ce repas
+                MealInfo snackInfo = mealInfo.snacks.get("Snack");
+                if (snackInfo != null) {
+                    holder.snackText.setText(snackInfo.menuName);
+                    holder.snackImage.setImageResource(R.drawable.ic_snack);
+                } else {
+                    holder.snackText.setText("Add a snack");
+                    holder.snackImage.setImageResource(R.drawable.ic_add_green);
+                }
+            } else {
+                // Afficher les valeurs par défaut pour le repas
+                holder.menuNameText.setText(R.string.no_meal_planned);
+                holder.caloriesText.setText("0 kcal");
+                holder.timeText.setText("0 min");
+                holder.snackText.setText("Add a snack");
+                holder.snackImage.setImageResource(R.drawable.ic_add_green);
+            }
         } else {
-            // Afficher les valeurs par défaut
+            // Pas de date sélectionnée ou pas de données pour cette date
             holder.menuNameText.setText(R.string.no_meal_planned);
             holder.caloriesText.setText("0 kcal");
             holder.timeText.setText("0 min");
+            holder.snackText.setText("Add a snack");
+            holder.snackImage.setImageResource(R.drawable.ic_add_green);
         }
 
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onMealClick(mealType, position);
+            }
+        });
+
+        holder.addSnackLayout.setOnClickListener(v -> {
+            if (listener != null && selectedDate != null) {
+                listener.onMealClick("Snack", position);
             }
         });
     }
@@ -108,6 +145,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         TextView menuNameText;
         TextView caloriesText;
         TextView timeText;
+        LinearLayout addSnackLayout;
+        ImageView snackImage;
+        TextView snackText;
 
         MealViewHolder(View itemView) {
             super(itemView);
@@ -115,6 +155,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             menuNameText = itemView.findViewById(R.id.cardText);
             caloriesText = itemView.findViewById(R.id.caloriesText);
             timeText = itemView.findViewById(R.id.timeText);
+            addSnackLayout = itemView.findViewById(R.id.add_snack);
+            snackImage = itemView.findViewById(R.id.snack_image);
+            snackText = itemView.findViewById(R.id.snack_text);
         }
     }
 }

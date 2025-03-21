@@ -26,9 +26,8 @@ import java.util.List;
 public class SummaryFragment extends Fragment {
 
     private SharedStepsViewModel sharedStepsViewModel;
-    private String selectedDate;
-    private String mealType;
-    private int cardPosition;
+    private LinearLayout ingredientsList;
+    private LinearLayout stepsList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,55 +39,66 @@ public class SummaryFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
+        ingredientsList = view.findViewById(R.id.ingredients_list);
+        stepsList = view.findViewById(R.id.steps_list);
 
-        // Récupération des vues
-        TextView menuNameTextView = view.findViewById(R.id.menu_name);
-        TextView participantCountTextView = view.findViewById(R.id.participant_count);
-        TextView caloriesTextView = view.findViewById(R.id.caloriesText);
-        TextView timeTextView = view.findViewById(R.id.timeText);
-        LinearLayout ingredientsList = view.findViewById(R.id.ingredients_list);
-        LinearLayout stepsList = view.findViewById(R.id.steps_list);
+        // Bouton de retour
+        ImageView backButton = view.findViewById(R.id.back);
+        backButton.setOnClickListener(v -> NavHostFragment.findNavController(this).navigateUp());
 
-        // Récupérer les arguments de navigation
-        Bundle args = getArguments();
-        Log.d("SummaryFragment", "Arguments reçus: " + (args != null ? args.toString() : "null"));
+        // Bouton de validation
+        Button validateButton = view.findViewById(R.id.finish);
+        validateButton.setOnClickListener(v -> {
+            // Récupérer les arguments
+            Bundle currentArgs = getArguments();
+            if (currentArgs != null) {
+                String selectedDate = currentArgs.getString("selectedDate");
+                String mealType = currentArgs.getString("mealType");
+                String parentMeal = currentArgs.getString("parentMeal");
+                int cardPosition = currentArgs.getInt("cardPosition", -1);
 
-        if (args != null) {
-            // Récupérer les arguments avec des valeurs par défaut
-            selectedDate = args.getString("selectedDate");
-            mealType = args.getString("mealType");
-            cardPosition = args.getInt("cardPosition", -1);
+                // Récupérer le nom du menu directement depuis le ViewModel
+                String menuName = sharedStepsViewModel.getMenuName();
 
-            Log.d("SummaryFragment", "Date sélectionnée: " + selectedDate);
-            Log.d("SummaryFragment", "Type de repas: " + mealType);
-            Log.d("SummaryFragment", "Position de la carte: " + cardPosition);
+                // Calculer la durée totale
+                int totalDuration = 0;
+                List<Integer> durations = sharedStepsViewModel.getDurations().getValue();
+                if (durations != null) {
+                    for (Integer duration : durations) {
+                        totalDuration += duration;
+                    }
+                }
 
-            // Vérifier si les valeurs sont valides
-            if (selectedDate == null || selectedDate.isEmpty()) {
-                Log.e("SummaryFragment", "La date est nulle ou vide");
+                // Calculer les calories totales
+                int totalCalories = 0;
+                List<Ingredient> ingredients = sharedStepsViewModel.getIngredients().getValue();
+                if (ingredients != null) {
+                    for (Ingredient ingredient : ingredients) {
+                        totalCalories += ingredient.getCalories();
+                    }
+                }
+
+                // Créer le bundle pour la navigation
+                Bundle args = new Bundle();
+                args.putString("selectedDate", selectedDate);
+                args.putString("mealType", mealType);
+                args.putString("parentMeal", parentMeal);
+                args.putInt("cardPosition", cardPosition);
+                args.putString("menuName", menuName);
+                args.putInt("calories", totalCalories);
+                args.putInt("duration", totalDuration);
+
+                // Afficher les informations en logs pour déboguer
+                Log.d("SummaryFragment", "Navigating back with: Date=" + selectedDate +
+                        ", MealType=" + mealType + ", Parent=" + parentMeal +
+                        ", MenuName=" + menuName + ", Calories=" + totalCalories +
+                        ", Duration=" + totalDuration);
+
+                // Naviguer vers le CalendarFragment
+                NavHostFragment.findNavController(this)
+                        .navigate(R.id.action_summary_to_calendar, args);
             }
-            if (mealType == null || mealType.isEmpty()) {
-                Log.e("SummaryFragment", "Le type de repas est nul ou vide");
-            }
-        } else {
-            Log.e("SummaryFragment", "Aucun argument reçu");
-        }
-
-        // Observer les changements du nom du menu
-        menuNameTextView.setText(sharedStepsViewModel.getMenuName());
-        Log.d("SummaryFragment", "Nom du menu: " + sharedStepsViewModel.getMenuName());
-
-        // Observer le nombre de participants
-        participantCountTextView.setText(String.valueOf(sharedStepsViewModel.getParticipantCount()));
-        Log.d("SummaryFragment", "Nombre de participants: " + sharedStepsViewModel.getParticipantCount());
-
-        // Observer les calories totales
-        caloriesTextView.setText(sharedStepsViewModel.getTotalCalories() + " kcal");
-        Log.d("SummaryFragment", "Calories totales: " + sharedStepsViewModel.getTotalCalories());
-
-        // Observer la durée totale
-        timeTextView.setText(sharedStepsViewModel.getTotalDuration() + " min");
-        Log.d("SummaryFragment", "Durée totale: " + sharedStepsViewModel.getTotalDuration());
+        });
 
         // Observer les ingrédients
         sharedStepsViewModel.getIngredients().observe(getViewLifecycleOwner(), ingredients -> {
@@ -129,44 +139,5 @@ public class SummaryFragment extends Fragment {
                 }
             }
         });
-
-        // Navigation
-        Button finishButton = view.findViewById(R.id.finish);
-        finishButton.setOnClickListener(v -> {
-            Log.d("SummaryFragment", "Bouton Finish cliqué");
-            Log.d("SummaryFragment", "Date actuelle: " + selectedDate);
-            Log.d("SummaryFragment", "Type de repas actuel: " + mealType);
-
-            // Vérifier que nous avons toutes les informations nécessaires
-            if (selectedDate == null || selectedDate.isEmpty()) {
-                Log.e("SummaryFragment", "Date manquante");
-                return;
-            }
-            if (mealType == null || mealType.isEmpty()) {
-                Log.e("SummaryFragment", "Type de repas manquant");
-                return;
-            }
-
-            // Créer un bundle avec les informations du meal
-            Bundle mealInfo = new Bundle();
-            mealInfo.putString("menuName", sharedStepsViewModel.getMenuName());
-            mealInfo.putInt("calories", sharedStepsViewModel.getTotalCalories());
-            mealInfo.putInt("duration", sharedStepsViewModel.getTotalDuration());
-            mealInfo.putString("selectedDate", selectedDate);
-            mealInfo.putString("mealType", mealType);
-            mealInfo.putInt("cardPosition", cardPosition);
-
-            Log.d("SummaryFragment", "Navigation vers le calendrier avec les infos: " + mealInfo);
-
-            // Réinitialiser le ViewModel
-            sharedStepsViewModel.reset();
-
-            // Naviguer vers le calendrier avec les informations du meal
-            NavHostFragment.findNavController(this)
-                    .navigate(R.id.action_summary_to_calendar, mealInfo);
-        });
-
-        ImageView backButton = view.findViewById(R.id.back);
-        backButton.setOnClickListener(v -> NavHostFragment.findNavController(this).navigateUp());
     }
 }

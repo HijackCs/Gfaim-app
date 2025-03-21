@@ -57,21 +57,31 @@ public class AddStepsFragment extends Fragment {
             NavHostFragment.findNavController(this).navigateUp();
         });
 
-        view.findViewById(R.id.next).setOnClickListener(v -> {
+        // Bouton Next
+        Button nextButton = view.findViewById(R.id.next);
+        nextButton.setOnClickListener(v -> {
+            // Sauvegarder les étapes avant de naviguer
             saveSteps();
-            // Récupérer les arguments reçus
+
+            // Récupérer les arguments actuels
             Bundle currentArgs = getArguments();
             if (currentArgs != null) {
-                String selectedDate = currentArgs.getString("selectedDate");
-                String mealType = currentArgs.getString("mealType");
-                int cardPosition = currentArgs.getInt("cardPosition", -1);
-                // Créer un nouveau bundle pour la navigation
+                // Créer un nouveau bundle avec les mêmes informations
                 Bundle args = new Bundle();
-                args.putString("selectedDate", selectedDate);
-                args.putString("mealType", mealType);
-                args.putInt("cardPosition", cardPosition);
+                args.putString("selectedDate", currentArgs.getString("selectedDate"));
+                args.putString("mealType", currentArgs.getString("mealType"));
+                args.putString("parentMeal", currentArgs.getString("parentMeal"));
+                args.putInt("cardPosition", currentArgs.getInt("cardPosition"));
+                args.putString("menuName", currentArgs.getString("menuName"));
 
-                // Naviguer vers le SummaryFragment avec les arguments
+                // Log pour déboguer
+                android.util.Log.d("AddStepsFragment", "Navigating to Summary: Date=" +
+                        currentArgs.getString("selectedDate") + ", MealType=" +
+                        currentArgs.getString("mealType") + ", Parent=" +
+                        currentArgs.getString("parentMeal") + ", MenuName=" +
+                        currentArgs.getString("menuName"));
+
+                // Naviguer vers SummaryFragment
                 NavHostFragment.findNavController(this)
                         .navigate(R.id.action_addSteps_to_summary, args);
             } else {

@@ -122,6 +122,10 @@ public class AddIngredientsFragment extends Fragment {
         // Bouton suivant
         Button nextButton = view.findViewById(R.id.next);
         nextButton.setOnClickListener(v -> {
+            // Sauvegarder le nom du menu avant de naviguer
+            String menuName = menuNameEditText.getText().toString();
+            sharedStepsViewModel.setMenuName(menuName);
+
             // Récupérer les arguments actuels
             Bundle currentArgs = getArguments();
             if (currentArgs != null) {
@@ -129,7 +133,9 @@ public class AddIngredientsFragment extends Fragment {
                 Bundle args = new Bundle();
                 args.putString("selectedDate", currentArgs.getString("selectedDate"));
                 args.putString("mealType", currentArgs.getString("mealType"));
+                args.putString("parentMeal", currentArgs.getString("parentMeal"));
                 args.putInt("cardPosition", currentArgs.getInt("cardPosition"));
+                args.putString("menuName", menuName);  // Ajouter le nom du menu aux arguments
 
                 // Naviguer vers AddStepsFragment avec les arguments
                 navController.navigate(R.id.action_addIngredients_to_addSteps, args);
@@ -137,7 +143,8 @@ public class AddIngredientsFragment extends Fragment {
                 // Si pas d'arguments, naviguer sans arguments
                 navController.navigate(R.id.action_addIngredients_to_addSteps);
             }
-        });    }
+        });
+    }
 
     private void updateIngredientList(List<Ingredient> ingredients) {
         ingredientContainer.removeAllViews();

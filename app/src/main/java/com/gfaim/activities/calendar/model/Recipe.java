@@ -1,4 +1,4 @@
-package com.gfaim.activities.calendar;
+package com.gfaim.activities.calendar.model;
 
 import java.util.List;
 
@@ -7,12 +7,15 @@ public class Recipe {
     private List<String> ingredients;
     private List<String> steps;
     private int servings;
+    private int time;
+
 
     public Recipe(String name, List<String> ingredients, List<String> steps, int servings) {
         this.name = name;
         this.ingredients = ingredients;
         this.steps = steps;
         this.servings = servings;
+        this.time = 30;
     }
 
     public String getName() {
@@ -45,5 +48,13 @@ public class Recipe {
 
     public void setServings(int servings) {
         this.servings = servings;
+    }
+
+    public int getTime() {
+        return time;
+    }
+
+    public void setTime(int time) {
+        this.time = time;
     }
 }

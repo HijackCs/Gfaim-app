@@ -90,7 +90,11 @@
     <fragment
         android:id="@+id/chooseRecipeFragment"
         android:name="com.gfaim.activities.calendar.fragments.ChooseRecipeFragment"
-        android:label="Choose Recipe" />
+        android:label="Choose Recipe">
+        <action
+            android:id="@+id/action_chooseRecipe_to_calendar"
+            app:destination="@id/calendarFragment" />
+    </fragment>
 
     <!-- Définir les actions de navigation -->
 

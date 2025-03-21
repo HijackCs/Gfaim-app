@@ -11,13 +11,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
-import com.gfaim.activities.calendar.Recipe;
+import com.gfaim.activities.calendar.model.Recipe;
 
 import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
     private List<Recipe> recipes;
     private Context context;
+    private OnItemClickListener listener;
+
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public RecipeAdapter(Context context, List<Recipe> recipes) {
         this.context = context;
@@ -27,7 +36,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     @NonNull
     @Override
     public RecipeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_layout, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.recipe_item, parent, false);
         return new RecipeViewHolder(view);
     }
 
@@ -59,6 +68,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
             }
             return true;
         });
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onItemClick(position);
+            }
+        });
     }
 
     @Override
@@ -71,7 +85,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            recipeName = itemView.findViewById(R.id.itemName);
+            recipeName = itemView.findViewById(R.id.recipeName);
         }
     }
 }

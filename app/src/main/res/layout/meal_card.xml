@@ -108,7 +108,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:contentDescription="@null"
-            android:src="@drawable/ic_snack"
+            android:src="@drawable/ic_add_green"
             android:layout_marginStart="16dp" />
 
         <TextView

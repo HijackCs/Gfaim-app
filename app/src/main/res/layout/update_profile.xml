@@ -57,7 +57,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="John Doe"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold" />
@@ -66,7 +65,6 @@
         android:id="@+id/family_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Family Name"
         android:textSize="16sp"
         android:textColor="@color/grey"
         android:layout_gravity="center_horizontal"
@@ -83,6 +81,7 @@
 
     <EditText
         android:id="@+id/email"
+        android:hint="@string/email"
         android:layout_width="match_parent"
         android:layout_height="51dp"
         android:drawablePadding="16dp"

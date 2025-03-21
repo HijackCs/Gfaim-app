@@ -3,38 +3,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/appBackground"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     android:padding="24dp"
-    android:background="@color/appBackground"
-    tools:context=".activities.settings.UpdateProfileActivity"
-    android:gravity="center_horizontal">
+    tools:context=".activities.settings.UpdateProfileActivity">
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="160dp"
         android:layout_height="158dp"
-        android:src="@drawable/logo"/>
+        android:src="@drawable/logo" />
 
     <TextView
-        android:layout_marginTop="20dp"
         android:id="@+id/welcomeBack"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:gravity="center"
         android:text="@string/welcomeBack"
-        android:textSize="20sp"/>
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/email"
-        android:hint="@string/email"
-        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="51dp"
-        android:drawablePadding="16dp"
-        android:drawableStart="@drawable/ic_mail"
-        android:background="@drawable/rounded_border"
-        android:inputType="textEmailAddress"
+        android:layout_marginTop="20dp"
         android:layout_marginBottom="16dp"
+        android:background="@drawable/rounded_border"
+        android:drawableStart="@drawable/ic_mail"
+        android:drawablePadding="16dp"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
         android:padding="12dp"
         android:textColor="@color/black"
         android:textSize="16sp" />
@@ -42,23 +42,21 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/laypass"
         android:layout_width="362dp"
-        android:layout_height="51dp"
-        >
+        android:layout_height="51dp">
 
         <EditText
-            android:drawableStart="@drawable/ic_password"
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@drawable/rounded_border"
+            android:drawableStart="@drawable/ic_password"
             android:drawablePadding="16dp"
             android:hint="@string/password"
             android:inputType="textPassword"
             android:padding="16dp"
             android:textColorHint="@color/greyOr"
             android:textCursorDrawable="@null"
-            android:textSize="16sp"
-            />
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/show_pass_btn"
@@ -80,25 +78,35 @@
         android:id="@+id/forgotPwd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="10dp"
         android:text="@string/forgotPwd"
         android:textSize="10sp"
-        android:textStyle="bold"
-        android:layout_gravity="end"
-        android:layout_marginTop="10dp" />
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/login"
-        android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="@color/greenBtn"
-        android:layout_marginBottom="16dp"
-        android:textAllCaps="false"
         android:gravity="center"
         android:padding="16dp"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/loginError"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        android:textColor="@color/red"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"

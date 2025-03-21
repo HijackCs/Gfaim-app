@@ -1,5 +1,7 @@
 package com.gfaim.activities.auth;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
@@ -126,11 +128,15 @@ public class RegisterActivity extends AppCompatActivity {
         String firstName = firstNameInput.getText().toString();
         String password = passwordInput.getText().toString();
 
+        TextView registerError = findViewById(R.id.registerError);
+        registerError.setVisibility(GONE);
+        registerError.setText("");
+
         tokenManager = new TokenManager(this);
         AuthService authService = ApiClient.getClient(this).create(AuthService.class);
 
         if (name.isEmpty() || email.isEmpty() || firstName.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Every fields must be filled.", Toast.LENGTH_SHORT).show();
+            registerError.setText("Every fields must be filled.");
             return;
         }
 
@@ -145,16 +151,19 @@ public class RegisterActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(activity, OnBoardingActivity.class);
                     activity.startActivity(intent);
-                    Toast.makeText(RegisterActivity.this, "Inscription réussie", Toast.LENGTH_SHORT).show();
                     activity.finish();
                 } else {
-                    Toast.makeText(RegisterActivity.this, "Erreur lors de l'inscription", Toast.LENGTH_SHORT).show();
+                    registerError.setText("Erreur lors de l'inscription");
+                    registerError.setVisibility(VISIBLE);
+
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                registerError.setText("Erreur: " + t.getMessage());
+                registerError.setVisibility(VISIBLE);
+
             }});
 
 

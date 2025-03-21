@@ -104,6 +104,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         TextView userName = findViewById(R.id.user_name);
         userName.setText(firstNameS + " " + lastNameS);
 
+
         firstName.setHint(firstNameS);
 
         lastName.setHint(lastNameS);
@@ -234,7 +235,6 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 updateUser( firstNameValue, lastNameValue);
 
             }else{
-                System.out.println("pass "+passwordValue );
                 utileProfile.updateUserPassword(new OnUserReceivedListener() {
                     @Override
                     public void onSuccess(UpdateUserBody session) {
@@ -259,6 +259,10 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     public void onSuccess(CreateMemberNoAccount session) {}
                     @Override
                     public void onSuccess(MemberSessionBody session) {
+                        firstName.setText("");
+                        lastName.setText("");
+                        email.setText("");
+                        passwordInput.setText("");
                         member = session;
                         getAllInfo();
                     }

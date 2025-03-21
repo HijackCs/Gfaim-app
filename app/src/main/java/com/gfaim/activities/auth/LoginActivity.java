@@ -1,5 +1,8 @@
 package com.gfaim.activities.auth;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -37,6 +40,8 @@ import com.gfaim.utility.auth.JwtDecoder;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+
+import org.w3c.dom.Text;
 
 import java.util.logging.Logger;
 
@@ -101,13 +106,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public void doesheHaveAFamily(Response<AuthResponse> response){
 
-        System.out.println("go");
-
         tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
-        System.out.println("passe2");
-
-        System.out.println("passe" +getUserEmail());
-        System.out.println("passe1");
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
@@ -159,28 +158,39 @@ public class LoginActivity extends AppCompatActivity {
     private void login() {
         String email = emailInput.getText().toString();
         String password = passwordInput.getText().toString();
+        TextView loginError = findViewById(R.id.loginError);
+        emailInput.setBackgroundResource(R.drawable.rounded_border);
+        passwordInput.setBackgroundResource(R.drawable.rounded_border);
+        loginError.setVisibility(GONE);
+        loginError.setText("");
+
 
         Call<AuthResponse> call = authService.login(new LoginRequest(email, password));
         call.enqueue(new Callback<AuthResponse>() {
             @Override
             public void onResponse(Call<AuthResponse> call, Response<AuthResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    System.out.println("test" +response);
                     doesheHaveAFamily(response);
                 } else {
                     if (email.isEmpty()) {
-                        Toast.makeText(LoginActivity.this, "Incorrect email.", Toast.LENGTH_SHORT).show();
+                        emailInput.setError("Veuillez entrer votre email.");
+                        emailInput.setBackgroundResource(R.drawable.rounded_border_error);
                     }
                     if (password.isEmpty()) {
-                        Toast.makeText(LoginActivity.this, "Incorrect password.", Toast.LENGTH_SHORT).show();
+                        passwordInput.setError("Veuillez entrer votre mot de passe.");
+                        passwordInput.setBackgroundResource(R.drawable.rounded_border_error);
+
                     }
-                    Toast.makeText(LoginActivity.this, "Error during logging in.", Toast.LENGTH_SHORT).show();
+                    loginError.setText("Email ou mot de passe incorrect.");
+                    emailInput.setBackgroundResource(R.drawable.rounded_border_error);
+                    passwordInput.setBackgroundResource(R.drawable.rounded_border_error);
+                    loginError.setVisibility(VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<AuthResponse> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                loginError.setText("Erreur: " + t.getMessage());
             }
         });
     }
@@ -229,6 +239,4 @@ public class LoginActivity extends AppCompatActivity {
             passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
     }
-
-
 }

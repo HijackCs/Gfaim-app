@@ -19,6 +19,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.HomeActivity;
 import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
@@ -104,7 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     tokenManager.saveTokens(response.body().getAccessToken(), response.body().getRefreshToken());
                     activity.finish();
-                    Intent intent = new Intent(activity, UserProfileActivity.class);
+                    Intent intent = new Intent(activity, HomeActivity.class);
                     activity.startActivity(intent);
                 } else {
                     if (email.isEmpty()) {

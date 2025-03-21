@@ -36,6 +36,9 @@
         <activity android:name=".activities.auth.RegisterActivity"></activity>
         <activity android:name=".activities.auth.CheckMailActivity"></activity>
         <activity android:name=".activities.auth.ForgotPwdActivity"></activity>
+        <activity android:name=".activities.groceries.GroceryActivity"></activity>
+        <activity android:name=".activities.groceries.AddGroceriesActivity"></activity>
+
         <activity android:name=".activities.auth.onboarding.OnBoardingActivity"></activity>
 
 

@@ -18,6 +18,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.gfaim.R;
 import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.groceries.GroceryActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -85,8 +86,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
 
-
-
     private void handleFacebookLogin() {
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -116,12 +115,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-        GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
+                goToLoginScreen();
+  /*      GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (googleAccount != null) {
             gsc.signOut().addOnCompleteListener(task -> {
                 Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
                 log.info("[acceuil][signOut] Signed out from Google ");
-                goToLoginScreen();
             });
         }
 
@@ -131,12 +130,12 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(HomeActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
             log.info("[acceuil][signOut] Signed out from Google ");
             goToLoginScreen();
-        }
+        }*/
     }
 
 
     private void goToLoginScreen() {
-        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+        Intent intent = new Intent(HomeActivity.this, GroceryActivity.class);
         startActivity(intent);
         finish();
     }

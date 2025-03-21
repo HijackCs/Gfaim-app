@@ -72,6 +72,19 @@
     <string name="joinFamily">Join the family</string>
 
     <!--Facebook-->
+    <!--Frigo-->
+    <string name="confirm">Confirm</string>
+    <string name="groceries">Groceries</string>
+    <string name="search">Search</string>
+    <string name="shopping">Shopping</string>
+    <string name="fridge">Fridge</string>
+    <string name="send">Send</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
+
+
+
+    <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>

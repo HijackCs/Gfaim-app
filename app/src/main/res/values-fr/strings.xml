@@ -9,7 +9,7 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mot de passe oublié ?</string>
+    <string name="forgotPwd">Mots de passe oublié ?</string>
 
     <!--Inscription-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
@@ -77,5 +77,14 @@
     <string name="createFamilly">Crée ta famille!</string>
     <string name="new_fam">Nouvelle famille créé</string>
     <string name="joinFamily">Rejoins la famille</string>
+    <!--Frigo-->
+    <string name="confirm">Confirmer</string>
+    <string name="groceries">Courses</string>
+    <string name="search">Rechercher</string>
+    <string name="shopping">Courses</string>
+    <string name="fridge">Frigo</string>
+    <string name="send">Envoyer</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
 
 </resources>

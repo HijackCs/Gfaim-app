@@ -33,7 +33,7 @@ import java.util.logging.Logger;
 public class HomeActivity extends AppCompatActivity {
 
     private final Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
-    private TextView email;
+    private Button email;
     private TextView name;
     private GoogleSignInClient gsc;
 
@@ -56,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
             email = findViewById(R.id.email);
             Button signOutBtn = findViewById(R.id.signOutBtn);
             signOutBtn.setOnClickListener(v -> signOut());
+            email.setOnClickListener(v -> groceries());
+
 
             handleGoogleLogin();
             handleFacebookLogin();
@@ -65,6 +67,12 @@ public class HomeActivity extends AppCompatActivity {
             log.warning("[acceuil][onCreate] Problem on MainActivity launch");
         }
 
+    }
+
+    private void groceries() {
+        Intent intent = new Intent(HomeActivity.this, GroceryActivity.class);
+        startActivity(intent);
+        finish();
     }
     public void handleGoogleLogin() {
 
@@ -84,10 +92,6 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Logged in with Google", Toast.LENGTH_SHORT).show();
         }
     }
-
-
-
-
 
     private void handleFacebookLogin() {
 

@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.facebook.Profile;
 import com.gfaim.R;
 import com.gfaim.activities.groceries.adapter.FridgeAdapter;
 import com.gfaim.activities.groceries.utility.RemovableFragment;
@@ -25,6 +26,11 @@ import com.gfaim.auth.TokenManager;
 import com.gfaim.models.FoodItem;
 import com.gfaim.models.groceries.ShoppingItem;
 import com.gfaim.models.groceries.ShoppingListResponse;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +46,8 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
     private FridgeAdapter adapter;
     private RecyclerView recyclerView;
     private TokenManager tokenManager;
+    private UtileProfile utileProfile;
+    private MemberSessionBody member;
 
     @Nullable
     @Override
@@ -49,6 +57,23 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         tokenManager = new TokenManager(getContext());
+        
+        utileProfile = new UtileProfile(getContext());
+
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {}
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+                loadFridgeData();
+            }
+            @Override
+            public void onFailure(Throwable error) {}
+            @Override
+            public void onSuccess(CreateMember body) {}
+        });
+        
 
         adapter = new FridgeAdapter(foodList);
         recyclerView.setAdapter(adapter);
@@ -62,7 +87,6 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         // Récupérer les données du frigo depuis l'API
-        loadFridgeData();
 
         return view;
     }
@@ -70,7 +94,7 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
     private void loadFridgeData() {
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
-        Call<ShoppingListResponse> call = shoppingService.getFridgeList(token, 1L);
+        Call<ShoppingListResponse> call = shoppingService.getFridgeList(token, member.getFamilyId());
 
         call.enqueue(new Callback<ShoppingListResponse>() {
             @Override
@@ -178,7 +202,7 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        Call<Void> call = shoppingService.removeIngredientFromFridge(token, 1L, item.getId());
+        Call<Void> call = shoppingService.removeIngredientFromFridge(token, member.getFamilyId(), item.getId());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

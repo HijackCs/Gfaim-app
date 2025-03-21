@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.gfaim.R;
+import com.gfaim.activities.HomeActivity;
 import com.gfaim.activities.groceries.adapter.GroceriesViewPagerAdapter;
 import com.gfaim.activities.groceries.fragment.FridgeFragment;
 import com.gfaim.activities.groceries.fragment.ShoppingFragment;
@@ -26,6 +28,11 @@ import com.gfaim.models.FoodItem;
 import com.gfaim.models.groceries.AddShoppingItemRequest;
 import com.gfaim.models.groceries.ShoppingItemResponse;
 import com.gfaim.models.groceries.ShoppingListResponse;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,11 +51,39 @@ public class GroceryActivity extends AppCompatActivity {
     private Button sendButton;
     private ShoppingFragment shoppingFragment;
     private FridgeFragment fridgeFragment;
+    
+    private UtileProfile utileProfile;
+    private MemberSessionBody member;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groceries);
+
+        //a modifier
+        FrameLayout circleProfile = findViewById(R.id.circleProfile);
+        circleProfile.setOnClickListener( v->{
+                Intent intent = new Intent(GroceryActivity.this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+        });
+
+
+
+        utileProfile = new UtileProfile(this);
+
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {}
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+            }
+            @Override
+            public void onFailure(Throwable error) {}
+            @Override
+            public void onSuccess(CreateMember body) {}
+        });
 
         viewPager = findViewById(R.id.viewPager);
         tvFridge = findViewById(R.id.tvFridge);
@@ -165,7 +200,7 @@ public class GroceryActivity extends AppCompatActivity {
         String token = "Bearer " + tokenManager.getAccessToken();
 
         // Utiliser le nouvel endpoint qui gère à la fois l'ajout au frigo et la suppression de la liste de courses
-        Call<Void> call = shoppingService.markIngredientsAsBought(token, 1L, requestItems);
+        Call<Void> call = shoppingService.markIngredientsAsBought(token, member.getFamilyId(), requestItems);
         Log.d(TAG, "Appel API en cours...");
 
         call.enqueue(new Callback<Void>() {
@@ -247,7 +282,7 @@ public class GroceryActivity extends AppCompatActivity {
         ShoppingService shoppingService = ApiClient.getClient(this).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        Call<ShoppingListResponse> call = shoppingService.getShoppingList(token, 1L);
+        Call<ShoppingListResponse> call = shoppingService.getShoppingList(token, member.getFamilyId());
         call.enqueue(new Callback<ShoppingListResponse>() {
             @Override
             public void onResponse(Call<ShoppingListResponse> call, Response<ShoppingListResponse> response) {
@@ -284,7 +319,7 @@ public class GroceryActivity extends AppCompatActivity {
         ShoppingService shoppingService = ApiClient.getClient(this).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        Call<ShoppingListResponse> call = shoppingService.getFridgeList(token, 1L);
+        Call<ShoppingListResponse> call = shoppingService.getFridgeList(token, member.getFamilyId());
         call.enqueue(new Callback<ShoppingListResponse>() {
             @Override
             public void onResponse(Call<ShoppingListResponse> call, Response<ShoppingListResponse> response) {

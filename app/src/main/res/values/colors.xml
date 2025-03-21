@@ -13,6 +13,8 @@
 
     <color name="dark_green">#1E3A2A</color>
 
+    <color name="layout">#C8CAB8</color>
+
 
     <color name="appBackground">#D3D5C9</color>
     <color name="greyOr">#909090</color>

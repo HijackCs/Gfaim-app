@@ -27,6 +27,11 @@ import com.gfaim.auth.TokenManager;
 import com.gfaim.models.FoodItem;
 import com.gfaim.models.groceries.ShoppingItem;
 import com.gfaim.models.groceries.ShoppingListResponse;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,56 +46,72 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
     private List<FoodItem> filteredList = new ArrayList<>();
     private List<FoodItem> selectedItems = new ArrayList<>();
     private ShoppingAdapter adapter;
-
+    private MemberSessionBody member;
     private TokenManager tokenManager;
+
+    private UtileProfile utileProfile;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
+        utileProfile = new UtileProfile(getContext());
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         tokenManager = new TokenManager(getContext());
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
 
         String token = "Bearer " + tokenManager.getAccessToken();
-        Call<ShoppingListResponse> call = shoppingService.getShoppingList(token, 1L);
 
-        call.enqueue(new Callback<ShoppingListResponse>() {
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
-            public void onResponse(Call<ShoppingListResponse> call, Response<ShoppingListResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    ShoppingListResponse shoppingListResponse = response.body();
-                    List<ShoppingItem> items = shoppingListResponse.getItems();
+            public void onSuccess(CreateMemberNoAccount session) {}
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+                Call<ShoppingListResponse> call = shoppingService.getShoppingList(token, member.getFamilyId());
 
-                    shoppingList.clear(); // On vide la liste existante
+                call.enqueue(new Callback<ShoppingListResponse>() {
+                    @Override
+                    public void onResponse(Call<ShoppingListResponse> call, Response<ShoppingListResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            ShoppingListResponse shoppingListResponse = response.body();
+                            List<ShoppingItem> items = shoppingListResponse.getItems();
 
-                    // On convertit les ShoppingItem en FoodItem
-                    for (ShoppingItem item : items) {
-                        FoodItem foodItem = new FoodItem(
-                                item.getIngredientNameFr(),
-                                item.getIngredientNameEn(),
-                                item.getIngredientName(),
-                                item.getIngredientCatalogId()
-                        );
-                        shoppingList.add(foodItem);
+                            shoppingList.clear(); // On vide la liste existante
+
+                            // On convertit les ShoppingItem en FoodItem
+                            for (ShoppingItem item : items) {
+                                FoodItem foodItem = new FoodItem(
+                                        item.getIngredientNameFr(),
+                                        item.getIngredientNameEn(),
+                                        item.getIngredientName(),
+                                        item.getIngredientCatalogId()
+                                );
+                                shoppingList.add(foodItem);
+                            }
+
+                            // Mise à jour de la liste filtrée et de l'adaptateur
+                            filteredList.clear();
+                            filteredList.addAll(shoppingList);
+                            adapter.notifyDataSetChanged();
+
+                            Toast.makeText(getContext(), "Liste récupérée avec succès", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getContext(), "Erreur lors de la récupération", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
-                    // Mise à jour de la liste filtrée et de l'adaptateur
-                    filteredList.clear();
-                    filteredList.addAll(shoppingList);
-                    adapter.notifyDataSetChanged();
-
-                    Toast.makeText(getContext(), "Liste récupérée avec succès", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Erreur lors de la récupération", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onFailure(Call<ShoppingListResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
-
             @Override
-            public void onFailure(Call<ShoppingListResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            public void onFailure(Throwable error) {}
+            @Override
+            public void onSuccess(CreateMember body) {}
         });
 
         // Suppression des données de test (a supp)
@@ -134,7 +155,7 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        Call<Void> call = shoppingService.removeIngredientFromShoppingList(token, 1L, item.getId());
+        Call<Void> call = shoppingService.removeIngredientFromShoppingList(token, member.getFamilyId(), item.getId());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

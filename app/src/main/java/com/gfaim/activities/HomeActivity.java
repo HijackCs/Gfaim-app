@@ -18,6 +18,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.gfaim.R;
 import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.activities.groceries.GroceryActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -32,7 +33,7 @@ import java.util.logging.Logger;
 public class HomeActivity extends AppCompatActivity {
 
     private final Logger log = Logger.getLogger(HomeActivity.class.getName()) ;
-    private TextView email;
+    private Button email;
     private TextView name;
     private GoogleSignInClient gsc;
 
@@ -55,6 +56,8 @@ public class HomeActivity extends AppCompatActivity {
             email = findViewById(R.id.email);
             Button signOutBtn = findViewById(R.id.signOutBtn);
             signOutBtn.setOnClickListener(v -> signOut());
+            email.setOnClickListener(v -> groceries());
+
 
             handleGoogleLogin();
             handleFacebookLogin();
@@ -64,6 +67,12 @@ public class HomeActivity extends AppCompatActivity {
             log.warning("[acceuil][onCreate] Problem on MainActivity launch");
         }
 
+    }
+
+    private void groceries() {
+        Intent intent = new Intent(HomeActivity.this, GroceryActivity.class);
+        startActivity(intent);
+        finish();
     }
     public void handleGoogleLogin() {
 
@@ -83,8 +92,6 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(this, "Logged in with Google", Toast.LENGTH_SHORT).show();
         }
     }
-
-
 
     private void handleFacebookLogin() {
 
@@ -115,8 +122,9 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void signOut() {
-                goToLoginScreen();
-  /*      GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
+        goToLoginScreen();
+    }
+      /*  GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
         if (googleAccount != null) {
             gsc.signOut().addOnCompleteListener(task -> {
                 Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
@@ -130,12 +138,12 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(HomeActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
             log.info("[acceuil][signOut] Signed out from Google ");
             goToLoginScreen();
-        }*/
-    }
+        }
+    }*/
 
 
     private void goToLoginScreen() {
-        Intent intent = new Intent(HomeActivity.this, GroceryActivity.class);
+        Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
         startActivity(intent);
         finish();
     }

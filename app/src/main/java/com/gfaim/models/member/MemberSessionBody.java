@@ -16,7 +16,7 @@ public class MemberSessionBody {
     @SerializedName("has_account")
     private boolean hasAccount;
 
-    @SerializedName("firstName")
+    @SerializedName("first_name")
 
     private String firstName;
 
@@ -25,12 +25,52 @@ public class MemberSessionBody {
     private String lastName;
 
     private String role;
-    @SerializedName("family_id")
 
-    private String familyId;
+    @SerializedName("family_id")
+    private Long familyId;
 
     @SerializedName("user_id")
 
-    private String userId;
+    private Long userId;
 
+    @Override
+    public String toString() {
+        return "MemberSessionBody{" +
+                "id=" + id +
+                ", hasAccount=" + hasAccount +
+                ", first_name='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", role='" + role + '\'' +
+                ", familyId='" + familyId + '\'' +
+                ", userId='" + userId + '\'' +
+                '}';
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public boolean isHasAccount() {
+        return hasAccount;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Long getFamilyId() {
+        return familyId;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
 }

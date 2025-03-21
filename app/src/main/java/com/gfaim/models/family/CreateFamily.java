@@ -1,4 +1,4 @@
-package com.gfaim.models;
+package com.gfaim.models.family;
 
 import lombok.Getter;
 import lombok.Setter;

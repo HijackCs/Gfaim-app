@@ -23,6 +23,11 @@ import com.gfaim.auth.TokenManager;
 import com.gfaim.models.FoodItem;
 import com.gfaim.models.groceries.AddShoppingItemRequest;
 import com.gfaim.models.groceries.ShoppingListResponse;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +44,30 @@ public class AddGroceriesActivity extends AppCompatActivity {
     private static final String TAG = "AddGroceriesActivity";
     private Button addButton;
     private AddGroceriesFragment addGroceriesFragment;
+    
+    private UtileProfile utileProfile;
+    
+    private MemberSessionBody member;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_groceries);
+
+        utileProfile = new UtileProfile(this);
+
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {}
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+            }
+            @Override
+            public void onFailure(Throwable error) {}
+            @Override
+            public void onSuccess(CreateMember body) {}
+        });
 
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         EditText searchEditText = findViewById(R.id.searchEditTextAdd);
@@ -112,7 +136,7 @@ public class AddGroceriesActivity extends AppCompatActivity {
         String token = "Bearer " + tokenManager.getAccessToken();
 
         // Utiliser la version flexible qui renvoie Object pour le frigo
-        Call<Object> call = shoppingService.addIngredientsToFridgeFlexible(token, 1L, requestItems);
+        Call<Object> call = shoppingService.addIngredientsToFridgeFlexible(token, member.getFamilyId(), requestItems);
         Log.d(TAG, "Appel API Frigo Flexible en cours: " + call.request().url());
 
         call.enqueue(new Callback<Object>() {
@@ -157,7 +181,7 @@ public class AddGroceriesActivity extends AppCompatActivity {
         ShoppingService shoppingService = ApiClient.getClient(this).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        Call<List<ShoppingListResponse>> call = shoppingService.addIngredientsToShoppingList(token, 1L, requestItems);
+        Call<List<ShoppingListResponse>> call = shoppingService.addIngredientsToShoppingList(token, member.getFamilyId(), requestItems);
         Log.d(TAG, "Appel API Shopping en cours: " + call.request().url());
 
         call.enqueue(new Callback<List<ShoppingListResponse>>() {

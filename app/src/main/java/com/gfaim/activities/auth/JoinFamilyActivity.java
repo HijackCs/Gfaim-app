@@ -26,9 +26,14 @@ import com.gfaim.auth.TokenManager;
 import com.gfaim.models.family.CreateFamily;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.JoinFamily;
 import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.CreateSelfMemberBody;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.JwtDecoder;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -52,6 +57,8 @@ public class JoinFamilyActivity extends AppCompatActivity {
     private static Long memberId;
 
     private TokenManager tokenManager;
+    private UtileProfile utileProfile;
+    private MemberSessionBody member;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +67,27 @@ public class JoinFamilyActivity extends AppCompatActivity {
         setContentView(R.layout.joinfamily);
 
         tokenManager = new TokenManager(this);
+        utileProfile = new UtileProfile(this);
+
+        utileProfile.getSessionMember(new OnMemberReceivedListener() {
+            @Override
+            public void onSuccess(CreateMemberNoAccount session) {}
+            @Override
+            public void onSuccess(MemberSessionBody session) {
+                member = session;
+            }
+            @Override
+            public void onFailure(Throwable error) {}
+            @Override
+            public void onSuccess(CreateMember body) {}
+        });
 
         Button joinFamily = findViewById(R.id.joinFamily);
-        //Button createFamily = findViewById(R.id.createFamily);
         ImageView check = findViewById(R.id.check);
         check.setVisibility(View.GONE);
 
         joinFamily.setOnClickListener(v -> showJoinFamilyDialog());
 
-        //createFamily.setOnClickListener(v -> showCreateFamilyDialog());
 
         setupBackBtn();
 
@@ -85,27 +104,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
             }
         }
         return "";
-    }
-
-    private void createMember(String codeFamily) {
-        //create member
-        MemberService memberService = ApiClient.getClient(this).create(MemberService.class);
-        String email = getUserEmail();
-        Call<CreateMember> call = memberService.createMember("Bearer " + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
-        call.enqueue(new Callback<CreateMember>() {
-            @Override
-            public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    setMemberId(response.body().getId());
-                    familyId = response.body().getFamilyId();
-                } else {
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CreateMember> call, Throwable t) {
-            }
-        });
     }
 
     private void getFamillyName(View view) {
@@ -133,7 +131,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
         View view2 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_join_family, null);
 
 
-        Button createFamily = findViewById(R.id.createFamily);
         Button joinFamily2 = findViewById(R.id.joinFamily);
         ImageView check = findViewById(R.id.check);
         TextView tvFamilyName = view2.findViewById(R.id.tv_family_name);
@@ -167,135 +164,30 @@ public class JoinFamilyActivity extends AppCompatActivity {
         joinFamily.setOnClickListener(v -> {
 
             codeFamily = familyCode.getText().toString();
-            MemberService memberService = ApiClient.getClient(this).create(MemberService.class);
-            String email = getUserEmail();
-            Call<CreateMember> call = memberService.createMember("Bearer " + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
-            call.enqueue(new Callback<CreateMember>() {
+            FamilyService familyService = ApiClient.getClient(this).create(FamilyService.class);
+            Call<Void> call = familyService.joinFamily(new JoinFamily(codeFamily, member.getId()));
+            call.enqueue(new Callback<Void>() {
                 @Override
-                public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        setMemberId(response.body().getId());
-                        familyId = response.body().getFamilyId();
+                public void onResponse(Call<Void> call, Response<Void> response) {
                         joinFamily.setVisibility(View.GONE);
                         familyCode.setVisibility(View.GONE);
                         tvFamilyName.setVisibility(View.VISIBLE);
                         tvWelcomeMessage.setVisibility(View.VISIBLE);
                         getFamillyName(view2);
                         //Supprime les boutons parents
-                        createFamily.setVisibility(View.GONE);
                         joinFamily2.setVisibility(View.GONE);
                         check.setVisibility(View.VISIBLE);
                         ((Animatable) check.getDrawable()).start();
-                    } else {
-                    }
                 }
 
                 @Override
-                public void onFailure(Call<CreateMember> call, Throwable t) {
+                public void onFailure(Call<Void> call, Throwable t) {
                 }
             });
         });
 
         bottomSheetDialog.setContentView(view2);
         bottomSheetDialog.show();
-    }
-
-    private void showCreateFamilyDialog() {
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
-        View view2 = LayoutInflater.from(this).inflate(R.layout.bottom_sheet_create_family, null);
-
-        Button createFamily = findViewById(R.id.createFamily);
-        Button joinFamily = findViewById(R.id.joinFamily);
-        ImageView check = findViewById(R.id.check);
-
-        TextView newFam = view2.findViewById(R.id.new_fam);
-        TextView tvFamilyCode = view2.findViewById(R.id.textView);
-        Button createFamily2 = view2.findViewById(R.id.createFamily);
-        EditText familyName = view2.findViewById(R.id.familyName);
-        TextView tvFamilyName = view2.findViewById(R.id.tv_family_name);
-
-        ImageView copyIcon = view2.findViewById(R.id.copyIcon);
-
-        copyIcon.setOnClickListener(v -> copyToClipboard(tvFamilyCode.getText().toString()));
-
-        tvFamilyCode.setOnClickListener(v -> copyToClipboard(tvFamilyCode.getText().toString()));
-
-        createFamily2.setEnabled(false);
-
-        familyName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                //empty
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                boolean isValid = s.toString().trim().matches("[A-Za-zÀ-ÿ]+");
-                createFamily2.setEnabled(isValid);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) { //empty
-            }
-        });
-
-        tvFamilyCode.setVisibility(View.GONE);
-        copyIcon.setVisibility(View.GONE);
-        tvFamilyName.setVisibility(View.GONE);
-        newFam.setVisibility(View.GONE);
-
-
-        createFamily2.setOnClickListener(v -> {
-            String familyNameStr = familyName.getText().toString();
-            codeFamily = "0000000";
-            createFamily2.setVisibility(View.GONE);
-            familyName.setVisibility(View.GONE);
-            tvFamilyName.setVisibility(View.VISIBLE);
-            tvFamilyName.setText(familyNameStr);
-            tvFamilyCode.setVisibility(View.VISIBLE);
-            copyIcon.setVisibility(View.VISIBLE);
-            newFam.setVisibility(View.VISIBLE);
-
-            FamilyService familyService = ApiClient.getClient(this).create(FamilyService.class);
-
-            Call<CreateFamily> call = familyService.createFamily("Bearer " + tokenManager.getAccessToken(), new CreateFamilyBody(familyNameStr));
-            call.enqueue(new Callback<CreateFamily>() {
-                @Override
-                public void onResponse(Call<CreateFamily> call, Response<CreateFamily> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        codeFamily = response.body().getCode();
-                        tvFamilyCode.setText(codeFamily);
-                        createMember(codeFamily);
-
-                    } else {
-
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CreateFamily> call, Throwable t) {
-                }
-            });
-
-
-            //Supprime les boutons parents
-            createFamily.setVisibility(View.GONE);
-            joinFamily.setVisibility(View.GONE);
-            check.setVisibility(View.VISIBLE);
-            ((Animatable) check.getDrawable()).start();
-
-        });
-
-        bottomSheetDialog.setContentView(view2);
-        bottomSheetDialog.show();
-    }
-
-
-    private void copyToClipboard(String text) {
-        ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Copied Text", text); // Création du ClipData
-        clipboard.setPrimaryClip(clip);
-
     }
 
     public void setupBackBtn(){

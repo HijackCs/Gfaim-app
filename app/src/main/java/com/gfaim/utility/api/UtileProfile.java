@@ -197,7 +197,7 @@ public class UtileProfile {
     }
 
 
-    public void deleteMemberById(OnFamilyReceivedListener listener, Long memberId) {
+   /* public void deleteMemberById(OnFamilyReceivedListener listener, Long memberId) {
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         Call<MemberSessionBody> call = memberService.deleteMember(memberId);
 
@@ -223,7 +223,10 @@ public class UtileProfile {
                 System.err.println("Erreur réseau : " + t.getMessage());
             }
         });
-    }
+    }*/
+
+
+
 
     public void createMember(OnMemberReceivedListener listener, String codeFamily, String name , String familyName) {
         //create member

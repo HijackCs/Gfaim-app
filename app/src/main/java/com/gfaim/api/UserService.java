@@ -29,6 +29,9 @@ public interface UserService {
     @PUT("/users/{id}/password")
     Call<UpdateUserPassword> updateUserPassword(@Header("Authorization") String token, @Path("id") Long userId, @Body UpdateUserPassword request);
 
+    @DELETE("/users")
+    Call<Void> deleteUser();
+
 
 }
 

@@ -391,29 +391,18 @@ public class FamilyActivity extends AppCompatActivity {
 
                         utileProfile.getFamily(new OnFamilyReceivedListener() {
                             @Override
-                            public void onSuccess() {
-
-                            }
-
+                            public void onSuccess() {}
                             @Override
-                            public void onSuccess(LeaveFamilyBody family) {
-
-                            }
-
+                            public void onSuccess(LeaveFamilyBody family) {}
                             @Override
-                            public void onSuccess(CreateFamilyBody family) {
-                            }
-
+                            public void onSuccess(CreateFamilyBody family) {}
                             @Override
                             public void onSuccess(FamilyBody family) {
                                 TextView familyName = findViewById(R.id.familyName);
                                 familyName.setText(family.getName());
                             }
-
                             @Override
-                            public void onFailure(Throwable error) {
-
-                            }
+                            public void onFailure(Throwable error) {}
                         }, memberSession.getFamilyId());
                     }
 
@@ -421,7 +410,6 @@ public class FamilyActivity extends AppCompatActivity {
                     public void onSuccess(FamilyBody family) {
 
                     }
-
                     @Override
                     public void onFailure(Throwable error) {
                         System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
@@ -430,7 +418,6 @@ public class FamilyActivity extends AppCompatActivity {
 
                 familyName.setFocusable(false);
                 familyName.setCursorVisible(false);
-
                 editName.setVisibility(VISIBLE);
                 checkName.setVisibility(GONE);
                 cancelName.setVisibility(GONE);

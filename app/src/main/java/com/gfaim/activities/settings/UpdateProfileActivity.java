@@ -1,6 +1,7 @@
 package com.gfaim.activities.settings;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,9 +15,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.UserService;
 import com.gfaim.models.UpdateUserBody;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
@@ -30,6 +35,10 @@ import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnUserReceivedListener;
 import java.util.Objects;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class UpdateProfileActivity extends AppCompatActivity {
 
@@ -284,20 +293,40 @@ public class UpdateProfileActivity extends AppCompatActivity {
     }
 
     private void setupDeleteButton() {
-        deleteButton.setOnClickListener(v -> utileProfile.deleteMemberById(new OnFamilyReceivedListener() {
-            @Override
-            public void onSuccess() {
-                utileProfile.logout();
-            }
-            @Override
-            public void onSuccess(LeaveFamilyBody family) {}
-            @Override
-            public void onSuccess(CreateFamilyBody family) {}
-            @Override
-            public void onSuccess(FamilyBody family) {}
-            @Override
-            public void onFailure(Throwable error) {}
-        }, member.getId()));
-    }
+        deleteButton.setOnClickListener(v -> {
 
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Delete Member")
+                    .setMessage("Are you sure you want to delete your account ?")
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        UserService userService = ApiClient.getClient(this).create(UserService.class);
+                        Call<Void> call = userService.deleteUser();
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+
+                                    System.out.println("Membre supprimé avec succès.");
+                                    utileProfile.logout();
+                                } else {
+                                    System.err.println("Erreur lors de la suppression : " + response.message());
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                System.err.println("Erreur réseau : " + t.getMessage());
+                            }
+                        });
+                    })
+                    .setNegativeButton("No", (dialog, which) -> dialog.dismiss());
+
+            AlertDialog alertDialog = builder.create();
+
+            alertDialog.setOnShowListener(dialog -> alertDialog.getWindow().setBackgroundDrawable(new ColorDrawable(
+                    ContextCompat.getColor(this, R.color.appBackground)
+            )));
+            alertDialog.show();
+        });
+    }
 }

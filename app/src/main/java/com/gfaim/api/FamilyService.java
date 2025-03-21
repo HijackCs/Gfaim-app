@@ -3,6 +3,7 @@ package com.gfaim.api;
 import com.gfaim.models.family.CreateFamily;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
+import com.gfaim.models.family.JoinFamily;
 import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.UpdateMember;
 
@@ -36,5 +37,9 @@ public interface FamilyService {
             @Header("Authorization") String token,
             @Body LeaveFamilyBody leaveFamilyBody
     );
+
+    @POST("/families/join")
+    Call<Void> joinFamily(@Body JoinFamily joinFamily);
+
 
 }

@@ -3,6 +3,7 @@ package com.gfaim.activities.auth;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
 import android.text.Editable;
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gfaim.R;
+import com.gfaim.activities.settings.SettingsActivity;
+import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.FamilyService;
 import com.gfaim.api.MemberService;
@@ -59,13 +62,15 @@ public class JoinFamilyActivity extends AppCompatActivity {
         tokenManager = new TokenManager(this);
 
         Button joinFamily = findViewById(R.id.joinFamily);
-        Button createFamily = findViewById(R.id.createFamily);
+        //Button createFamily = findViewById(R.id.createFamily);
         ImageView check = findViewById(R.id.check);
         check.setVisibility(View.GONE);
 
         joinFamily.setOnClickListener(v -> showJoinFamilyDialog());
 
-        createFamily.setOnClickListener(v -> showCreateFamilyDialog());
+        //createFamily.setOnClickListener(v -> showCreateFamilyDialog());
+
+        setupBackBtn();
 
     }
 
@@ -291,6 +296,15 @@ public class JoinFamilyActivity extends AppCompatActivity {
         ClipData clip = ClipData.newPlainText("Copied Text", text); // Création du ClipData
         clipboard.setPrimaryClip(clip);
 
+    }
+
+    public void setupBackBtn(){
+        Button back = findViewById(R.id.back);
+        back.setOnClickListener(view -> {
+            Intent intent = new Intent(JoinFamilyActivity.this, FamilyActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
 }

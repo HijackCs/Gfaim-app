@@ -27,6 +27,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.auth.JoinFamilyActivity;
 import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
@@ -71,12 +72,10 @@ public class FamilyActivity extends AppCompatActivity {
         getAndSetInfo();
         setupLeaveFamily();
         setupBackBtn();
+        setupChangeFamily();
+
     }
 
-    public void setupLeaveFamily(){
-        TextView leave = findViewById(R.id.btnLeaveFamily);
-        leave.setOnClickListener(v -> showLeaveConfirmationDialog());
-    }
 
     public void getAndSetInfo(){
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
@@ -126,14 +125,7 @@ public class FamilyActivity extends AppCompatActivity {
         });
     }
 
-    public void setupBackBtn(){
-        ImageView myAccount = findViewById(R.id.back);
-        myAccount.setOnClickListener(view -> {
-            Intent intent = new Intent(FamilyActivity.this, SettingsActivity.class);
-            startActivity(intent);
-            finish();
-        });
-    }
+
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         if (clipboard != null) {
@@ -464,6 +456,28 @@ public class FamilyActivity extends AppCompatActivity {
             if (!familyName.isFocusable()) {
                 editName.performClick();
             }
+        });
+    }
+
+    public void setupChangeFamily(){
+        TextView change = findViewById(R.id.btnChangeFamily);
+        change.setOnClickListener(v -> {
+            Intent intent = new Intent(FamilyActivity.this, JoinFamilyActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    public void setupLeaveFamily(){
+        TextView leave = findViewById(R.id.btnLeaveFamily);
+        leave.setOnClickListener(v -> showLeaveConfirmationDialog());
+    }
+
+    public void setupBackBtn(){
+        ImageView myAccount = findViewById(R.id.back);
+        myAccount.setOnClickListener(view -> {
+            Intent intent = new Intent(FamilyActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }

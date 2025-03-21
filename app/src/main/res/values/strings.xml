@@ -115,6 +115,8 @@
     <string name="leave_family">Quitter la famille</string>
     <string name="no">non</string>
     <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">retour</string>
 
 
 </resources>

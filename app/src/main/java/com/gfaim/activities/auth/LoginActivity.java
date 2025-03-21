@@ -65,25 +65,19 @@ public class LoginActivity extends AppCompatActivity {
         try {
             super.onCreate(savedInstanceState);
             EdgeToEdge.enable(this);
-            setContentView(R.layout.login);
-
-            ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-                Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-                v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-                return insets;
-            });
+            setContentView(R.layout.loginv2);
             utileProfile = new UtileProfile(this);
 
         } catch (Exception e) {
             log.warning("[LoginActivity][onCreate] Problem on MainActivity launch");
         }
 
-        ImageButton googleBtn = findViewById(R.id.googleButton);
-        ImageButton facebookBtn = findViewById(R.id.facebookButton);
+        //ImageButton googleBtn = findViewById(R.id.googleButton);
+        //ImageButton facebookBtn = findViewById(R.id.facebookButton);
 
         authManager = new AuthManager(this);
-        authManager.setupGoogleLogin(googleBtn, this);
-        authManager.setupFacebookLogin(facebookBtn, this);
+       // authManager.setupGoogleLogin(googleBtn, this);
+       // authManager.setupFacebookLogin(facebookBtn, this);
 
         setupClassicLogin();
         setupRegister();
@@ -190,8 +184,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
-
-
 
 
     @Override

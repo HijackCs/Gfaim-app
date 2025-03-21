@@ -165,10 +165,12 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
             codeFamily = familyCode.getText().toString();
             FamilyService familyService = ApiClient.getClient(this).create(FamilyService.class);
-            Call<Void> call = familyService.joinFamily(new JoinFamily(codeFamily, member.getId()));
+            Call<Void> call = familyService.joinFamily(new JoinFamily(codeFamily));
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
+
+                    if (response.isSuccessful()) {
                         joinFamily.setVisibility(View.GONE);
                         familyCode.setVisibility(View.GONE);
                         tvFamilyName.setVisibility(View.VISIBLE);
@@ -178,6 +180,7 @@ public class JoinFamilyActivity extends AppCompatActivity {
                         joinFamily2.setVisibility(View.GONE);
                         check.setVisibility(View.VISIBLE);
                         ((Animatable) check.getDrawable()).start();
+                    }
                 }
 
                 @Override

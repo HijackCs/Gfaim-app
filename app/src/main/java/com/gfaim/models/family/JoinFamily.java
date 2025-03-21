@@ -12,8 +12,8 @@ import lombok.Setter;
 public class JoinFamily {
 
     private String code;
-
+/*
     @SerializedName("member_id")
     private Long memberId;
-
+*/
 }

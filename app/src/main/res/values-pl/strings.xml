@@ -22,6 +22,15 @@
     <string name="checkMail">Sprawdź swoją skrzynkę e-mail</string>
     <string name="continueBtn">Kontynuuj</string>
 
+    <!--Forgot pwd-->
+    <string name="sendCode">Wyślij kod</string>
+    <string name="resetPwd">Zresetuj hasło</string>
+    <string name="remember">Pamiętasz swoje hasło?</string>
+    <string name="goBackLogin">Wróć do logowania</string>
+    <string name="enter_code">Wprowadź kod</string>
+    <string name="new_password">Nowe hasło</string>
+    <string name="confirm_password">Potwierdź hasło</string>
+    <string name="reset_password">Zresetuj hasło</string>
 
     <!-- Wprowadzenie -->
     <string name="skip">Pomiń</string>
@@ -65,14 +74,15 @@
     <string name="createFamilly">Utwórz swoją rodzinę!</string>
     <string name="new_fam">Nowa rodzina została utworzona!</string>
     <string name="joinFamily">Dołącz do rodziny</string>
-    <!--Forgot pwd-->
-    <string name="sendCode">Send code</string>
-    <string name="resetPwd">Reset Password</string>
-    <string name="remember">Remember your password ?</string>
-    <string name="goBackLogin">Go back to login</string>
-    <string name="enter_code">enter code</string>
-    <string name="new_password">new password</string>
-    <string name="confirm_password">confirm password</string>
-    <string name="reset_password">reset password\n</string>
+
+    <!--Frigo-->
+    <string name="confirm">Potwierdź</string>
+    <string name="groceries">Zakupy</string>
+    <string name="search">Szukaj</string>
+    <string name="shopping">Zakupy</string>
+    <string name="fridge">Lodówka</string>
+    <string name="send">Wyślij</string>
+    <string name="add_groceries">Dodaj zakupy</string>
+    <string name="add">Dodaj</string>
 
 </resources>

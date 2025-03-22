@@ -50,14 +50,18 @@
     <string name="JoinOrCreate">Join or Create a Family</string>
 
     <!--Home-->
-    <string name="Home">Home</string>
+    <string name="Home">Accueil</string>
     <string name="what_s_for_today">What\'s for today ?</string>
-    <string name="weekly_progress">Weekly Progress</string>
+    <string name="weekly_progress">Progrès hebdomadaires</string>
     <string name="calories">Calories</string>
-    <string name="nb_calories">nb calories</string>
-    <string name="Groceries">Groceries</string>
-    <string name="Recipes">Recipes</string>
-    <string name="Calendar">Calendar</string>
+    <string name="nb_calories">Nombre calories</string>
+    <string name="Groceries">Epicerie</string>
+    <string name="Recipes">Recette</string>
+    <string name="Calendar">Calendrier</string>
+    <string name="breakfast">Petit Déjeuner</string>
+    <string name="lunch">Déjeuner</string>
+    <string name="dinner">Dinner</string>
+    <string name="no_meal_planned">No meal planned</string>
 
     <!--Onboarding-->
     <string name="skip">Passer</string>

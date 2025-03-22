@@ -14,6 +14,8 @@ import com.gfaim.R;
 //import com.gfaim.activities.calendar.CalendarActivity;
 import com.gfaim.activities.groceries.GroceryActivity;
 import com.gfaim.activities.home.HomeActivity;
+import com.gfaim.activities.calendar.CalendarActivity;
+import com.gfaim.activities.home.HomeActivity;
 
 import java.util.Arrays;
 import java.util.List;

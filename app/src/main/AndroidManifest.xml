@@ -115,6 +115,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.calendar.CalendarActivity"/><!--
+        <activity android:name=".activities.calendar.AddIngredientsCalendar"/>
+        <activity android:name=".activities.calendar.DialogAddIngredient"/>
+        <activity android:name=".activities.calendar.AddStepsCalendar"/>
+        <activity android:name=".activities.calendar.SummaryCalendar"/>-->
 
 
         <activity android:name=".activities.home.HomeActivity"></activity>

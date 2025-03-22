@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginStart="30dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="Summary"
+        android:textColor="@color/grey"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/menu_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Menu name"
+        android:textColor="@color/grey"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
+    <!-- Nombre de participants -->
+    <LinearLayout
+        android:id="@+id/nb_participant_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintTop_toBottomOf="@id/menu_name"
+        app:layout_constraintStart_toStartOf="parent">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Number of participants :"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="8dp"/>
+
+    <TextView
+        android:id="@+id/participant_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+    </LinearLayout>
+
+    <!-- Calories et Temps -->
+    <LinearLayout
+        android:id="@+id/stats_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="50dp"
+        app:layout_constraintTop_toBottomOf="@id/nb_participant_layout"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginEnd="32dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total calories :"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/caloriesText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 kcal"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total time :"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginEnd="8dp"/>
+
+            <TextView
+                android:id="@+id/timeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0 min"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <!-- Liste des ingrédients -->
+    <TextView
+        android:id="@+id/ingredients_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ingredients:"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/stats_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp" />
+
+    <LinearLayout
+        android:id="@+id/ingredients_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/ingredients_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@id/ingredients_list"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintWidth_percent="0.7"
+        android:layout_gravity="center"/>
+
+
+    <!-- Liste des étapes -->
+    <TextView
+        android:id="@+id/steps_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Steps:"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/divider"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp" />
+
+    <LinearLayout
+        android:id="@+id/steps_list"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/steps_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginTop="10dp" />
+
+    <Button
+        android:id="@+id/finish"
+        android:layout_width="250dp"
+        android:layout_height="66dp"
+        android:backgroundTint="@color/greenBtn"
+        android:padding="16dp"
+        android:text="Finish"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

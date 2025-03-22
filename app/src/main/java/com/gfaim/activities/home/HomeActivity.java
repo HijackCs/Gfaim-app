@@ -1,5 +1,6 @@
 package com.gfaim.activities.home;
 import android.content.Intent;
+package com.gfaim.activities.home;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,6 +16,8 @@ import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.groceries.GroceryActivity;
 import com.gfaim.activities.settings.SettingsActivity;
+import com.gfaim.activities.CarrouselAdapter;
+import com.gfaim.activities.NavigationBar;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,12 +41,13 @@ public class HomeActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-            setupCarrousel();
-            navigationBar = new NavigationBar(this);
+            NavigationBar navigationBar = new NavigationBar(this);
+
             int activeButtonId = getIntent().getIntExtra("activeButtonId", -1);
             if (activeButtonId != -1) {
                 navigationBar.setActiveButton(activeButtonId);
             }
+            setupCarrousel();
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION

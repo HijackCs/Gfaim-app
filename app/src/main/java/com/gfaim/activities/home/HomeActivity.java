@@ -1,6 +1,8 @@
-package com.gfaim.activities;
+package com.gfaim.activities.home;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +12,9 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.gfaim.R;
-import com.gfaim.activities.auth.LoginActivity;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.gfaim.activities.NavigationBar;
+import com.gfaim.activities.groceries.GroceryActivity;
+import com.gfaim.activities.settings.SettingsActivity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,6 +23,8 @@ import java.util.logging.Logger;
 public class HomeActivity extends AppCompatActivity {
 
     private final Logger log = Logger.getLogger(HomeActivity.class.getName());
+    private NavigationBar navigationBar;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +38,12 @@ public class HomeActivity extends AppCompatActivity {
                 v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
                 return insets;
             });
-            new NavigationBar(this);
             setupCarrousel();
+            navigationBar = new NavigationBar(this);
+            int activeButtonId = getIntent().getIntExtra("activeButtonId", -1);
+            if (activeButtonId != -1) {
+                navigationBar.setActiveButton(activeButtonId);
+            }
             getWindow().getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
                             | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
@@ -45,9 +51,23 @@ public class HomeActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
                             | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+
+            navigationBar.setActiveButton(R.id.btn_home);
+
         } catch (Exception e) {
             log.warning("[acceuil][onCreate] Problème au lancement de HomeActivity");
         }
+
+        setupProfilBtn();
+    }
+
+    private void setupProfilBtn(){
+        FrameLayout circleProfile = findViewById(R.id.circleProfile);
+        circleProfile.setOnClickListener( v->{
+            Intent intent = new Intent(HomeActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void setupCarrousel() {

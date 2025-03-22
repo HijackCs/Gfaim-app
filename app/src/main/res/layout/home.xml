@@ -21,7 +21,7 @@
             android:layout_height="40dp"
             android:layout_gravity="center"
             android:contentDescription="@null"
-            android:src="@drawable/ic_person" />
+            android:src="@drawable/avatar" />
     </FrameLayout>
 
 
@@ -136,15 +136,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/carrousel"
+    <androidx.cardview.widget.CardView
         android:layout_width="350dp"
         android:layout_height="250dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/bottom_bar"
-        app:layout_constraintTop_toBottomOf="@id/textView2" />
+        app:layout_constraintTop_toBottomOf="@id/textView2">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/carrousel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
+
+    </androidx.cardview.widget.CardView>
+
 
     <include layout="@layout/navigation_bar"/>
 

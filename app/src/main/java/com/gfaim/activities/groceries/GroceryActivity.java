@@ -17,16 +17,17 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.NavigationBar;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.groceries.adapter.GroceriesViewPagerAdapter;
 import com.gfaim.activities.groceries.fragment.FridgeFragment;
 import com.gfaim.activities.groceries.fragment.ShoppingFragment;
+import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.ShoppingService;
 import com.gfaim.auth.TokenManager;
 import com.gfaim.models.FoodItem;
 import com.gfaim.models.groceries.AddShoppingItemRequest;
-import com.gfaim.models.groceries.ShoppingItemResponse;
 import com.gfaim.models.groceries.ShoppingListResponse;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
@@ -54,21 +55,25 @@ public class GroceryActivity extends AppCompatActivity {
     
     private UtileProfile utileProfile;
     private MemberSessionBody member;
+    private NavigationBar navigationBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groceries);
 
-        //a modifier
-        FrameLayout circleProfile = findViewById(R.id.circleProfile);
-        circleProfile.setOnClickListener( v->{
-                Intent intent = new Intent(GroceryActivity.this, HomeActivity.class);
-        startActivity(intent);
-        finish();
-        });
-
-
+        navigationBar = new NavigationBar(this);
+        int activeButtonId = getIntent().getIntExtra("activeButtonId", -1);
+        if (activeButtonId != -1) {
+            navigationBar.setActiveButton(activeButtonId);
+        }
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+                        | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                        | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                        | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
         utileProfile = new UtileProfile(this);
 
@@ -146,6 +151,17 @@ public class GroceryActivity extends AppCompatActivity {
 
 
         updateTabs(0);
+
+        setupProfilBtn();
+    }
+
+    private void setupProfilBtn(){
+        FrameLayout circleProfile = findViewById(R.id.circleProfile);
+        circleProfile.setOnClickListener( v->{
+            Intent intent = new Intent(GroceryActivity.this, SettingsActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     private void updateTabs(int position) {

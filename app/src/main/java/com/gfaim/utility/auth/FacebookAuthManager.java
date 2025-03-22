@@ -11,7 +11,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 
 import java.util.Arrays;
 import java.util.logging.Logger;

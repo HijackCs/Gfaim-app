@@ -107,9 +107,13 @@
     <string name="alreadyAccount">Vous avez déjà un compte ?</string>
     <string name="notEmpty">Le nom ne peut pas être vide</string>
     <string name="delete_family">Supprimer la famille</string>
+    <string name="leave_family">Quitter la famille</string>
+    <string name="no">non</string>
+    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">retour</string>
 
-    <!--facebook-->
-    <!--Facebook-->
+
     <!--Frigo-->
     <string name="confirm">Confirm</string>
     <string name="groceries">Groceries</string>
@@ -120,13 +124,6 @@
     <string name="add_groceries">Add Groceries</string>
     <string name="add">Add</string>
 
-
-
-    <!--facebook-->
-    <string name="facebook_app_id" translatable="false">617642374011640</string>
-    <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
-    <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-
     <!--Home-->
     <string name="Home">Home</string>
     <string name="what_s_for_today">What\'s for today ?</string>
@@ -136,6 +133,13 @@
     <string name="Groceries">Groceries</string>
     <string name="Recipes">Recipes</string>
     <string name="Calendar">Calendar</string>
+
+    <!--facebook-->
+    <string name="facebook_app_id" translatable="false">617642374011640</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
+    <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
+
+
 
 
 </resources>

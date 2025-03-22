@@ -16,7 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.MemberService;
 import com.gfaim.auth.TokenManager;

@@ -1,4 +1,4 @@
-package com.gfaim.activities;
+package com.gfaim.activities.home;
 
 import android.view.LayoutInflater;
 import android.view.View;

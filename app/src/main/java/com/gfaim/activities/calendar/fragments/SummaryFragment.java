@@ -28,6 +28,10 @@ public class SummaryFragment extends Fragment {
     private SharedStepsViewModel sharedStepsViewModel;
     private LinearLayout ingredientsList;
     private LinearLayout stepsList;
+    private TextView menuNameTextView;
+    private TextView participantCountTextView;
+    private TextView caloriesTextView;
+    private TextView timeTextView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -41,6 +45,15 @@ public class SummaryFragment extends Fragment {
         sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
         ingredientsList = view.findViewById(R.id.ingredients_list);
         stepsList = view.findViewById(R.id.steps_list);
+
+        // Initialiser les TextViews pour afficher les informations
+        menuNameTextView = view.findViewById(R.id.menu_name);
+        participantCountTextView = view.findViewById(R.id.participant_count);
+        caloriesTextView = view.findViewById(R.id.caloriesText);
+        timeTextView = view.findViewById(R.id.timeText);
+
+        // Mettre à jour les informations depuis le ViewModel
+        updateSummaryInfo();
 
         // Bouton de retour
         ImageView backButton = view.findViewById(R.id.back);
@@ -61,22 +74,10 @@ public class SummaryFragment extends Fragment {
                 String menuName = sharedStepsViewModel.getMenuName();
 
                 // Calculer la durée totale
-                int totalDuration = 0;
-                List<Integer> durations = sharedStepsViewModel.getDurations().getValue();
-                if (durations != null) {
-                    for (Integer duration : durations) {
-                        totalDuration += duration;
-                    }
-                }
+                int totalDuration = sharedStepsViewModel.getTotalDuration();
 
                 // Calculer les calories totales
-                int totalCalories = 0;
-                List<Ingredient> ingredients = sharedStepsViewModel.getIngredients().getValue();
-                if (ingredients != null) {
-                    for (Ingredient ingredient : ingredients) {
-                        totalCalories += ingredient.getCalories();
-                    }
-                }
+                int totalCalories = sharedStepsViewModel.getTotalCalories();
 
                 // Créer le bundle pour la navigation
                 Bundle args = new Bundle();
@@ -118,6 +119,9 @@ public class SummaryFragment extends Fragment {
                     ingredientsList.addView(ingredientTextView);
                 }
             }
+
+            // Mettre à jour les calories totales
+            updateSummaryInfo();
         });
 
         // Observer les étapes
@@ -138,6 +142,41 @@ public class SummaryFragment extends Fragment {
                     stepsList.addView(stepView);
                 }
             }
+
+            // Mettre à jour la durée totale
+            updateSummaryInfo();
         });
+    }
+
+    /**
+     * Met à jour toutes les informations de résumé (nom du menu, participants, calories, temps)
+     */
+    private void updateSummaryInfo() {
+        if (sharedStepsViewModel != null) {
+            // Mettre à jour le nom du menu
+            String menuName = sharedStepsViewModel.getMenuName();
+            if (menuName != null && !menuName.isEmpty()) {
+                menuNameTextView.setText(menuName);
+            } else {
+                menuNameTextView.setText("Menu sans nom");
+            }
+
+            // Mettre à jour le nombre de participants
+            int participantCount = sharedStepsViewModel.getParticipantCount();
+            participantCountTextView.setText(String.valueOf(participantCount));
+
+            // Mettre à jour les calories totales
+            int totalCalories = sharedStepsViewModel.getTotalCalories();
+            caloriesTextView.setText(totalCalories + " kcal");
+
+            // Mettre à jour le temps total
+            int totalDuration = sharedStepsViewModel.getTotalDuration();
+            timeTextView.setText(totalDuration + " min");
+
+            Log.d("SummaryFragment", "Informations mises à jour - Menu: " + menuName +
+                    ", Participants: " + participantCount +
+                    ", Calories: " + totalCalories +
+                    ", Durée: " + totalDuration);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.gfaim.activities.calendar.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,20 +12,37 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
 import com.gfaim.activities.calendar.model.Ingredient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
-    private final List<Ingredient> ingredients;
+    private List<Ingredient> ingredients;
     private final OnIngredientClickListener listener;
+    private final Context context;
 
     public interface OnIngredientClickListener {
         void onIngredientClick(Ingredient ingredient);
     }
 
+    public IngredientAdapter(Context context, OnIngredientClickListener listener) {
+        this.context = context;
+        this.ingredients = new ArrayList<>();
+        this.listener = listener;
+    }
 
     public IngredientAdapter(List<Ingredient> ingredients, OnIngredientClickListener listener) {
-        this.ingredients = ingredients;
+        this.context = null;
+        this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
         this.listener = listener;
+    }
+
+    /**
+     * Met à jour la liste des ingrédients
+     * @param ingredients Nouvelle liste d'ingrédients
+     */
+    public void setIngredientList(List<Ingredient> ingredients) {
+        this.ingredients = ingredients != null ? ingredients : new ArrayList<>();
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -37,15 +55,16 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     @Override
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
-        Ingredient ingredient = ingredients.get(position);
-        holder.bind(ingredient, listener);
+        if (ingredients != null && position < ingredients.size()) {
+            Ingredient ingredient = ingredients.get(position);
+            holder.bind(ingredient, listener);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return ingredients.size();
+        return ingredients != null ? ingredients.size() : 0;
     }
-
 
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
@@ -58,13 +77,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         }
 
         public void bind(final Ingredient ingredient, final OnIngredientClickListener listener) {
-            nameTextView.setText(ingredient.getName());
-            caloriesTextView.setText(String.valueOf(ingredient.getCalories()) + " kcal");
-            itemView.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onIngredientClick(ingredient);
-                }
-            });
+            if (ingredient != null) {
+                nameTextView.setText(ingredient.getName());
+                caloriesTextView.setText(String.valueOf(ingredient.getCalories()) + " kcal");
+                itemView.setOnClickListener(v -> {
+                    if (listener != null) {
+                        listener.onIngredientClick(ingredient);
+                    }
+                });
+            }
         }
     }
 }

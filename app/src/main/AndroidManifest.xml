@@ -58,7 +58,8 @@
         <activity
             android:name=".activities.home.HomeActivity">
         </activity>
-        <activity android:name=".activities.calendar.CalendarActivity"/><!--
+        <activity android:name=".activities.calendar.CalendarActivity"/>
+        <activity android:name=".activities.recipe.fragments.RecipeActivity"/><!--
         <activity android:name=".activities.calendar.AddIngredientsCalendar"/>
         <activity android:name=".activities.calendar.DialogAddIngredient"/>
         <activity android:name=".activities.calendar.AddStepsCalendar"/>

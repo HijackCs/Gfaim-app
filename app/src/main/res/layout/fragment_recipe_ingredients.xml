@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/appBackground">
+
+
+    <!-- Titre de la recette -->
+    <TextView
+        android:id="@+id/recipeTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="Ramen"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Sous-titre (type de repas et durée) -->
+    <TextView
+        android:id="@+id/recipeSubtitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Lunch / 15 mins"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/recipeTitleTextView" />
+
+    <!-- Informations nutritionnelles -->
+    <LinearLayout
+        android:id="@+id/nutritionInfoLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/recipeSubtitleTextView">
+
+        <!-- Calories -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/caloriesValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="100 k"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Energy"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Protéines -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/proteinsValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15 g"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Protein"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Glucides -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/carbsValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="58 g"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Carbs"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <!-- Graisses -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/fatValueTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="20 g"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fat"
+                android:textColor="@color/grey"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Section des ingrédients -->
+    <TextView
+        android:id="@+id/ingredientsTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="30dp"
+        android:text="Ingredients"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nutritionInfoLayout" />
+
+    <!-- Nombre de portions -->
+    <TextView
+        android:id="@+id/servingsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        android:text="2"
+        android:textColor="@color/grey"
+        android:textSize="14sp"
+        app:layout_constraintStart_toEndOf="@id/ingredientsTitleTextView"
+        app:layout_constraintTop_toBottomOf="@id/nutritionInfoLayout" />
+
+
+    <!-- Liste des ingrédients -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ingredientsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingStart="30dp"
+        android:paddingEnd="30dp"
+        app:layout_constraintBottom_toTopOf="@id/startCookingButton"
+        app:layout_constraintTop_toBottomOf="@id/ingredientsTitleTextView" />
+
+    <!-- Bouton pour commencer la cuisine -->
+    <Button
+        android:id="@+id/startCookingButton"
+        android:layout_width="350dp"
+        android:layout_height="66dp"
+        android:backgroundTint="@color/greenBtn"
+        android:padding="16dp"
+        android:text="Start cooking"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.95" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -113,7 +113,15 @@ public class SummaryFragment extends Fragment {
             } else {
                 for (Ingredient ingredient : ingredients) {
                     TextView ingredientTextView = new TextView(requireContext());
-                    ingredientTextView.setText(ingredient.getName() + " (" + ingredient.getCalories() + " kcal)");
+                    // Afficher la quantité et l'unité au lieu des calories
+                    if (ingredient.getQuantity() > 0 && !ingredient.getUnit().isEmpty()) {
+                        ingredientTextView.setText(String.format("%s (%.1f %s)",
+                                ingredient.getName(),
+                                ingredient.getQuantity(),
+                                ingredient.getUnit()));
+                    } else {
+                        ingredientTextView.setText(ingredient.getName());
+                    }
                     ingredientTextView.setTextSize(16);
                     ingredientTextView.setPadding(0, 8, 0, 8);
                     ingredientsList.addView(ingredientTextView);

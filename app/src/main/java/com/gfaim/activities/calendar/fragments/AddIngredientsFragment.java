@@ -171,7 +171,16 @@ public class AddIngredientsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f);
         ingredientText.setLayoutParams(textParams);
-        ingredientText.setText(ingredient.getName() + " (" + ingredient.getCalories() + " kcal)");
+        // Afficher la quantité et l'unité au lieu des calories
+        if (ingredient.getQuantity() > 0 && !ingredient.getUnit().isEmpty()) {
+            ingredientText.setText(String.format("%s (%.1f %s)",
+                    ingredient.getName(),
+                    ingredient.getQuantity(),
+                    ingredient.getUnit()));
+        } else {
+            ingredientText.setText(ingredient.getName());
+        }
+
         ingredientText.setTextSize(16);
         ingredientText.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey));
 

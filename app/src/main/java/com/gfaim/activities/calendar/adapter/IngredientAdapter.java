@@ -68,18 +68,15 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
-        private final TextView caloriesTextView;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.ingredient_name);
-            caloriesTextView = itemView.findViewById(R.id.ingredient_calories);
         }
 
         public void bind(final Ingredient ingredient, final OnIngredientClickListener listener) {
             if (ingredient != null) {
                 nameTextView.setText(ingredient.getName());
-                caloriesTextView.setText(String.valueOf(ingredient.getCalories()) + " kcal");
                 itemView.setOnClickListener(v -> {
                     if (listener != null) {
                         listener.onIngredientClick(ingredient);

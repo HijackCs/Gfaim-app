@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
+import com.gfaim.activities.calendar.IngredientQuantityDialog;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.adapter.IngredientAdapter;
 import com.gfaim.activities.calendar.model.Ingredient;
@@ -47,11 +48,10 @@ public class AddIngredientFragment extends Fragment {
                 new Ingredient("Onion", 44)
         );
 
+        // Modification du comportement au clic sur un ingrédient
         IngredientAdapter adapter = new IngredientAdapter(ingredients, ingredient -> {
-            if (!selectedIngredients.contains(ingredient)) {
-                selectedIngredients.add(ingredient);
-                sharedStepsViewModel.addIngredient(ingredient);
-            }
+            // Au lieu d'ajouter directement l'ingrédient, on affiche la popup
+            showIngredientQuantityDialog(ingredient);
         });
 
         ImageView backButton = view.findViewById(R.id.back);
@@ -59,6 +59,34 @@ public class AddIngredientFragment extends Fragment {
             navController.navigateUp();
         });
         recyclerView.setAdapter(adapter);
+    }
+
+    /**
+     * Affiche la popup pour sélectionner la quantité et l'unité de l'ingrédient
+     * @param ingredient L'ingrédient sélectionné
+     */
+    private void showIngredientQuantityDialog(Ingredient ingredient) {
+        IngredientQuantityDialog dialog = new IngredientQuantityDialog(
+                requireContext(),
+                ingredient,
+                (selectedIngredient, quantity, unit) -> {
+                    // Créer une nouvelle instance de l'ingrédient avec la quantité et l'unité
+                    Ingredient ingredientWithQuantity = new Ingredient(
+                            selectedIngredient.getName(),
+                            selectedIngredient.getCalories(),
+                            quantity,
+                            unit
+                    );
+
+                    // Ajouter l'ingrédient à la liste des ingrédients sélectionnés
+                    if (!selectedIngredients.contains(ingredientWithQuantity)) {
+                        selectedIngredients.add(ingredientWithQuantity);
+                        sharedStepsViewModel.addIngredient(ingredientWithQuantity);
+                    }
+                }
+        );
+
+        dialog.show();
     }
 
     @Override

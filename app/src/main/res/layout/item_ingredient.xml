@@ -21,14 +21,6 @@
             android:textSize="16sp"
             android:textColor="@android:color/black" />
 
-        <TextView
-            android:id="@+id/ingredient_calories"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:textSize="16sp"
-            android:textColor="@android:color/darker_gray" />
-
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

@@ -1,11 +1,18 @@
 package com.gfaim.activities.calendar.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Représente une unité de mesure pour les ingrédients
  */
 public class Unit {
+    @SerializedName("id")
     private Long id;
+
+    @SerializedName("name_en")
     private String nameEn;
+
+    @SerializedName("name_fr")
     private String nameFr;
 
     public Unit() {

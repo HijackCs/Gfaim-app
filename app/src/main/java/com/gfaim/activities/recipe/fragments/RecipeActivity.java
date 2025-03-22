@@ -226,102 +226,61 @@ public class RecipeActivity extends AppCompatActivity {
      * @param recipe La recette reçue de l'API
      */
     private void updateViewModelWithRecipe(Recipe recipe) {
-        try {
-            // Vérifier si la recette est valide
-            if (recipe == null) {
-                Log.e(TAG, "La recette est null dans updateViewModelWithRecipe");
-                return;
-            }
+        if (recipe == null) {
+            return;
+        }
 
-            Log.d(TAG, "Début de l'extraction des données de la recette: " + recipe.getName());
+        // Mettre à jour le nom de la recette
+        sharedStepsViewModel.setMenuName(recipe.getName());
 
-            // Mettre à jour le nom de la recette
-            sharedStepsViewModel.setMenuName(recipe.getName());
+        // Créer une liste d'ingrédients
+        List<Ingredient> ingredients = new ArrayList<>();
 
-            // Mettre à jour le nombre de portions
-            int servings = recipe.getNbServings();
-            sharedStepsViewModel.setParticipantCount(servings > 0 ? servings : 2); // Valeur par défaut = 2
-
-            // APPROCHE SIMPLIFIÉE:
-            // 1. Créer une liste temporaire d'ingrédients
-            List<Ingredient> tempIngredients = new ArrayList<>();
-
-            // 2. Extraire les ingrédients de chaque étape
-            if (recipe.getSteps() != null) {
-                Log.d(TAG, "La recette contient " + recipe.getSteps().size() + " étapes");
-
-                for (Step step : recipe.getSteps()) {
-                    if (step.getIngredients() != null) {
-                        for (StepIngredient si : step.getIngredients()) {
-                            if (si != null && si.getIngredientCatalog() != null) {
-                                // Extraire le nom (préférer le nom français)
-                                String name = si.getIngredientCatalog().getNameFr();
-                                if (name == null || name.isEmpty()) {
-                                    name = si.getIngredientCatalog().getName();
-                                }
-
-                                // Extraire l'unité (préférer le nom français)
-                                String unit = "";
-                                if (si.getUnit() != null) {
-                                    unit = si.getUnit().getNameFr();
-                                    if (unit == null || unit.isEmpty()) {
-                                        unit = si.getUnit().getNameEn();
-                                    }
-                                }
-
-                                // Créer et ajouter l'ingrédient
-                                tempIngredients.add(new Ingredient(
-                                        name,
-                                        0, // calories à 0 par défaut
-                                        si.getQuantity(),
-                                        unit
-                                ));
-
-                                Log.d(TAG, "Ajout ingrédient: " + name);
-                            }
+        // Extraire les ingrédients de chaque étape
+        if (recipe.getSteps() != null) {
+            for (Step step : recipe.getSteps()) {
+                if (step.getIngredients() != null) {
+                    for (StepIngredient si : step.getIngredients()) {
+                        if (si != null && si.getIngredientCatalog() != null) {
+                            Ingredient ingredient = new Ingredient(
+                                    si.getIngredientCatalog().getNameFr() != null ?
+                                            si.getIngredientCatalog().getNameFr() :
+                                            si.getIngredientCatalog().getName(),
+                                    0,
+                                    si.getQuantity(),
+                                    si.getUnit() != null ?
+                                            (si.getUnit().getNameFr() != null ?
+                                                    si.getUnit().getNameFr() :
+                                                    si.getUnit().getNameEn()) :
+                                            ""
+                            );
+                            ingredients.add(ingredient);
                         }
                     }
                 }
-
-                // 3. Mettre à jour directement la liste d'ingrédients du ViewModel
-                if (!tempIngredients.isEmpty()) {
-                    // SIMPLIFICATION: on va directement modifier la liste dans le LiveData
-                    List<Ingredient> currentList = new ArrayList<>(tempIngredients);
-                    sharedStepsViewModel._ingredients.setValue(currentList);
-
-                    Log.d(TAG, "Nombre d'ingrédients ajoutés directement: " + currentList.size());
-                } else {
-                    Log.w(TAG, "Aucun ingrédient trouvé");
-                }
-
-                // Mise à jour des étapes et durées
-                List<String> stepDescriptions = new ArrayList<>();
-                List<Integer> stepDurations = new ArrayList<>();
-
-                for (Step step : recipe.getSteps()) {
-                    stepDescriptions.add(step.getDescription());
-                    stepDurations.add(5); // 5 minutes par défaut
-                }
-
-                // Mise à jour des étapes
-                sharedStepsViewModel.setRawSteps(recipe.getSteps());
-                sharedStepsViewModel.setSteps(stepDescriptions);
-                sharedStepsViewModel.setDurations(stepDurations);
             }
-
-            // Mettre à jour les informations nutritionnelles
-            sharedStepsViewModel.setNutritionInfo(
-                    recipe.getCalories(),
-                    recipe.getProtein(),
-                    recipe.getCarbs(),
-                    recipe.getFat()
-            );
-
-            Log.d(TAG, "ViewModel mis à jour avec les données de la recette: " + recipe.getName());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans updateViewModelWithRecipe", e);
-            e.printStackTrace();
         }
+
+        // Mettre à jour la liste d'ingrédients dans le ViewModel
+        sharedStepsViewModel._ingredients.setValue(ingredients);
+
+        // Mettre à jour les étapes
+        sharedStepsViewModel.setRawSteps(recipe.getSteps());
+
+        // Mettre à jour les descriptions d'étapes
+        List<String> stepDescriptions = new ArrayList<>();
+        for (Step step : recipe.getSteps()) {
+            stepDescriptions.add(step.getDescription());
+        }
+        sharedStepsViewModel.setSteps(stepDescriptions);
+
+        // Mettre à jour les informations nutritionnelles
+        sharedStepsViewModel.setNutritionInfo(
+                recipe.getCalories(),
+                recipe.getProtein(),
+                recipe.getCarbs(),
+                recipe.getFat()
+        );
     }
 
     /**

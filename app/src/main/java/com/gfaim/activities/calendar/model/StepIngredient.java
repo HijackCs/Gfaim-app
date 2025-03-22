@@ -1,12 +1,21 @@
 package com.gfaim.activities.calendar.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Représente un ingrédient utilisé dans une étape de recette
  */
 public class StepIngredient {
+    @SerializedName("id")
     private Long id;
+
+    @SerializedName("ingredient_catalog")
     private IngredientCatalog ingredientCatalog;
+
+    @SerializedName("quantity")
     private float quantity;
+
+    @SerializedName("unit")
     private Unit unit;
 
     public StepIngredient() {

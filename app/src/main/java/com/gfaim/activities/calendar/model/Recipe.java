@@ -219,29 +219,68 @@ public class Recipe {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Recipe{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(getName()).append('\'');
-        sb.append(", calories=").append(getCalories());
-        sb.append(", protein=").append(getProtein());
-        sb.append(", carbs=").append(getCarbs());
-        sb.append(", fat=").append(getFat());
-        sb.append(", readyInMinutes=").append(getReadyInMinutes());
-        sb.append(", nbServings=").append(getNbServings());
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append("\"id\":").append(id);
+        sb.append(",\"name\":\"").append(getName()).append("\"");
+        sb.append(",\"calories\":").append(getCalories());
+        sb.append(",\"protein\":").append(getProtein());
+        sb.append(",\"carbs\":").append(getCarbs());
+        sb.append(",\"fat\":").append(getFat());
+        sb.append(",\"steps\":[");
 
-        // Ajouter des informations sur les étapes
-        sb.append(", steps=[");
         if (steps != null) {
             for (int i = 0; i < steps.size(); i++) {
                 if (i > 0) {
-                    sb.append(", ");
+                    sb.append(",");
                 }
-                sb.append("Step ").append(i + 1);
+                Step step = steps.get(i);
+                sb.append("{");
+                sb.append("\"id\":").append(step.getId());
+                sb.append(",\"description\":\"").append(step.getDescription()).append("\"");
+                sb.append(",\"ingredients\":[");
+
+                if (step.getIngredients() != null) {
+                    for (int j = 0; j < step.getIngredients().size(); j++) {
+                        if (j > 0) {
+                            sb.append(",");
+                        }
+                        StepIngredient si = step.getIngredients().get(j);
+                        sb.append("{");
+                        sb.append("\"id\":").append(si.getId());
+                        sb.append(",\"quantity\":").append(si.getQuantity());
+                        sb.append(",\"unit\":{");
+                        if (si.getUnit() != null) {
+                            sb.append("\"id\":").append(si.getUnit().getId());
+                            sb.append(",\"name_en\":\"").append(si.getUnit().getNameEn()).append("\"");
+                            sb.append(",\"name_fr\":\"").append(si.getUnit().getNameFr()).append("\"");
+                        }
+                        sb.append("}");
+                        sb.append(",\"ingredient_catalog\":{");
+                        if (si.getIngredientCatalog() != null) {
+                            sb.append("\"id\":").append(si.getIngredientCatalog().getId());
+                            sb.append(",\"name\":\"").append(si.getIngredientCatalog().getName()).append("\"");
+                            sb.append(",\"name_en\":\"").append(si.getIngredientCatalog().getNameEn()).append("\"");
+                            sb.append(",\"name_fr\":\"").append(si.getIngredientCatalog().getNameFr()).append("\"");
+                        }
+                        sb.append("}");
+                        sb.append("}");
+                    }
+                }
+                sb.append("]");
+                sb.append(",\"step_number\":").append(step.getStepNumber());
+                sb.append("}");
             }
         }
         sb.append("]");
-
-        sb.append('}');
+        sb.append(",\"image_uri\":\"").append(imageUri != null ? imageUri : "").append("\"");
+        sb.append(",\"image_type\":\"").append(imageType != null ? imageType : "").append("\"");
+        sb.append(",\"preparation_minutes\":").append(preparationMinutes != null ? preparationMinutes : 0);
+        sb.append(",\"cooking_minutes\":").append(cookingMinutes != null ? cookingMinutes : 0);
+        sb.append(",\"ready_in_minutes\":").append(readyInMinutes != null ? readyInMinutes : 0);
+        sb.append(",\"nb_servings\":").append(nbServings != null ? nbServings : 0);
+        sb.append(",\"price_per_serving\":").append(pricePerServing != null ? pricePerServing : 0.0);
+        sb.append("}");
         return sb.toString();
     }
 }

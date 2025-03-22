@@ -1,6 +1,7 @@
 package com.gfaim.activities.calendar.fragments;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,14 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         // Initialiser le calendrier
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
+            System.out.println("je suis la ");
             selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
             mealAdapter.setSelectedDate(selectedDate);
         });
 
         // Restaurer les données si on revient d'un autre fragment
         if (getArguments() != null) {
+            System.out.println("je gfd)dffdfdgfd la ");
             String date = getArguments().getString("selectedDate");
             String mealType = getArguments().getString("mealType");
             String menuName = getArguments().getString("menuName");
@@ -89,6 +92,7 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
 
                 // Mettre à jour la date sélectionnée dans le calendrier
                 try {
+                    System.out.println("je passe ici ");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     Date parsedDate = sdf.parse(date);
                     if (parsedDate != null) {

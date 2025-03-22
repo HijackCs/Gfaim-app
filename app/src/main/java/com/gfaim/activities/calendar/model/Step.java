@@ -1,5 +1,6 @@
 package com.gfaim.activities.calendar.model;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +8,16 @@ import java.util.List;
  * Représente une étape de préparation dans une recette
  */
 public class Step {
+    @SerializedName("id")
     private Long id;
+
+    @SerializedName("description")
     private String description;
+
+    @SerializedName("step_number")
     private int stepNumber;
+
+    @SerializedName("ingredients")
     private List<StepIngredient> ingredients = new ArrayList<>();
 
     public Step() {

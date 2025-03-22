@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.calendar.model.Step;
+import com.gfaim.activities.calendar.model.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,9 @@ public class SharedStepsViewModel extends ViewModel {
     private int protein = 0;
     private int carbs = 0;
     private int fat = 0;
+
+    // Variable pour stocker la recette actuelle
+    private Recipe currentRecipe = null;
 
     // Getter et Setter pour le nom du menu
     public String getMenuName() {
@@ -273,5 +277,42 @@ public class SharedStepsViewModel extends ViewModel {
             total += ingredient.getCalories();
         }
         return total;
+    }
+
+    /**
+     * Récupère la recette actuelle
+     * @return La recette actuelle ou null si aucune n'est définie
+     */
+    public Recipe getCurrentRecipe() {
+        return currentRecipe;
+    }
+
+    /**
+     * Définit la recette actuelle
+     * @param recipe La recette à définir
+     */
+    public void setCurrentRecipe(Recipe recipe) {
+        this.currentRecipe = recipe;
+
+        // Mise à jour automatique des informations nutritionnelles
+        if (recipe != null) {
+            setNutritionInfo(recipe.getCalories(), recipe.getProtein(), recipe.getCarbs(), recipe.getFat());
+            setMenuName(recipe.getName());
+
+            if (recipe.getNbServings() > 0) {
+                setParticipantCount(recipe.getNbServings());
+            }
+
+            // Mise à jour des étapes si disponibles
+            if (recipe.getSteps() != null) {
+                setRawSteps(recipe.getSteps());
+
+                List<String> stepDescriptions = new ArrayList<>();
+                for (Step step : recipe.getSteps()) {
+                    stepDescriptions.add(step.getDescription());
+                }
+                setSteps(stepDescriptions);
+            }
+        }
     }
 }

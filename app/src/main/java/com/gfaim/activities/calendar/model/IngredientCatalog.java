@@ -1,12 +1,21 @@
 package com.gfaim.activities.calendar.model;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Représente un ingrédient du catalogue
  */
 public class IngredientCatalog {
+    @SerializedName("id")
     private Long id;
+
+    @SerializedName("name")
     private String name;
+
+    @SerializedName("name_en")
     private String nameEn;
+
+    @SerializedName("name_fr")
     private String nameFr;
 
     public IngredientCatalog() {

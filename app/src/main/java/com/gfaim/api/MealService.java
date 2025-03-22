@@ -8,8 +8,6 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 public interface MealService {
-    @GET("/meals")
-    Call<List<Meal>> getMeals(@Header("Authorization") String token);
     @GET("/families/{id}/meals")
     Call<List<Meal>> getMeals(@Path("id") Long id,
                               @Header("Authorization") String token);

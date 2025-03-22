@@ -1,0 +1,32 @@
+package com.gfaim.models;
+
+import com.gfaim.api.models.CreateRecipeBody;
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class MealResponseBody {
+    @SerializedName("id")
+    private Long id;
+
+    @SerializedName("date")
+    private LocalDate date;
+
+    @SerializedName("family_id")
+    private Long familyId;
+
+    @SerializedName("recipe")
+    private CreateRecipeBody recipe;
+
+    @SerializedName("meal_type")
+    private String mealType;
+
+}

@@ -1,5 +1,6 @@
 package com.gfaim.activities.calendar.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import com.gfaim.activities.calendar.model.Recipe;
 import com.gfaim.activities.calendar.adapter.RecipeAdapter;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.RecipeService;
+import com.gfaim.activities.recipe.fragments.RecipeActivity;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -106,22 +108,29 @@ public class ChooseRecipeFragment extends Fragment {
         // Configuration du listener pour le clic sur une recette
         adapter.setOnItemClickListener(position -> {
             Recipe selectedRecipe = recipes.get(position);
-            Bundle args = new Bundle();
-            args.putString("menuName", selectedRecipe.getName());
-            args.putInt("duration", selectedRecipe.getTime());
-            args.putInt("calories", 350); // Valeur par défaut pour l'exemple
-            args.putString("selectedDate", getArguments().getString("selectedDate"));
-            args.putString("mealType", getArguments().getString("mealType"));
-            args.putInt("cardPosition", getArguments().getInt("cardPosition", -1));
+
+            // Créer un Intent pour naviguer vers RecipeActivity
+            Intent intent = new Intent(getContext(), RecipeActivity.class);
+
+            // Transmettre l'ID de la recette pour que RecipeActivity puisse récupérer les détails
+            intent.putExtra("recipe_id", selectedRecipe.getId());
+
+            // Transmettre d'autres informations utiles
+            intent.putExtra("menuName", selectedRecipe.getName());
+            intent.putExtra("selectedDate", getArguments().getString("selectedDate"));
+            intent.putExtra("mealType", getArguments().getString("mealType"));
+            intent.putExtra("duration", selectedRecipe.getReadyInMinutes());
+            intent.putExtra("calories", selectedRecipe.getCalories());
+            intent.putExtra("cardPosition", getArguments().getInt("cardPosition", -1));
 
             // Vérifier si c'est un snack et transmettre le repas parent
             String mealType = getArguments().getString("mealType");
             if ("Snack".equals(mealType)) {
-                args.putString("mealType", "Snack");
-                args.putString("parentMeal", getArguments().getString("parentMeal"));
+                intent.putExtra("parentMeal", getArguments().getString("parentMeal"));
             }
 
-            navController.navigate(R.id.action_chooseRecipe_to_calendar, args);
+            // Démarrer l'activité
+            startActivity(intent);
         });
 
         // Bouton retour

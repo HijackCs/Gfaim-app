@@ -1,14 +1,15 @@
 package com.gfaim.activities.calendar.model;
 
 /**
- * Représente une unité de mesure pour les ingrédients
+ * Représente un ingrédient du catalogue
  */
-public class Unit {
+public class IngredientCatalog {
     private Long id;
+    private String name;
     private String nameEn;
     private String nameFr;
 
-    public Unit() {
+    public IngredientCatalog() {
         // Constructeur par défaut nécessaire pour Gson
     }
 
@@ -18,6 +19,14 @@ public class Unit {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNameEn() {
@@ -38,9 +47,9 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "Unit{" +
+        return "IngredientCatalog{" +
                 "id=" + id +
-                ", nameFr='" + nameFr + '\'' +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

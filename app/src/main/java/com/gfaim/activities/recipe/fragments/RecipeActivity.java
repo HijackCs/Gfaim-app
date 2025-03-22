@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -13,16 +14,24 @@ import com.gfaim.R;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.calendar.model.Recipe;
-import com.gfaim.activities.recipe.fragments.RecipeIngredientsFragment;
+import com.gfaim.activities.calendar.model.Step;
+import com.gfaim.activities.calendar.model.StepIngredient;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.RecipeService;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class RecipeActivity extends AppCompatActivity {
 
     private static final String TAG = "RecipeActivity";
     private SharedStepsViewModel sharedStepsViewModel;
     private ImageView backButton;
+    private Long recipeId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +51,20 @@ public class RecipeActivity extends AppCompatActivity {
             // Vérifier si nous avons des données depuis l'intent
             handleIntent();
 
-            // Ajouter des ingrédients de test UNIQUEMENT si aucun ingrédient n'est disponible
-            // et si aucun menuName n'est défini (signifie qu'aucune recette réelle n'a été sélectionnée)
-            if ((sharedStepsViewModel.getIngredients().getValue() == null ||
-                    sharedStepsViewModel.getIngredients().getValue().isEmpty()) &&
-                    (sharedStepsViewModel.getMenuName() == null ||
-                            sharedStepsViewModel.getMenuName().isEmpty())) {
-                ensureTestIngredientsAvailable();
+            // Si nous avons l'ID de la recette, la charger depuis l'API
+            if (recipeId != null) {
+                loadRecipeFromApi(recipeId);
+            }
+            // Sinon, essayer les autres méthodes de chargement
+            else {
+                // Ajouter des ingrédients de test UNIQUEMENT si aucun ingrédient n'est disponible
+                // et si aucun menuName n'est défini (signifie qu'aucune recette réelle n'a été sélectionnée)
+                if ((sharedStepsViewModel.getIngredients().getValue() == null ||
+                        sharedStepsViewModel.getIngredients().getValue().isEmpty()) &&
+                        (sharedStepsViewModel.getMenuName() == null ||
+                                sharedStepsViewModel.getMenuName().isEmpty())) {
+                    ensureTestIngredientsAvailable();
+                }
             }
 
             // Charger le fragment d'ingrédients par défaut
@@ -76,6 +92,17 @@ public class RecipeActivity extends AppCompatActivity {
     private void handleIntent() {
         try {
             if (getIntent() != null && sharedStepsViewModel != null) {
+                // Récupérer l'ID de la recette s'il existe
+                if (getIntent().hasExtra("recipe_id")) {
+                    recipeId = getIntent().getLongExtra("recipe_id", -1);
+                    if (recipeId <= 0) {
+                        recipeId = null;
+                        Log.e(TAG, "ID de recette invalide dans l'intent");
+                    } else {
+                        Log.d(TAG, "ID de recette récupéré: " + recipeId);
+                    }
+                }
+
                 // Récupérer le nom du menu s'il existe
                 if (getIntent().hasExtra("menuName")) {
                     String menuName = getIntent().getStringExtra("menuName");
@@ -83,8 +110,10 @@ public class RecipeActivity extends AppCompatActivity {
                         sharedStepsViewModel.setMenuName(menuName);
                         Log.d(TAG, "Menu name set from intent: " + menuName);
 
-                        // Essayer de récupérer la recette complète associée au menuName
-                        loadRecipeDataByMenuName(menuName);
+                        // Si pas d'ID de recette, essayer de récupérer la recette complète associée au menuName
+                        if (recipeId == null) {
+                            loadRecipeDataByMenuName(menuName);
+                        }
                     }
                 } else {
                     Log.d(TAG, "Pas de menuName dans l'intent");
@@ -97,6 +126,201 @@ public class RecipeActivity extends AppCompatActivity {
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans handleIntent", e);
+        }
+    }
+
+    /**
+     * Charge les détails d'une recette depuis l'API
+     * @param recipeId L'identifiant de la recette à charger
+     */
+    private void loadRecipeFromApi(Long recipeId) {
+        try {
+            Log.d(TAG, "Chargement de la recette depuis l'API, ID: " + recipeId);
+
+            RecipeService recipeService = ApiClient.getClient(this).create(RecipeService.class);
+            Call<Recipe> call = recipeService.getRecipe(recipeId);
+
+            call.enqueue(new Callback<Recipe>() {
+                @Override
+                public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        Recipe recipe = response.body();
+
+                        // Afficher les données brutes et le type de chaque champ pour le débogage
+                        Log.d(TAG, "Réponse API brute: " + recipe.toString());
+                        Log.d(TAG, "---- Détails de la recette reçue ----");
+                        Log.d(TAG, "ID: " + recipe.getId());
+                        Log.d(TAG, "Nom: " + recipe.getName());
+
+                        // Log des valeurs nutritionnelles avec leur type
+                        Log.d(TAG, "Calories (brut): " + recipe.getCalories() + " (type: " +
+                                (recipe.getCalories() != 0 ? "valeur présente" : "valeur absente") + ")");
+                        Log.d(TAG, "Protéines (brut): " + recipe.getProtein() + "g (type: " +
+                                (recipe.getProtein() != 0 ? "valeur présente" : "valeur absente") + ")");
+                        Log.d(TAG, "Glucides (brut): " + recipe.getCarbs() + "g (type: " +
+                                (recipe.getCarbs() != 0 ? "valeur présente" : "valeur absente") + ")");
+                        Log.d(TAG, "Graisses (brut): " + recipe.getFat() + "g (type: " +
+                                (recipe.getFat() != 0 ? "valeur présente" : "valeur absente") + ")");
+
+                        Log.d(TAG, "Prêt en: " + recipe.getReadyInMinutes() + " min");
+                        Log.d(TAG, "Portions: " + recipe.getNbServings());
+
+                        // Étapes
+                        if (recipe.getSteps() != null) {
+                            Log.d(TAG, "Nombre d'étapes: " + recipe.getSteps().size());
+                            for (int i = 0; i < recipe.getSteps().size(); i++) {
+                                Step step = recipe.getSteps().get(i);
+                                Log.d(TAG, "Étape " + (i+1) + ": " + step.getDescription());
+                            }
+                        } else {
+                            Log.d(TAG, "Aucune étape trouvée dans la recette");
+                        }
+
+                        updateViewModelWithRecipe(recipe);
+                        Log.d(TAG, "Recette chargée avec succès depuis l'API: " + recipe.getName());
+                    } else {
+                        Log.e(TAG, "Erreur lors du chargement de la recette: " +
+                                (response.errorBody() != null ? response.errorBody().toString() : "Erreur inconnue") +
+                                ", code: " + response.code());
+
+                        // Tenter d'afficher plus de détails sur l'erreur
+                        if (response.errorBody() != null) {
+                            try {
+                                Log.e(TAG, "Détail de l'erreur: " + response.errorBody().string());
+                            } catch (Exception e) {
+                                Log.e(TAG, "Impossible de lire le corps de l'erreur", e);
+                            }
+                        }
+
+                        Toast.makeText(RecipeActivity.this,
+                                "Erreur lors du chargement de la recette: " + response.code(),
+                                Toast.LENGTH_SHORT).show();
+                        // Charger des données de test en cas d'échec
+                        ensureTestIngredientsAvailable();
+                    }
+
+                    // Mettre à jour l'interface utilisateur
+                    loadIngredientsFragment();
+                }
+
+                @Override
+                public void onFailure(Call<Recipe> call, Throwable t) {
+                    Log.e(TAG, "Échec de la requête API", t);
+                    Toast.makeText(RecipeActivity.this,
+                            "Échec de la connexion à l'API: " + t.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                    // Charger des données de test en cas d'échec
+                    ensureTestIngredientsAvailable();
+                    loadIngredientsFragment();
+                }
+            });
+        } catch (Exception e) {
+            Log.e(TAG, "Exception lors du chargement de la recette depuis l'API", e);
+            ensureTestIngredientsAvailable();
+            loadIngredientsFragment();
+        }
+    }
+
+    /**
+     * Met à jour le ViewModel avec les données de la recette reçue
+     * @param recipe La recette reçue de l'API
+     */
+    private void updateViewModelWithRecipe(Recipe recipe) {
+        try {
+            // Vérifier si la recette est valide
+            if (recipe == null) {
+                Log.e(TAG, "La recette est null dans updateViewModelWithRecipe");
+                return;
+            }
+
+            Log.d(TAG, "Début de l'extraction des données de la recette: " + recipe.getName());
+
+            // Mettre à jour le nom de la recette
+            sharedStepsViewModel.setMenuName(recipe.getName());
+
+            // Mettre à jour le nombre de portions
+            int servings = recipe.getNbServings();
+            sharedStepsViewModel.setParticipantCount(servings > 0 ? servings : 2); // Valeur par défaut = 2
+
+            // APPROCHE SIMPLIFIÉE:
+            // 1. Créer une liste temporaire d'ingrédients
+            List<Ingredient> tempIngredients = new ArrayList<>();
+
+            // 2. Extraire les ingrédients de chaque étape
+            if (recipe.getSteps() != null) {
+                Log.d(TAG, "La recette contient " + recipe.getSteps().size() + " étapes");
+
+                for (Step step : recipe.getSteps()) {
+                    if (step.getIngredients() != null) {
+                        for (StepIngredient si : step.getIngredients()) {
+                            if (si != null && si.getIngredientCatalog() != null) {
+                                // Extraire le nom (préférer le nom français)
+                                String name = si.getIngredientCatalog().getNameFr();
+                                if (name == null || name.isEmpty()) {
+                                    name = si.getIngredientCatalog().getName();
+                                }
+
+                                // Extraire l'unité (préférer le nom français)
+                                String unit = "";
+                                if (si.getUnit() != null) {
+                                    unit = si.getUnit().getNameFr();
+                                    if (unit == null || unit.isEmpty()) {
+                                        unit = si.getUnit().getNameEn();
+                                    }
+                                }
+
+                                // Créer et ajouter l'ingrédient
+                                tempIngredients.add(new Ingredient(
+                                        name,
+                                        0, // calories à 0 par défaut
+                                        si.getQuantity(),
+                                        unit
+                                ));
+
+                                Log.d(TAG, "Ajout ingrédient: " + name);
+                            }
+                        }
+                    }
+                }
+
+                // 3. Mettre à jour directement la liste d'ingrédients du ViewModel
+                if (!tempIngredients.isEmpty()) {
+                    // SIMPLIFICATION: on va directement modifier la liste dans le LiveData
+                    List<Ingredient> currentList = new ArrayList<>(tempIngredients);
+                    sharedStepsViewModel._ingredients.setValue(currentList);
+
+                    Log.d(TAG, "Nombre d'ingrédients ajoutés directement: " + currentList.size());
+                } else {
+                    Log.w(TAG, "Aucun ingrédient trouvé");
+                }
+
+                // Mise à jour des étapes et durées
+                List<String> stepDescriptions = new ArrayList<>();
+                List<Integer> stepDurations = new ArrayList<>();
+
+                for (Step step : recipe.getSteps()) {
+                    stepDescriptions.add(step.getDescription());
+                    stepDurations.add(5); // 5 minutes par défaut
+                }
+
+                // Mise à jour des étapes
+                sharedStepsViewModel.setRawSteps(recipe.getSteps());
+                sharedStepsViewModel.setSteps(stepDescriptions);
+                sharedStepsViewModel.setDurations(stepDurations);
+            }
+
+            // Mettre à jour les informations nutritionnelles
+            sharedStepsViewModel.setNutritionInfo(
+                    recipe.getCalories(),
+                    recipe.getProtein(),
+                    recipe.getCarbs(),
+                    recipe.getFat()
+            );
+
+            Log.d(TAG, "ViewModel mis à jour avec les données de la recette: " + recipe.getName());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception dans updateViewModelWithRecipe", e);
+            e.printStackTrace();
         }
     }
 

@@ -14,8 +14,7 @@ import retrofit2.http.Path;
 
 public interface RecipeService {
     @GET("/recipes/{recipe_id}")
-    Call<List<Recipe>> getRecipe(@Path("recipe_id") Long recipe_id);
-
+    Call<Recipe> getRecipe(@Path("recipe_id") Long recipe_id);
     @POST("/recipes")
     Call<CreateRecipe> createMeal(@Header("Authorization") String token, @Body CreateRecipeBody request);
 

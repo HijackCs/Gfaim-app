@@ -7,17 +7,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
+import com.gfaim.activities.calendar.model.Step;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,12 +34,10 @@ public class RecipeStepsFragment extends Fragment {
     private TextView stepInstructionsTextView;
     private Button previousStepButton;
     private Button nextStepButton;
-    private List<String> steps;
+    private List<Step> steps;
     private List<Integer> durations;
     private int currentStepIndex = 0;
-
-    // Step indicators
-    private TextView step1Indicator, step2Indicator, step3Indicator, step4Indicator;
+    private LinearLayout stepIndicatorsLayout;
 
     // Step ingredients
     private TextView ingredient1NameTextView, ingredient1QuantityTextView;
@@ -64,13 +64,13 @@ public class RecipeStepsFragment extends Fragment {
     private void debugViewModel() {
         if (sharedStepsViewModel != null) {
             String menuName = sharedStepsViewModel.getMenuName();
-            List<String> steps = sharedStepsViewModel.getSteps().getValue();
+            List<Step> steps = sharedStepsViewModel.getRawSteps();
 
             Log.d(TAG, "ViewModel - Menu name: " + menuName);
             Log.d(TAG, "ViewModel - Steps count: " + (steps != null ? steps.size() : 0));
             if (steps != null) {
                 for (int i = 0; i < steps.size(); i++) {
-                    Log.d(TAG, "Step " + (i+1) + ": " + steps.get(i));
+                    Log.d(TAG, "Step " + (i+1) + ": " + steps.get(i).getDescription());
                 }
             }
         }
@@ -84,6 +84,7 @@ public class RecipeStepsFragment extends Fragment {
             view = inflater.inflate(R.layout.fragment_recipe_steps, container, false);
             initViews(view);
             fetchStepsData();
+            createStepIndicators();
             updateUIForCurrentStep();
         } catch (Exception e) {
             Log.e(TAG, "Erreur lors de la création de la vue", e);
@@ -110,18 +111,7 @@ public class RecipeStepsFragment extends Fragment {
 
             stepNumberTextView = view.findViewById(R.id.stepNumberTextView);
             stepInstructionsTextView = view.findViewById(R.id.stepInstructionsTextView);
-
-            // Indicators
-            step1Indicator = view.findViewById(R.id.step1Indicator);
-            step2Indicator = view.findViewById(R.id.step2Indicator);
-            step3Indicator = view.findViewById(R.id.step3Indicator);
-            step4Indicator = view.findViewById(R.id.step4Indicator);
-
-            // Ingredients in this step
-            /*ingredient1NameTextView = view.findViewById(R.id.ingredient1NameTextView);
-            ingredient1QuantityTextView = view.findViewById(R.id.ingredient1QuantityTextView);
-            ingredient2NameTextView = view.findViewById(R.id.ingredient2NameTextView);
-            ingredient2QuantityTextView = view.findViewById(R.id.ingredient2QuantityTextView);*/
+            stepIndicatorsLayout = view.findViewById(R.id.stepIndicatorsLayout);
 
             // Navigation buttons
             previousStepButton = view.findViewById(R.id.previousStepButton);
@@ -140,8 +130,8 @@ public class RecipeStepsFragment extends Fragment {
                 return;
             }
 
-            // Récupérer les étapes et les durées du ViewModel
-            steps = sharedStepsViewModel.getSteps().getValue();
+            // Récupérer les étapes du ViewModel
+            steps = sharedStepsViewModel.getRawSteps();
             durations = sharedStepsViewModel.getDurations().getValue();
 
             // Si pas d'étapes, créer des étapes de test
@@ -176,12 +166,32 @@ public class RecipeStepsFragment extends Fragment {
     private void addTestSteps() {
         try {
             // Créer des étapes de test
-            List<String> testSteps = Arrays.asList(
-                    "Prepare all ingredients: chop vegetables, measure spices, and slice meat.",
-                    "Heat a large pot over medium heat. Add sesame oil and sauté ginger until fragrant.",
-                    "Add chicken and cook until browned on all sides, about 5-7 minutes.",
-                    "We tie the bacon with twine so that the skin is on the outside and one end and the other practically meet. Heat a little oil in a pressure cooker and mark the bacon all over until golden brown. We remove and discard the oil."
-            );
+            List<Step> testSteps = new ArrayList<>();
+
+            Step step1 = new Step();
+            step1.setId(1L);
+            step1.setDescription("Prepare all ingredients: chop vegetables, measure spices, and slice meat.");
+            step1.setStepNumber(1);
+
+            Step step2 = new Step();
+            step2.setId(2L);
+            step2.setDescription("Heat a large pot over medium heat. Add sesame oil and sauté ginger until fragrant.");
+            step2.setStepNumber(2);
+
+            Step step3 = new Step();
+            step3.setId(3L);
+            step3.setDescription("Add chicken and cook until browned on all sides, about 5-7 minutes.");
+            step3.setStepNumber(3);
+
+            Step step4 = new Step();
+            step4.setId(4L);
+            step4.setDescription("We tie the bacon with twine so that the skin is on the outside and one end and the other practically meet. Heat a little oil in a pressure cooker and mark the bacon all over until golden brown. We remove and discard the oil.");
+            step4.setStepNumber(4);
+
+            testSteps.add(step1);
+            testSteps.add(step2);
+            testSteps.add(step3);
+            testSteps.add(step4);
 
             // Créer des durées correspondantes
             List<Integer> testDurations = Arrays.asList(5, 3, 7, 10);
@@ -190,12 +200,88 @@ public class RecipeStepsFragment extends Fragment {
             steps = new ArrayList<>(testSteps);
             durations = new ArrayList<>(testDurations);
 
-            sharedStepsViewModel.setSteps(steps);
+            // Mettre à jour le ViewModel avec les étapes brutes
+            sharedStepsViewModel.setRawSteps(steps);
+
+            // Extraire les descriptions des étapes pour les méthodes existantes
+            List<String> stepDescriptions = new ArrayList<>();
+            for (Step step : steps) {
+                stepDescriptions.add(step.getDescription());
+            }
+            sharedStepsViewModel.setSteps(stepDescriptions);
             sharedStepsViewModel.setDurations(durations);
 
             Log.d(TAG, "Étapes de test ajoutées: " + steps.size());
         } catch (Exception e) {
             Log.e(TAG, "Exception dans addTestSteps", e);
+        }
+    }
+
+    /**
+     * Crée dynamiquement les indicateurs d'étape en fonction du nombre d'étapes
+     */
+    private void createStepIndicators() {
+        try {
+            if (stepIndicatorsLayout == null || steps == null || steps.isEmpty()) {
+                Log.e(TAG, "Impossible de créer les indicateurs d'étape");
+                return;
+            }
+
+            // Supprimer tous les indicateurs existants
+            stepIndicatorsLayout.removeAllViews();
+
+            // Vérifier les étapes avant de créer les indicateurs
+            for (int i = 0; i < steps.size(); i++) {
+                Step step = steps.get(i);
+                Log.d(TAG, "Étape " + i + ": ID=" + step.getId() + ", Numéro=" + step.getStepNumber() + ", Description=" + step.getDescription());
+
+                // S'assurer que chaque étape a un numéro et un ID valide
+                if (step.getStepNumber() <= 0) {
+                    step.setStepNumber(i + 1);
+                    Log.d(TAG, "Correction du numéro d'étape: " + step.getStepNumber());
+                }
+
+                if (step.getId() == null) {
+                    step.setId((long) (i + 1));
+                    Log.d(TAG, "Correction de l'ID d'étape: " + step.getId());
+                }
+            }
+
+            // Créer un nouvel indicateur pour chaque étape
+            for (int i = 0; i < steps.size(); i++) {
+                Step step = steps.get(i);
+                TextView indicator = new TextView(requireContext());
+
+                // Définir l'ID de l'étape comme texte de l'indicateur
+                indicator.setText(String.valueOf(step.getId()));
+                Log.d(TAG, "Création de l'indicateur pour l'étape " + i + " avec ID: " + step.getId());
+
+                // Paramètres de mise en page
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                );
+                params.width = getResources().getDimensionPixelSize(R.dimen.step_indicator_size);
+                params.height = getResources().getDimensionPixelSize(R.dimen.step_indicator_size);
+                params.setMarginEnd(getResources().getDimensionPixelSize(R.dimen.step_indicator_margin));
+                indicator.setLayoutParams(params);
+
+                // Définir l'apparence
+                indicator.setTextColor(ContextCompat.getColor(requireContext(), R.color.white));
+                indicator.setTextSize(12);
+                indicator.setGravity(android.view.Gravity.CENTER);
+                indicator.setBackgroundResource(R.drawable.circle_bg);
+
+                // Ajouter un tag pour identifier l'indicateur
+                indicator.setTag(i);
+
+                // Ajouter l'indicateur au layout
+                stepIndicatorsLayout.addView(indicator);
+            }
+
+            Log.d(TAG, "Indicateurs d'étape créés: " + steps.size());
+        } catch (Exception e) {
+            Log.e(TAG, "Exception dans createStepIndicators", e);
         }
     }
 
@@ -211,120 +297,45 @@ public class RecipeStepsFragment extends Fragment {
                 currentStepIndex = steps.size() - 1;
             }
 
+            Step currentStep = steps.get(currentStepIndex);
+
             // Mettre à jour le numéro et le texte de l'étape
-            stepNumberTextView.setText("Step " + (currentStepIndex + 1));
-            stepInstructionsTextView.setText(steps.get(currentStepIndex));
+            stepNumberTextView.setText("Step " + currentStep.getStepNumber());
+            stepInstructionsTextView.setText(currentStep.getDescription());
 
             // Mise à jour des indicateurs d'étape
             updateStepIndicators();
 
             // Mise à jour des boutons
             updateNavigationButtons();
-
-            // Mise à jour des ingrédients spécifiques à cette étape
-            updateStepIngredients();
         } catch (Exception e) {
             Log.e(TAG, "Exception dans updateUIForCurrentStep", e);
         }
     }
 
-    /**
-     * Met à jour les ingrédients affichés pour l'étape actuelle
-     * Dans un cas réel, chaque étape aurait ses propres ingrédients
-     */
-    private void updateStepIngredients() {
-        try {
-            // Pour cet exemple, nous utilisons des ingrédients statiques différents selon l'étape
-            switch (currentStepIndex) {
-                case 0:
-                    setStepIngredients("All ingredients", "Various", "Cutting board", "1");
-                    break;
-                case 1:
-                    setStepIngredients("Sesame oil", "30 ml", "Fresh ginger", "20 g");
-                    break;
-                case 2:
-                    setStepIngredients("Chicken breasts", "350 g", "Salt & pepper", "to taste");
-                    break;
-                case 3:
-                    setStepIngredients("Bacon", "50 gr", "Soy Sauce", "200 ml");
-                    break;
-                default:
-                    setStepIngredients("Ingredients", "as needed", "", "");
-                    break;
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans updateStepIngredients", e);
-        }
-    }
-
-    /**
-     * Définit les ingrédients à afficher pour l'étape courante
-     */
-    private void setStepIngredients(String name1, String quantity1, String name2, String quantity2) {
-        if (ingredient1NameTextView != null && ingredient1QuantityTextView != null) {
-            ingredient1NameTextView.setText(name1);
-            ingredient1QuantityTextView.setText(quantity1);
-        }
-
-        if (ingredient2NameTextView != null && ingredient2QuantityTextView != null) {
-            if (name2.isEmpty()) {
-                // Cacher le deuxième ingrédient si non utilisé
-                ingredient2NameTextView.setVisibility(View.GONE);
-                ingredient2QuantityTextView.setVisibility(View.GONE);
-            } else {
-                ingredient2NameTextView.setVisibility(View.VISIBLE);
-                ingredient2QuantityTextView.setVisibility(View.VISIBLE);
-                ingredient2NameTextView.setText(name2);
-                ingredient2QuantityTextView.setText(quantity2);
-            }
-        }
-    }
-
     private void updateStepIndicators() {
         try {
-            if (step1Indicator == null || step2Indicator == null ||
-                    step3Indicator == null || step4Indicator == null || steps == null) {
+            if (stepIndicatorsLayout == null || steps == null || steps.isEmpty()) {
                 Log.e(TAG, "Indicateurs d'étape null dans updateStepIndicators");
                 return;
             }
 
-            // Réinitialiser tous les indicateurs
-            resetIndicators();
-
-            // Mettre en surbrillance l'indicateur actuel
-            /*switch (currentStepIndex) {
-                case 0:
-                    step1Indicator.setBackgroundResource(R.drawable.circle_bg_active);
-                    break;
-                case 1:
-                    step2Indicator.setBackgroundResource(R.drawable.circle_bg_active);
-                    break;
-                case 2:
-                    step3Indicator.setBackgroundResource(R.drawable.circle_bg_active);
-                    break;
-                case 3:
-                    step4Indicator.setBackgroundResource(R.drawable.circle_bg_active);
-                    break;
-            }*/
-
-            // Cacher les indicateurs qui ne sont pas nécessaires
-            int stepCount = steps.size();
-            if (stepCount < 4) step4Indicator.setVisibility(View.GONE);
-            if (stepCount < 3) step3Indicator.setVisibility(View.GONE);
-            if (stepCount < 2) step2Indicator.setVisibility(View.GONE);
+            // Mettre à jour les indicateurs en fonction de l'étape active
+            for (int i = 0; i < stepIndicatorsLayout.getChildCount(); i++) {
+                View child = stepIndicatorsLayout.getChildAt(i);
+                if (child instanceof TextView) {
+                    TextView indicator = (TextView) child;
+                    if (i == currentStepIndex) {
+                        // Indicateur actif
+                        indicator.setBackgroundResource(R.drawable.circle_bg_active);
+                    } else {
+                        // Indicateur inactif
+                        indicator.setBackgroundResource(R.drawable.circle_bg);
+                    }
+                }
+            }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans updateStepIndicators", e);
-        }
-    }
-
-    private void resetIndicators() {
-        try {
-            /*if (step1Indicator != null) step1Indicator.setBackgroundResource(R.drawable.circle_bg);
-            if (step2Indicator != null) step2Indicator.setBackgroundResource(R.drawable.circle_bg);
-            if (step3Indicator != null) step3Indicator.setBackgroundResource(R.drawable.circle_bg);
-            if (step4Indicator != null) step4Indicator.setBackgroundResource(R.drawable.circle_bg);*/
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans resetIndicators", e);
         }
     }
 
@@ -340,9 +351,9 @@ public class RecipeStepsFragment extends Fragment {
 
             // Changer le texte du bouton suivant à la dernière étape
             if (currentStepIndex == steps.size() - 1) {
-                nextStepButton.setText("Finish cook");
+                nextStepButton.setText("Terminer");
             } else {
-                nextStepButton.setText("Next");
+                nextStepButton.setText("Suivant");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans updateNavigationButtons", e);

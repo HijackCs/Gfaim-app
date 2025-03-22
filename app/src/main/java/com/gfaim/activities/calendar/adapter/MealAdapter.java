@@ -200,6 +200,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             // Récupérer le mealType et la durée associés à ce menuName
             String mealType = null;
             int duration = 0;
+            int calories = 0;
+            // Dans une vraie application, nous aurions l'ID de la recette à partir de la base de données
+            // Pour l'instant, nous utilisons un ID fictif pour les tests
+            Long recipeId = 1L; // ID temporaire pour tester la fonctionnalité
 
             if (selectedDate != null) {
                 Map<String, MealInfo> mealsForDate = mealsByDate.get(selectedDate);
@@ -209,6 +213,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                         if (menuName.equals(entry.getValue().menuName)) {
                             mealType = entry.getKey();
                             duration = entry.getValue().duration;
+                            calories = entry.getValue().calories;
                             break;
                         }
 
@@ -219,6 +224,7 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                                 if (menuName.equals(snackEntry.getValue().menuName)) {
                                     mealType = "Snack";
                                     duration = snackEntry.getValue().duration;
+                                    calories = snackEntry.getValue().calories;
                                     break;
                                 }
                             }
@@ -229,10 +235,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             }
 
             // Ajouter les extras à l'intent
+            intent.putExtra("recipe_id", recipeId); // Ajouter l'ID de la recette
             if (mealType != null) {
                 intent.putExtra("mealType", mealType);
             }
             intent.putExtra("duration", duration);
+            intent.putExtra("calories", calories);
+            intent.putExtra("selectedDate", selectedDate);
 
             context.startActivity(intent);
         }

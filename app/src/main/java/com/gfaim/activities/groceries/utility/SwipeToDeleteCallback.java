@@ -23,7 +23,7 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     private final int iconMargin;
 
     public SwipeToDeleteCallback(Context context, RemovableFragment fragment) {
-        super(0, ItemTouchHelper.LEFT); // Swipe à gauche uniquement
+        super(0, ItemTouchHelper.LEFT);
         this.fragment = fragment;
         deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_delete);
         background = new ColorDrawable(Color.RED);
@@ -43,8 +43,8 @@ public class SwipeToDeleteCallback extends ItemTouchHelper.SimpleCallback {
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         int position = viewHolder.getAdapterPosition();
-        FoodItem item = fragment.getItemAtPosition(position);  // Récupère l'élément à la position
-        fragment.removeItem(item);  // Suppression via le fragment
+        FoodItem item = fragment.getItemAtPosition(position);
+        fragment.removeItem(item);
     }
 
     @Override

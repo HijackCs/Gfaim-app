@@ -10,22 +10,16 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
 import com.gfaim.activities.HomeActivity;
 import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
-import com.gfaim.activities.HomeActivity;
-import com.gfaim.activities.UserProfileActivity;
+
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
@@ -36,12 +30,7 @@ import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.auth.AuthManager;
-import com.gfaim.utility.auth.JwtDecoder;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-
-import org.w3c.dom.Text;
 
 import java.util.logging.Logger;
 
@@ -77,31 +66,12 @@ public class LoginActivity extends AppCompatActivity {
             log.warning("[LoginActivity][onCreate] Problem on MainActivity launch");
         }
 
-        //ImageButton googleBtn = findViewById(R.id.googleButton);
-        //ImageButton facebookBtn = findViewById(R.id.facebookButton);
-
         authManager = new AuthManager(this);
-       // authManager.setupGoogleLogin(googleBtn, this);
-       // authManager.setupFacebookLogin(facebookBtn, this);
 
         setupClassicLogin();
         setupRegister();
         setupForgotPwd();
         setupHidePwd();
-    }
-
-    private String getUserEmail() {
-        String accessToken = tokenManager.getAccessToken();
-        if (accessToken != null) {
-            String decodedToken = JwtDecoder.decodeJWT(accessToken);
-            assert decodedToken != null;
-            JsonObject jsonObject = JsonParser.parseString(decodedToken).getAsJsonObject();
-            if (jsonObject.has("upn")) {
-                System.out.println(jsonObject);
-                return jsonObject.get("upn").getAsString();
-            }
-        }
-        return "";
     }
 
     public void doesheHaveAFamily(Response<AuthResponse> response){
@@ -111,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
-
+                // Empty
             }
 
             @Override
@@ -132,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onSuccess(CreateMember body) {
-
+                // Empty
             }
         });
     }

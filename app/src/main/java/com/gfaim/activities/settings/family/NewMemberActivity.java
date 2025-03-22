@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
 import com.gfaim.R;
 import com.gfaim.activities.auth.onboarding.ViewPagerAdapter;
 import com.gfaim.api.ApiClient;
@@ -73,6 +74,7 @@ public class NewMemberActivity extends AppCompatActivity {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             //empty
         }
+
         @Override
         public void onPageSelected(int position) {
 
@@ -83,12 +85,13 @@ public class NewMemberActivity extends AppCompatActivity {
             } else {
                 backButton.setVisibility(View.INVISIBLE);
             }
-            if (position == 3){
+            if (position == 3) {
                 nextButton.setText(R.string.finish);
             } else {
                 nextButton.setText(R.string.next);
             }
         }
+
         @Override
         public void onPageScrollStateChanged(int state) {
             //empty
@@ -107,18 +110,6 @@ public class NewMemberActivity extends AppCompatActivity {
         nextButton = findViewById(R.id.nextButton);
         cancelButton = findViewById(R.id.cancelButton);
 
-        // Nav bar
-       /*
-        new NavigationBar(this);
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-                            | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                            | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                            | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
-        */
-
         backButton.setOnClickListener(v -> {
             if (getItem(0) > 0) {
                 slideViewPager.setCurrentItem(getItem(-1), true);
@@ -132,37 +123,38 @@ public class NewMemberActivity extends AppCompatActivity {
                 String name = viewPagerAdapter.getMemberName();
                 if (!name.isEmpty()) {
 
-                        utileProfile.createMember(new OnMemberReceivedListener() {
-                            @Override
-                            public void onSuccess(CreateMemberNoAccount session) {
-                            }
+                    utileProfile.createMember(new OnMemberReceivedListener() {
+                        @Override
+                        public void onSuccess(CreateMemberNoAccount session) {
+                            //empty
+                        }
 
-                            @Override
-                            public void onSuccess(MemberSessionBody session) {
+                        @Override
+                        public void onSuccess(MemberSessionBody session) {
+                            //empty
+                        }
 
-                            }
+                        @Override
+                        public void onFailure(Throwable error) {
+//empty
+                        }
 
-                            @Override
-                            public void onFailure(Throwable error) {
+                        @Override
+                        public void onSuccess(CreateMember session) {
+                            setMemberId(session.getId());  // Stocke l'ID du membre nouvellement créé
 
-                            }
+                            postSelections(activity, ALLERGIES, viewPagerAdapter.getSelectedAllergiesItems());
+                            postSelections(activity, "diets", viewPagerAdapter.getSelectedDietsItems());
 
-                            @Override
-                            public void onSuccess(CreateMember session) {
-                                setMemberId(session.getId());  // Stocke l'ID du membre nouvellement créé
-
-                                postSelections(activity, ALLERGIES,viewPagerAdapter.getSelectedAllergiesItems());
-                                postSelections(activity,"diets",viewPagerAdapter.getSelectedDietsItems());
-
-                                activity.finish();
-                                Intent intent = new Intent(activity, FamilyActivity.class);
-                                activity.startActivity(intent);
-                                log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
-                            }
-                        },family.getCode(), name, family.getName());
+                            activity.finish();
+                            Intent intent = new Intent(activity, FamilyActivity.class);
+                            activity.startActivity(intent);
+                            log.info("[NewMemberActivity][OnCreate] (fin) nouveau membre " + name);
+                        }
+                    }, family.getCode(), name, family.getName());
 
 
-                    }
+                }
             }
         });
         //annule
@@ -184,11 +176,11 @@ public class NewMemberActivity extends AppCompatActivity {
     }
 
 
-    public void getAndSetInfo(){
+    public void getAndSetInfo() {
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
-
+                //empty
             }
 
             @Override
@@ -196,36 +188,47 @@ public class NewMemberActivity extends AppCompatActivity {
                 member = session; // Stocke dans l'Activity
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
                     @Override
-                    public void onSuccess() {}
+                    public void onSuccess() {
+                        //empty
+                    }
+
                     @Override
-                    public void onSuccess(LeaveFamilyBody family) {}
+                    public void onSuccess(LeaveFamilyBody family) {
+                        //empty
+                    }
+
                     @Override
-                    public void onSuccess(CreateFamilyBody session) {}
+                    public void onSuccess(CreateFamilyBody session) {
+                        //empty
+                    }
+
                     @Override
                     public void onSuccess(FamilyBody session) {
                         family = session;
                     }
+
                     @Override
                     public void onFailure(Throwable error) {
-                        System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
+                        log.info("Error fetching family : " + error.getMessage());
                     }
                 }, member.getFamilyId());
             }
+
             @Override
             public void onFailure(Throwable error) {
-                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                log.info("Error fetching session : " + error.getMessage());
             }
 
             @Override
             public void onSuccess(CreateMember body) {
-
+                //empty
             }
         });
     }
 
 
     public void setDotIndicator(int position) {
-        int totalDots = 3; // Nombre total d'étapes
+        int totalDots = 3;
         dots = new TextView[totalDots];
         dotIndicator.removeAllViews();
 
@@ -241,7 +244,6 @@ public class NewMemberActivity extends AppCompatActivity {
                     TypedValue.COMPLEX_UNIT_DIP, sizeInDp, getResources().getDisplayMetrics());
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
-
 
 
             dots[i].setLayoutParams(params);
@@ -291,18 +293,16 @@ public class NewMemberActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    log.info("Données envoyées avec succès");
-                    Toast.makeText(context, "Données envoyées avec succès", Toast.LENGTH_SHORT).show();
+                    log.info("Successfully saved data");
 
                 } else {
-                    Toast.makeText(context, "Erreur lors de l'envoi", Toast.LENGTH_SHORT).show();
-                    log.info("Erreur lors de l'envoi");
+                    log.info("Error sending data");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                log.info("Erreur: " + t.getMessage());
+                log.info("Error: " + t.getMessage());
             }
         });
     }

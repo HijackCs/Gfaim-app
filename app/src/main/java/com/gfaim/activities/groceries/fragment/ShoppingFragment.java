@@ -41,7 +41,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ShoppingFragment extends Fragment implements RemovableFragment {
-    private RecyclerView recyclerView;
     private List<FoodItem> shoppingList = new ArrayList<>();
     private List<FoodItem> filteredList = new ArrayList<>();
     private List<FoodItem> selectedItems = new ArrayList<>();
@@ -49,14 +48,13 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
     private MemberSessionBody member;
     private TokenManager tokenManager;
 
-    private UtileProfile utileProfile;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        utileProfile = new UtileProfile(getContext());
-        recyclerView = view.findViewById(R.id.recyclerView);
+        UtileProfile utileProfile = new UtileProfile(getContext());
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         tokenManager = new TokenManager(getContext());
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
@@ -65,7 +63,9 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
-            public void onSuccess(CreateMemberNoAccount session) {}
+            public void onSuccess(CreateMemberNoAccount session) {
+                //empty
+            }
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
@@ -78,9 +78,8 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
                             ShoppingListResponse shoppingListResponse = response.body();
                             List<ShoppingItem> items = shoppingListResponse.getItems();
 
-                            shoppingList.clear(); // On vide la liste existante
+                            shoppingList.clear();
 
-                            // On convertit les ShoppingItem en FoodItem
                             for (ShoppingItem item : items) {
                                 FoodItem foodItem = new FoodItem(
                                         item.getIngredientNameFr(),
@@ -91,7 +90,6 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
                                 shoppingList.add(foodItem);
                             }
 
-                            // Mise à jour de la liste filtrée et de l'adaptateur
                             filteredList.clear();
                             filteredList.addAll(shoppingList);
                             adapter.notifyDataSetChanged();
@@ -109,13 +107,14 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
                 });
             }
             @Override
-            public void onFailure(Throwable error) {}
+            public void onFailure(Throwable error) {
+                //Empty
+            }
             @Override
-            public void onSuccess(CreateMember body) {}
+            public void onSuccess(CreateMember body) {
+                //Empty
+            }
         });
-
-        // Suppression des données de test (a supp)
-        // On utilise maintenant les données de l'API
 
         adapter = new ShoppingAdapter(shoppingList, this);
         recyclerView.setAdapter(adapter);
@@ -151,7 +150,6 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
 
     @Override
     public void removeItem(FoodItem item) {
-        // Appel à l'API pour supprimer l'ingrédient
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
@@ -160,21 +158,19 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Suppression locale uniquement si l'appel API a réussi
                     filteredList.remove(item);
                     shoppingList.remove(item);
                     adapter.updateList(filteredList);
                     adapter.notifyDataSetChanged();
 
-                    Toast.makeText(getContext(), "Ingrédient supprimé de la liste de courses", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Erreur lors de la suppression: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.errorDeleting + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Erreur de communication: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.errorFetching + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -215,16 +211,13 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
         adapter.notifyDataSetChanged();
     }
 
-    // Nouvelle méthode pour mettre à jour la liste des courses à partir des données de l'API
     public void updateShoppingList(List<ShoppingItem> items) {
         if (items == null) {
             return;
         }
 
-        // Vider les listes existantes
         shoppingList.clear();
 
-        // Convertir les ShoppingItem en FoodItem
         for (ShoppingItem item : items) {
             FoodItem foodItem = new FoodItem(
                     item.getIngredientNameFr(),
@@ -235,11 +228,9 @@ public class ShoppingFragment extends Fragment implements RemovableFragment {
             shoppingList.add(foodItem);
         }
 
-        // Mettre à jour la liste filtrée
         filteredList.clear();
         filteredList.addAll(shoppingList);
 
-        // Notifier l'adaptateur du changement
         adapter.updateList(filteredList);
         adapter.notifyDataSetChanged();
     }

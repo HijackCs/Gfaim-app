@@ -124,22 +124,6 @@ public class HomeActivity extends AppCompatActivity {
     private void signOut() {
         goToLoginScreen();
     }
-      /*  GoogleSignInAccount googleAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if (googleAccount != null) {
-            gsc.signOut().addOnCompleteListener(task -> {
-                Toast.makeText(HomeActivity.this, "Signed out from Google", Toast.LENGTH_SHORT).show();
-                log.info("[acceuil][signOut] Signed out from Google ");
-            });
-        }
-
-        AccessToken facebookAccessToken = AccessToken.getCurrentAccessToken();
-        if (facebookAccessToken != null) {
-            com.facebook.login.LoginManager.getInstance().logOut();
-            Toast.makeText(HomeActivity.this, "Signed out from Facebook", Toast.LENGTH_SHORT).show();
-            log.info("[acceuil][signOut] Signed out from Google ");
-            goToLoginScreen();
-        }
-    }*/
 
 
     private void goToLoginScreen() {

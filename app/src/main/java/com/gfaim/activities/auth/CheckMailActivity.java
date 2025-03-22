@@ -47,9 +47,9 @@ public class CheckMailActivity extends AppCompatActivity {
             String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
             if (code.isEmpty() || newPassword.isEmpty() || confirmPassword.isEmpty()) {
-                Toast.makeText(this, "Veuillez remplir tous les champs.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.fillAll, Toast.LENGTH_SHORT).show();
             } else if (!newPassword.equals(confirmPassword)) {
-                Toast.makeText(this, "Les mots de passe ne correspondent pas.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, R.string.samePassword, Toast.LENGTH_SHORT).show();
             } else {
                 resetPassword(code, newPassword);
             }
@@ -64,17 +64,16 @@ public class CheckMailActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(CheckMailActivity.this, "Mot de passe réinitialisé avec succès.", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(CheckMailActivity.this, LoginActivity.class));
                     finish();
                 } else {
-                    Toast.makeText(CheckMailActivity.this, "Code invalide ou erreur de réinitialisation.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CheckMailActivity.this, R.string.errorCode, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(CheckMailActivity.this, "Erreur de connexion : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(CheckMailActivity.this, R.string.errorConnection + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

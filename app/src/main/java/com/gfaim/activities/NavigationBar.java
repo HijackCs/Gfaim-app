@@ -65,7 +65,7 @@ public class NavigationBar {
         Intent intent = null;
 
         if (selectedButton.getId() == R.id.btn_calendar) {
-           /* intent = new Intent(context, CalendarActivity.class);*/
+            intent = new Intent(context, CalendarActivity.class);
         } else if (selectedButton.getId() == R.id.btn_home) {
             intent = new Intent(context, HomeActivity.class);
         } else if (selectedButton.getId() == R.id.btn_groceries) {

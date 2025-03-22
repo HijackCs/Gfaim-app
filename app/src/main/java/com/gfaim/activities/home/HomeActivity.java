@@ -1,6 +1,5 @@
 package com.gfaim.activities.home;
 import android.content.Intent;
-package com.gfaim.activities.home;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,11 +13,7 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
-import com.gfaim.activities.groceries.GroceryActivity;
 import com.gfaim.activities.settings.SettingsActivity;
-import com.gfaim.activities.CarrouselAdapter;
-import com.gfaim.activities.NavigationBar;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;

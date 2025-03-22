@@ -1,16 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--Login-->
-    <string name="app_name">GFaim</string>
-    <string name="welcomeBack">Welcome Back!</string>
-    <string name="password">Password</string>
-    <string name="email">Email</string>
-    <string name="login">Login</string>
-    <string name="or">or</string>
-    <string name="noAccount">Don\'t have an account?</string>
-    <string name="signUp">Sign up</string>
-    <string name="forgotPwd">Forget password ?</string>
-
 
     <!--Register-->
     <string name="registerTxtView">Enter your credential to access your account</string>

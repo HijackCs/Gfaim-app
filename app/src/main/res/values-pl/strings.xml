@@ -1,33 +1,125 @@
 <resources>
-    <!--Login-->
+
+    <!--Connexion-->
     <string name="app_name">GFaim</string>
-    <string name="welcomeBack">Witamy z powrotem!</string>
-    <string name="password">Hasło</string>
-    <string name="email">E-mail</string>
-    <string name="login">Zaloguj się</string>
-    <string name="or">lub</string>
-    <string name="noAccount">Nie masz konta?</string>
-    <string name="signUp">Zarejestruj się</string>
+    <string name="welcomeBack">Bienvenue !</string>
+    <string name="password">Mot de passe</string>
+    <string name="email">Email</string>
+    <string name="login">Connexion</string>
+    <string name="or">ou</string>
+    <string name="noAccount">Pas de compte ?</string>
+    <string name="signUp">Inscris-toi</string>
     <string name="forgotPwd">Mots de passe oublié ?</string>
 
-
-    <!--Register-->
-    <string name="registerTxtView">Wprowadź swoje dane, aby uzyskać dostęp do konta</string>
-    <string name="helloTxt">Cześć, Witaj 👋</string>
-    <string name="name">Imię</string>
-    <string name="surname">Nazwisko</string>
-    <string name="haveAccount">Masz już konto?</string>
+    <!--Inscription-->
+    <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
+    <string name="helloTxt">Salut 👋</string>
+    <string name="name">Nom</string>
+    <string name="firstName">Prénom</string>
+    <string name="haveAccount">Tu as un compte ?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
 
     <!--Check Mail-->
     <string name="checkMail">Regarde tes mails</string>
     <string name="continueBtn">Continuer</string>
+    <string name="enter_code">enter code</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="reset_password">reset password\n</string>
+
 
     <!--Forgot pwd-->
-    <string name="sendCode">Send code</string>
-    <string name="resetPwd">Reset Password</string>
-    <string name="remember">Remember your password ?</string>
-    <string name="goBackLogin">Go back to login</string>
+    <string name="sendCode">Envoyer le code</string>
+    <string name="resetPwd">Réinitialiser le mot de passe</string>
+    <string name="remember">Tu te souviens de ton mot de passe ?</string>
+    <string name="goBackLogin">Retour à la connexion</string>
+    <string name="your_email">Ton Email</string>
+
+    <!--settings-->
+    <string name="delete_profile">Supprimer le profil</string>
+    <string name="update_profile">Mettre à jour le profil</string>
+    <string name="my_account">Mon compte</string>
+    <string name="manage_account_settings">Gérer les paramètres de votre compte</string>
+    <string name="family_group">Groupe familial</string>
+    <string name="manage_family_settings">Gérer les paramètres familiaux</string>
+    <string name="log_out">Déconnexion</string>
+    <string name="log_out_text">Sécurisez davantage votre compte</string>
+    <string name="more">Plus</string>
+    <string name="help_support">Aide et support</string>
+    <string name="about_app">À propos de l\'application</string>
+    <string name="JoinOrCreate">Join or Create a Family</string>
+
+
+    <!--Onboarding-->
+    <string name="skip">Passer</string>
+    <string name="previous">Précédent</string>
+    <string name="next">Suivant</string>
+    <string name="finish">Terminer</string>
+
+    <string name="screen0">Profitez de votre repas</string>
+    <string name="screen0Desc">Détendez-vous et ne réfléchissez pas trop à ce que vous allez manger. Nous nous occupons de tout avec des plans de repas personnalisés adaptés à vos besoins.</string>
+
+    <string name="screen1">Avez-vous des allergies alimentaires ?</string>
+    <string name="screen1Desc">Pour vous proposer les meilleures suggestions de repas adaptées à vous et votre famille, vous devez rejoindre une famille ou en créer une nouvelle.</string>
+
+    <string name="screen2">Suivez-vous l’un de ces régimes ?</string>
+    <string name="screen2Desc">Pour vous offrir la meilleure expérience alimentaire personnalisée, nous devons en savoir plus sur vous.</string>
+
+    <string name="screen3">Rejoignez votre famille</string>
+    <string name="screen3Desc">Pour vous offrir la meilleure expérience alimentaire personnalisée, nous devons en savoir plus sur vous.</string>
+
+    <string name="allergieGluten">Gluten</string>
+    <string name="allergieDiary">Produits laitiers</string>
+    <string name="allergieEgg">Œufs</string>
+    <string name="allergieSoy">Soja</string>
+    <string name="allergiePeanut">Arachides</string>
+    <string name="allergieWheat">Blé</string>
+    <string name="allergieMilk">Lait</string>
+    <string name="allergieFish">Poisson</string>
+
+    <string name="dietsVegan">Végan</string>
+    <string name="dietsPaleo">Paléo</string>
+    <string name="dietsDukan">Dukan</string>
+    <string name="dietsVegetarian">Végétarien</string>
+    <string name="dietsAktin">Atkins</string>
+    <string name="dietsInterFast">Jeûne intermittent</string>
+
+    <string name="familyCode">Code familial</string>
+    <string name="joinFamilly">Rejoindre votre famille</string>
+    <string name="createFamily">Créer un nouveau groupe familial</string>
+    <string name="tv_welcome_message">Bienvenue dans votre famille !</string>
+    <string name="familyName">Nom de la famille</string>
+    <string name="createFamilly">Créez votre famille !</string>
+    <string name="new_fam">Une nouvelle famille a été créée !</string>
+    <string name="joinFamily">Rejoindre la famille</string>
+
+    <!--Famille-->
+    <string name="screen0Family">Données générales</string>
+    <string name="screen1Family">Rôle des membres</string>
+    <string name="screen2Family">Des allergies alimentaires ?</string>
+    <string name="screen3Family">Suivez-vous un de ces régimes ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="role_chef">Chef cuisinier</string>
+    <string name="role_consumer">Consommateur</string>
+    <string name="memberMail">Email du membre</string>
+    <string name="alreadyAccount">Vous avez déjà un compte ?</string>
+    <string name="notEmpty">Le nom ne peut pas être vide</string>
+    <string name="delete_family">Supprimer la famille</string>
+    <string name="leave_family">Quitter la famille</string>
+    <string name="no">non</string>
+    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">retour</string>
+
+    <!--Frigo-->
+    <string name="confirm">Confirmer</string>
+    <string name="groceries">Courses</string>
+    <string name="search">Rechercher</string>
+    <string name="shopping">Courses</string>
+    <string name="fridge">Frigo</string>
+    <string name="send">Envoyer</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
 
     <!--Home-->
     <string name="Home">Home</string>

@@ -14,10 +14,10 @@ import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 public class UnitService {
-    @GET("/units")
+    /*@GET("/units")
     Call<List<Unit>> getUnits(@Header("Authorization") String token);
 
     @GET("/units/{id}")
     Call<List<Unit>> getUnitById(@Path("id") Long id,
-                              @Header("Authorization") String token);
+                              @Header("Authorization") String token);*/
 }

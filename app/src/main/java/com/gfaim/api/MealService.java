@@ -5,13 +5,16 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.Path;
 
 public interface MealService {
+    @GET("/meals")
+    Call<List<Meal>> getMeals(@Header("Authorization") String token);
     @GET("/families/{id}/meals")
     Call<List<Meal>> getMeals(@Path("id") Long id,
                               @Header("Authorization") String token);
 
-    @POST("/families/{id}/meals")
+    /*@POST("/families/{id}/meals")
     Call<CreateAMeal> createMeal(@Path("id") Long id,
                                  @Header("Authorization") String token,@Body CreateMealBody request);
 
@@ -27,6 +30,6 @@ public interface MealService {
     Call<CreateMealBody> deleteMeal(
             @Path("id") Long families_id
             @Path("mealId") Long meals_id
-    );
+    );*/
 }
 

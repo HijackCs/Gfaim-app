@@ -17,7 +17,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.groceries.adapter.GroceriesViewPagerAdapter;
 import com.gfaim.activities.groceries.fragment.FridgeFragment;
 import com.gfaim.activities.groceries.fragment.ShoppingFragment;

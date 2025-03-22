@@ -22,9 +22,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;

@@ -90,18 +90,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
         android:layout_marginTop="15dp"
         android:layout_marginStart="80dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/next">
-        <ImageButton
+        
+        <ImageView
             android:id="@+id/add_step_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_add_green"
-            android:background="@null"/>
+            android:layout_gravity="center_vertical"/>
 
         <TextView
             android:layout_width="wrap_content"

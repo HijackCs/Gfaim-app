@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
-import com.gfaim.activities.calendar.model.Ingredient;
+import com.gfaim.models.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ public class DialogAddIngredient extends Dialog {
     private final OnIngredientSelectedListener listener;
 
     public interface OnIngredientSelectedListener {
-        void onIngredientSelected(Ingredient ingredient);
+        void onIngredientSelected(FoodItem ingredient);
     }
 
     public DialogAddIngredient(@NonNull Context context, OnIngredientSelectedListener listener) {
@@ -34,7 +34,7 @@ public class DialogAddIngredient extends Dialog {
         RecyclerView recyclerView = findViewById(R.id.mealRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        List<Ingredient> ingredientList = getSampleIngredients();
+        //List<FoodItem> ingredientList = getSampleIngredients();
         //IngredientAdapter adapter = new IngredientAdapter(ingredientList, listener::onIngredientSelected);
        // recyclerView.setAdapter(adapter);
 
@@ -43,7 +43,7 @@ public class DialogAddIngredient extends Dialog {
     }
 
 
-    private List<Ingredient> getSampleIngredients() {
+   /* private List<Ingredient> getSampleIngredients() {
         List<Ingredient> ingredients = new ArrayList<>();
         ingredients.add(new Ingredient("Tomato", 18));
         ingredients.add(new Ingredient("Cheese", 402));
@@ -55,5 +55,5 @@ public class DialogAddIngredient extends Dialog {
         ingredients.add(new Ingredient("Potato", 77));
         ingredients.add(new Ingredient("Salmon", 208));
         return ingredients;
-    }
+    }*/
 }

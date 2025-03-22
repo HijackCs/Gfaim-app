@@ -5,6 +5,7 @@
     <color name="grey">#303030</color>
     <color name="red">#FF0000</color>
     <color name="green">#A6CE96</color>
+    <color name="light_green">#E8F5E9</color>
     <color name="lightGrey">#DCDDCB</color>
     <color name="selected_tab">#6750A4</color> <!-- Violet -->
     <color name="unselected_tab">#DCDDCB</color> <!-- Gris clair -->

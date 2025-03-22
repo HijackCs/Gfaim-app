@@ -1,4 +1,4 @@
-package com.gfaim.models;
+package com.gfaim.models.auth;
 
 import com.google.gson.annotations.SerializedName;
 

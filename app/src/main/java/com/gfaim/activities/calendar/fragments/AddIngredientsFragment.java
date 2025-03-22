@@ -21,7 +21,7 @@ import androidx.navigation.Navigation;
 
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.R;
-import com.gfaim.activities.calendar.model.Ingredient;
+import com.gfaim.models.FoodItem;
 
 import java.util.List;
 
@@ -146,17 +146,17 @@ public class AddIngredientsFragment extends Fragment {
         });
     }
 
-    private void updateIngredientList(List<Ingredient> ingredients) {
+    private void updateIngredientList(List<FoodItem> ingredients) {
         ingredientContainer.removeAllViews();
         if (ingredients != null) {
-            for (Ingredient ingredient : ingredients) {
+            for (FoodItem ingredient : ingredients) {
                 addIngredientView(ingredient);
             }
         }
     }
 
 
-    private void addIngredientView(Ingredient ingredient) {
+    private void addIngredientView(FoodItem ingredient) {
         LinearLayout ingredientLayout = new LinearLayout(getContext());
         ingredientLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -171,7 +171,7 @@ public class AddIngredientsFragment extends Fragment {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 1.0f);
         ingredientText.setLayoutParams(textParams);
-        ingredientText.setText(ingredient.getName() + " (" + ingredient.getCalories() + " kcal)");
+        ingredientText.setText(ingredient.getName());
         ingredientText.setTextSize(16);
         ingredientText.setTextColor(ContextCompat.getColor(requireContext(), R.color.grey));
 

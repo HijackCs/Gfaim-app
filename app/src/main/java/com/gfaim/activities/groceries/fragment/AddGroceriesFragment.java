@@ -51,10 +51,8 @@ public class AddGroceriesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
         recyclerView = view.findViewById(R.id.recyclerView);
 
-        // Initialiser les vues pour l'état de chargement et les états vides
         progressBar = view.findViewById(R.id.progressBar);
         if (progressBar == null) {
-            // Si le progressBar n'existe pas dans la mise en page, créons-en un
             progressBar = new ProgressBar(getContext(), null, android.R.attr.progressBarStyleLarge);
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -66,7 +64,6 @@ public class AddGroceriesFragment extends Fragment {
 
         emptyTextView = view.findViewById(R.id.emptyTextView);
         if (emptyTextView == null) {
-            // Si le texte pour état vide n'existe pas dans la mise en page, nous pouvons le créer
             emptyTextView = new TextView(getContext());
             emptyTextView.setText("Aucun ingrédient disponible");
             ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -106,7 +103,7 @@ public class AddGroceriesFragment extends Fragment {
 
         // Préparer l'appel API
         String token = "Bearer " + tokenManager.getAccessToken();
-        Call<List<IngredientCatalogItem>> call = service.getIngredientCatalog(token);
+        Call<List<IngredientCatalogItem>> call = service.getIngredientCatalog();
 
         Log.d(TAG, "Chargement des ingrédients depuis l'API...");
 

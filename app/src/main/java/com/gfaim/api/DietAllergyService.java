@@ -1,6 +1,6 @@
 package com.gfaim.api;
 
-import com.gfaim.models.DietAllergy;
+import com.gfaim.models.user.DietAllergy;
 
 import java.util.List;
 import retrofit2.Call;

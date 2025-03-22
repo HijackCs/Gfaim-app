@@ -3,6 +3,7 @@ package com.gfaim.activities.calendar.model;
 import java.util.List;
 
 public class Recipe {
+    private Long id;
     private String name;
     private List<String> ingredients;
     private List<String> steps;
@@ -16,6 +17,10 @@ public class Recipe {
         this.steps = steps;
         this.servings = servings;
         this.time = 30;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getName() {

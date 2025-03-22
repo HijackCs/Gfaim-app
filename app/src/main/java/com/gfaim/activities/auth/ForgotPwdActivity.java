@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.gfaim.R;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
-import com.gfaim.models.ForgotPasswordRequest;
+import com.gfaim.models.auth.ForgotPasswordRequest;
 
 import retrofit2.Call;
 import retrofit2.Callback;

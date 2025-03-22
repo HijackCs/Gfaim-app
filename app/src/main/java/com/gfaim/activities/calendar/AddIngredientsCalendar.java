@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
-import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.MenuData;
+import com.gfaim.models.FoodItem;
 
 import android.widget.ImageButton;
 import android.widget.Toast;
@@ -34,7 +34,7 @@ public class AddIngredientsCalendar extends AppCompatActivity {
     private MenuData menuData;
     private LinearLayout ingredientContainer;
     private List<String> ingredientList = new ArrayList<>();
-    private Ingredient ingredient;
+    private FoodItem ingredient;
 
 
     @Override
@@ -127,11 +127,11 @@ public class AddIngredientsCalendar extends AppCompatActivity {
         }
     }
 
-    private void addIngredientToList(Ingredient ingredient) {
+    private void addIngredientToList(FoodItem ingredient) {
         ingredientList.add(String.valueOf(ingredient));
 
         TextView ingredientView = new TextView(this);
-        ingredientView.setText(ingredient.getName() + " - " + ingredient.getCalories() + " kcal");
+        ingredientView.setText(ingredient.getName());
         ingredientView.setTextSize(18);
         ingredientContainer.addView(ingredientView);
     }

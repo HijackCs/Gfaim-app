@@ -131,6 +131,8 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
 
                 // Réinitialiser les arguments après utilisation
                 setArguments(null);
+                // Réinitialiser le ViewModel après avoir créé un repas
+                sharedStepsViewModel.reset();
             }
         }
         // Si pas d'arguments mais que nous avons un lastMealType et un lastParentMeal
@@ -190,6 +192,8 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
 
         createRecipeButton.setOnClickListener(v -> {
             popupWindow.dismiss();
+            // Réinitialiser le ViewModel avant de commencer un nouveau repas
+            sharedStepsViewModel.reset();
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_calendar_to_addIngredients, args);
         });

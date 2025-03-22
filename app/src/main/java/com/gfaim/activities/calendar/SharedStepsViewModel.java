@@ -4,17 +4,16 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.gfaim.activities.calendar.model.Ingredient;
+import com.gfaim.models.FoodItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class SharedStepsViewModel extends ViewModel {
     private String menuName = "";
     private int participantCount = 1;
-    private final MutableLiveData<List<Ingredient>> _ingredients = new MutableLiveData<>(new ArrayList<>());
-    public LiveData<List<Ingredient>> ingredients = _ingredients;
+    private final MutableLiveData<List<FoodItem>> _ingredients = new MutableLiveData<>(new ArrayList<>());
+    public LiveData<List<FoodItem>> ingredients = _ingredients;
     private final MutableLiveData<List<String>> _steps = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<String>> steps = _steps;
 
@@ -40,12 +39,12 @@ public class SharedStepsViewModel extends ViewModel {
     }
 
     // Gestion des ingrédients via LiveData
-    public LiveData<List<Ingredient>> getIngredients() {
+    public LiveData<List<FoodItem>> getIngredients() {
         return ingredients;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        List<Ingredient> currentIngredients = _ingredients.getValue();
+    public void addIngredient(FoodItem ingredient) {
+        List<FoodItem> currentIngredients = _ingredients.getValue();
         if (currentIngredients != null) {
             currentIngredients.add(ingredient);
             _ingredients.setValue(currentIngredients); // Mise à jour du LiveData
@@ -53,20 +52,12 @@ public class SharedStepsViewModel extends ViewModel {
         }
     }
 
-    public void removeIngredient(Ingredient ingredient) {
-        List<Ingredient> currentIngredients = _ingredients.getValue();
+    public void removeIngredient(FoodItem ingredient) {
+        List<FoodItem> currentIngredients = _ingredients.getValue();
         if (currentIngredients != null) {
             currentIngredients.remove(ingredient);
             _ingredients.setValue(currentIngredients);
         }
-    }
-
-    public int getTotalCalories() {
-        List<Ingredient> currentIngredients = _ingredients.getValue();
-        if (currentIngredients == null) return 0;
-        return currentIngredients.stream()
-                .mapToInt(Ingredient::getCalories)
-                .sum();
     }
 
 

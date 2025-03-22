@@ -10,10 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Patterns;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -66,7 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
         setupAuthButtons();
         setupLoginBtn();
         signUpBtn.setOnClickListener(v -> signUp());
-
+        setupHidePwd();
         setupTermsTextLink();
 
     }
@@ -249,5 +252,23 @@ public class RegisterActivity extends AppCompatActivity {
 
     private boolean isValidEmail(String email) {
         return email != null && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private void setupHidePwd() {
+        ImageView showPassButton = findViewById(R.id.show_pass_btn);
+        showPassButton.setOnClickListener(v -> showHidePass());
+    }
+
+    private void showHidePass() {
+        EditText passwordField = findViewById(R.id.password);
+        ImageView showPassButton = findViewById(R.id.show_pass_btn);
+
+        if (passwordField.getTransformationMethod().equals(PasswordTransformationMethod.getInstance())) {
+            showPassButton.setImageResource(R.drawable.ic_eye_close);
+            passwordField.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+        } else {
+            showPassButton.setImageResource(R.drawable.ic_eye_open);
+            passwordField.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
     }
 }

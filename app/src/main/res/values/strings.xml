@@ -1,33 +1,126 @@
 <resources>
     <!--Login-->
     <string name="app_name">GFaim</string>
-    <string name="welcomeBack">Welcome Back!</string>
+    <string name="welcomeBack">Welcome back!</string>
     <string name="password">Password</string>
     <string name="email">Email</string>
-    <string name="login">Login</string>
+    <string name="login">Log in</string>
     <string name="or">or</string>
     <string name="noAccount">Don\'t have an account?</string>
     <string name="signUp">Sign up</string>
-    <string name="forgotPwd">Forget password ?</string>
-
+    <string name="forgotPwd">Forgot your password?</string>
 
     <!--Register-->
     <string name="registerTxtView">Enter your credential to access your account</string>
     <string name="helloTxt">Hey, Hello 👋</string>
     <string name="name">Name</string>
-    <string name="surname">Surnanme</string>
+    <string name="firstName">First name</string>
     <string name="haveAccount">Have an account?</string>
     <string name="terms">I agree to the terms of use</string>
 
     <!--Check Mail-->
-    <string name="checkMail">Check your mail</string>
+    <string name="checkMail">Check your mailbox</string>
     <string name="continueBtn">Continue</string>
+    <string name="enter_code">enter code</string>
+    <string name="new_password">new password</string>
+    <string name="confirm_password">confirm password</string>
+    <string name="reset_password">reset password\n</string>
+
 
     <!--Forgot pwd-->
     <string name="sendCode">Send code</string>
-    <string name="resetPwd">Reset Password</string>
-    <string name="remember">Remember your password ?</string>
+    <string name="resetPwd">Reset password</string>
+    <string name="remember">Remember your password?</string>
     <string name="goBackLogin">Go back to login</string>
+    <string name="your_email">Your Email</string>
+
+
+
+
+    <!--OnBoarding-->
+    <string name="skip">Skip</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="finish">Finish</string>
+
+    <string name="screen0">Enjoy your lunch</string>
+    <string name="screen0Desc">Just relax and don’t overthink what to eat. We’ll take care of it for you with our personalized meal plans tailored to your needs.</string>
+
+    <string name="screen1">Do you have any food allergies?</string>
+    <string name="screen1Desc">To provide you with the best meal suggestions tailored to you and your family, you need to join a family or create a new one.</string>
+
+    <string name="screen2">Do you follow any of these diets?</string>
+    <string name="screen2Desc">To give you the best personalized dietary experience, we need to know more about you.</string>
+
+    <string name="screen3">Join your family</string>
+    <string name="screen3Desc">To give you the best personalized dietary experience, we need to know more about you.</string>
+
+    <string name="allergieGluten">Gluten</string>
+    <string name="allergieDiary">Dairy</string>
+    <string name="allergieEgg">Egg</string>
+    <string name="allergieSoy">Soy</string>
+    <string name="allergiePeanut">Peanuts</string>
+    <string name="allergieWheat">Wheat</string>
+    <string name="allergieMilk">Milk</string>
+    <string name="allergieFish">Fish</string>
+
+    <string name="dietsVegan">Vegan</string>
+    <string name="dietsPaleo">Paleo</string>
+    <string name="dietsDukan">Dukan</string>
+    <string name="dietsVegetarian">Vegetarian</string>
+    <string name="dietsAktin">Atkins</string>
+    <string name="dietsInterFast">Intermittent fasting</string>
+
+    <string name="familyCode">Family code</string>
+    <string name="joinFamilly">Join your family</string>
+    <string name="createFamily">Create a new family group</string>
+    <string name="tv_welcome_message">Welcome to your family!</string>
+    <string name="familyName">Family name</string>
+    <string name="createFamilly">Create your family!</string>
+    <string name="new_fam">A new family has been created!</string>
+    <string name="joinFamily">Join the family</string>
+
+    <!--settings-->
+    <string name="update_profile">Update Profile</string>
+    <string name="delete_profile">Delete Profile</string>
+    <string name="my_account">My Account</string>
+    <string name="manage_account_settings">Manage your account settings</string>
+    <string name="family_group">Family Group</string>
+    <string name="manage_family_settings">Manage family settings</string>
+    <string name="log_out">Log Out</string>
+    <string name="log_out_text">Further secure your account for safety</string>
+    <string name="more">More</string>
+    <string name="help_support">Help and support</string>
+    <string name="about_app">About App</string>
+    <string name="JoinOrCreate">Join or Create a Family</string>
+
+
+    <!--Famille-->
+    <string name="screen0Family">Données générales</string>
+    <string name="screen1Family">Rôle des membres</string>
+    <string name="screen2Family">Des allergies alimentaires ?</string>
+    <string name="screen3Family">Suivez-vous un de ces régimes ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="role_chef">Chef cuisinier</string>
+    <string name="role_consumer">Consommateur</string>
+    <string name="memberMail">Email du membre</string>
+    <string name="alreadyAccount">Vous avez déjà un compte ?</string>
+    <string name="notEmpty">Le nom ne peut pas être vide</string>
+    <string name="delete_family">Supprimer la famille</string>
+
+    <!--facebook-->
+    <!--Facebook-->
+    <!--Frigo-->
+    <string name="confirm">Confirm</string>
+    <string name="groceries">Groceries</string>
+    <string name="search">Search</string>
+    <string name="shopping">Shopping</string>
+    <string name="fridge">Fridge</string>
+    <string name="send">Send</string>
+    <string name="add_groceries">Add Groceries</string>
+    <string name="add">Add</string>
+
+
 
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
@@ -47,7 +140,11 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="no_meal_planned">No meal planned</string>
+    <string name="leave_family">Quitter la famille</string>
+    <string name="no">non</string>
+    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">retour</string>
 
 
 </resources>
-

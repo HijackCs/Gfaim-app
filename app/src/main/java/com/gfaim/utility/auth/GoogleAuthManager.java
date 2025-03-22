@@ -44,7 +44,7 @@ public class GoogleAuthManager {
     }
 
     //Faire la verif inscription ici
-    public void handleActivityResult(int requestCode, int resultCode, Intent data, Activity activity) {
+    public void handleActivityResult(int requestCode, Intent data, Activity activity) {
         if (requestCode == GOOGLE_SIGN_IN_REQUEST_CODE) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {

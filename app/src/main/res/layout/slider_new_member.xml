@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/appBackground">
+
+    <!-- Titre -->
+    <TextView
+        android:id="@+id/sliderTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true"
+        android:padding="10dp">
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/diet_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            app:flexWrap="wrap"
+            app:flexDirection="row"
+            app:justifyContent="center"
+            app:alignItems="center"/>
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/placeHolder1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/name"
+        android:textStyle="bold"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="30dp"
+        android:textSize="14sp"
+        android:textColor="@color/black"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/memberName"
+        android:layout_width="362dp"
+        android:layout_height="61dp"
+        android:layout_marginHorizontal="27dp"
+        android:background="@drawable/edittext_rounded"
+        android:padding="16dp"
+        android:hint="@string/name"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+<!--
+    <LinearLayout
+        android:id="@+id/role_display"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/role_selection_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/role_chef"
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/role_unselected"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/icon_chef"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_chef"
+                    app:tint="@color/orangeBtn" />
+
+                <TextView
+                    android:id="@+id/text_chef"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Meals Chef"
+                    android:textColor="@color/orangeBtn"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/role_consumer"
+                android:layout_width="100dp"
+                android:layout_height="300dp"
+                android:layout_margin="20dp"
+                android:background="@drawable/role_unselected"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <ImageView
+                    android:id="@+id/icon_consumer"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    android:src="@drawable/ic_consumer"
+                    app:tint="@color/orangeBtn" />
+
+                <TextView
+                    android:id="@+id/text_consumer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Consumer"
+                    android:textColor="@color/orangeBtn"
+                    android:textSize="16sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>-->
+</LinearLayout>

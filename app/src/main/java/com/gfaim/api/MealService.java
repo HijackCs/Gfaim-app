@@ -11,6 +11,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface MealService {
     @GET("/meals")
@@ -21,6 +22,11 @@ public interface MealService {
 
     @POST("/families/{id}/meals")
     Call<CreateMealBody> createMeal(@Path("id") Long id,@Body CreateMealBody request);
+
+    @GET("/families/{familyId}/meals")
+    Call<List<MealResponseBody>> getMeal(@Path("familyId") Long familyId,
+                                       @Query("date") String date, 
+                                       @Query("meal_type") String mealType);
 /*
     @PATCH("/families/{id}/meals/{mealId}")
     Call<CreateMealBody> updateMeal(

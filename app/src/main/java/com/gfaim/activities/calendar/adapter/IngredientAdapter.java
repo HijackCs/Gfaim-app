@@ -49,12 +49,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         holder.bind(ingredient, listener);
         
         // Vérifier si l'ingrédient est déjà sélectionné
-        List<FoodItem> selectedIngredients = viewModel.getIngredients().getValue();
+       /* List<FoodItem> selectedIngredients = viewModel.getIngredients().getValue();
         if (selectedIngredients != null && selectedIngredients.contains(ingredient)) {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.light_green));
         } else {
             holder.itemView.setBackgroundColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.white));
-        }
+        }*/
     }
 
     @Override

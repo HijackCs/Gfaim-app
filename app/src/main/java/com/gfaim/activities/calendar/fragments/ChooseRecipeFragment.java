@@ -145,20 +145,20 @@ public class ChooseRecipeFragment extends Fragment {
         String mealType = getArguments().getString("mealType");
 
         switch (mealType) {
-            case "Breakfast":
+            case "BREAKFAST":
                 mealBody.setMealType("BREAKFAST");
                 break;
-            case "Lunch":
+            case "LUNCH":
                 mealBody.setMealType("LUNCH");
                 break;
-            case "Dinner":
+            case "DINNER":
                 mealBody.setMealType("DINNER");
                 break;
-            case "SNACK":
-                mealBody.setMealType("BREAKFAST");
+            case "Snack":
+                mealBody.setMealType("SNACK");
                 break;
             default:
-                Toast.makeText(requireContext(), "Type de repas invalide", Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), "repas invalide" + mealType, Toast.LENGTH_SHORT).show();
                 return;
         }
         mealBody.setRecipeId(selectedRecipe.getId());

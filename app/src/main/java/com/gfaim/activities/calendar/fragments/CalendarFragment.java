@@ -1,6 +1,10 @@
 package com.gfaim.activities.calendar.fragments;
 
+import static android.content.ContentValues.TAG;
+
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +26,14 @@ import com.gfaim.R;
 import com.gfaim.activities.calendar.adapter.MealAdapter;
 import com.gfaim.activities.calendar.adapter.MealAdapter.OnMealClickListener;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
+import com.gfaim.api.ApiClient;
+import com.gfaim.api.MealService;
+import com.gfaim.models.MealResponseBody;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -30,26 +42,40 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class CalendarFragment extends Fragment implements OnMealClickListener {
+    private RecyclerView mealRecyclerView;
     private MealAdapter mealAdapter;
     private String selectedDate;
-    private final List<String> meals = Arrays.asList("Breakfast", "Lunch", "Dinner");
+    private final List<String> meals = Arrays.asList("Breakfast", "Lunch", "Dinner", "Snack");
     private SharedStepsViewModel sharedStepsViewModel;
     private String lastMealType;
     private String lastParentMeal;
 
+    private UtileProfile utileProfile;
+    private MemberSessionBody member;
+
+    private Context context;
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
+        context = requireContext();
+
+
 
         // Initialiser le ViewModel
         sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
 
-        // Initialiser le RecyclerView avec l'adaptateur
-        RecyclerView recyclerView = view.findViewById(R.id.mealRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Initialiser le RecyclerView
+        mealRecyclerView = view.findViewById(R.id.mealRecyclerView);
+        mealRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mealAdapter = new MealAdapter(meals, this);
-        recyclerView.setAdapter(mealAdapter);
+        mealRecyclerView.setAdapter(mealAdapter);
 
         // Initialiser le calendrier
         CalendarView calendarView = view.findViewById(R.id.calendarView);
@@ -62,15 +88,15 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         if (getArguments() != null) {
             String date = getArguments().getString("selectedDate");
             String mealType = getArguments().getString("mealType");
+
             String menuName = getArguments().getString("menuName");
-            int calories = getArguments().getInt("calories", 0);
             int duration = getArguments().getInt("duration", 0);
             String parentMeal = getArguments().getString("parentMeal");
 
             if (date != null && mealType != null) {
                 // Si on a un menuName dans les arguments, on l'utilise
                 if (menuName != null) {
-                    mealAdapter.updateMealInfo(date, mealType, menuName, calories, duration, parentMeal);
+                    mealAdapter.updateMealInfo(date, mealType, menuName, duration, parentMeal);
                 }
                 // Sinon, on vérifie si on a un menuName dans le ViewModel
                 else if ("Snack".equals(mealType) && sharedStepsViewModel.getMenuName() != null) {
@@ -80,7 +106,6 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
                                 date,
                                 mealType,
                                 viewModelMenuName,
-                                0,
                                 sharedStepsViewModel.getTotalDuration(),
                                 parentMeal
                         );
@@ -108,14 +133,13 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
     @Override
     public void onResume() {
         super.onResume();
-
+        System.out.println("je passe la");
         // Les arguments ont priorité sur le ViewModel
         Bundle args = getArguments();
         if (args != null) {
             String date = args.getString("selectedDate");
             String mealType = args.getString("mealType");
             String menuName = args.getString("menuName");
-            int calories = args.getInt("calories", 0);
             int duration = args.getInt("duration", 0);
             String parentMeal = args.getString("parentMeal");
 
@@ -127,7 +151,7 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
             if (date != null && mealType != null && menuName != null) {
                 selectedDate = date;
                 mealAdapter.setSelectedDate(date);
-                mealAdapter.updateMealInfo(date, mealType, menuName, calories, duration, parentMeal);
+                mealAdapter.updateMealInfo(date, mealType, menuName, duration, parentMeal);
 
                 // Réinitialiser les arguments après utilisation
                 setArguments(null);
@@ -147,7 +171,6 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
                         selectedDate,
                         "Snack",
                         menuName,
-                        0,
                         sharedStepsViewModel.getTotalDuration(),
                         lastParentMeal
                 );
@@ -178,6 +201,39 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         }
 
         showPopup(args);
+    }
+
+    public void getMeal(String mealType) {
+        MealService service = ApiClient.getClient(context).create(MealService.class);
+
+        Log.d(TAG, "Début du chargement des repas pour le type: " + mealType);
+        Call<List<MealResponseBody>> call = service.getMeal(member.getFamilyId(), selectedDate, mealType);
+
+        call.enqueue(new Callback<List<MealResponseBody>>() {
+            @Override
+            public void onResponse(Call<List<MealResponseBody>> call, Response<List<MealResponseBody>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    MealResponseBody meal = response.body().get(0);
+                    // Mettre à jour l'adaptateur avec les informations du repas
+                        mealAdapter.updateMealInfo(
+                        selectedDate,
+                        mealType,
+                        meal.getRecipe().getName(),
+                        meal.getRecipe().getReadyInMinutes(),
+                        null // Pas de parent meal car c'est un repas principal
+                    );
+                    Log.d(TAG, "Repas chargé avec succès: ");
+                } else {
+                    String errorCode = String.valueOf(response.code());
+                    Log.e(TAG, "Erreur lors du chargement des repas: " + errorCode);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MealResponseBody>> call, Throwable t) {
+                Log.e(TAG, "Erreur de connexion: " + t.getMessage());
+            }
+        });
     }
 
     private void showPopup(Bundle args) {

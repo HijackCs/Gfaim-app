@@ -17,7 +17,7 @@ public class MealResponseBody {
     private Long id;
 
     @SerializedName("date")
-    private LocalDate date;
+    private String date;
 
     @SerializedName("family_id")
     private Long familyId;
@@ -28,4 +28,7 @@ public class MealResponseBody {
     @SerializedName("meal_type")
     private MealTypeEnum mealType;
 
-} 
+    public CreateRecipeBody getRecipe() {
+        return recipe;
+    }
+}

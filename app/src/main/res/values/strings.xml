@@ -15,6 +15,7 @@
     <string name="helloTxt">Hey, Hello 👋</string>
     <string name="name">Name</string>
     <string name="firstName">First name</string>
+    <string name="surname">Surname</string>
     <string name="haveAccount">Have an account?</string>
     <string name="terms">I agree to the terms of use</string>
 
@@ -44,7 +45,7 @@
     <string name="finish">Finish</string>
 
     <string name="screen0">Enjoy your lunch</string>
-    <string name="screen0Desc">Just relax and don’t overthink what to eat. We’ll take care of it for you with our personalized meal plans tailored to your needs.</string>
+    <string name="screen0Desc">Just relax and don't overthink what to eat. We'll take care of it for you with our personalized meal plans tailored to your needs.</string>
 
     <string name="screen1">Do you have any food allergies?</string>
     <string name="screen1Desc">To provide you with the best meal suggestions tailored to you and your family, you need to join a family or create a new one.</string>

@@ -110,10 +110,15 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return new MealViewHolder(view);
     }
 
-    private void openRecipeActivity(Long id) {
-            Intent intent = new Intent(context, RecipeActivity.class);
-            intent.putExtra("id", id);
-            context.startActivity(intent);
+    private void openRecipeActivity(Long id, String mealType) {
+        Intent intent = new Intent(context, RecipeActivity.class);
+        intent.putExtra("id", id);
+
+        // Récupérer le texte de type de repas qui est affiché à l'utilisateur
+        // Ce sera utilisé dans le sous-titre sur l'écran de recette
+        intent.putExtra("mealTitle", mealType);
+
+        context.startActivity(intent);
     }
 
     /**
@@ -161,7 +166,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     holder.menuNameText.setText(meal.getRecipe().getName());
                     holder.timeText.setText(meal.getRecipe().getReadyInMinutes() + " min");
 
-                    holder.itemView.setOnClickListener(v -> openRecipeActivity(meal.getRecipe().getId()));
+                    // Utilisez la valeur du TextView mealTypeText comme type de repas affiché
+                    final String displayedMealType = holder.mealTypeText.getText().toString();
+
+                    holder.itemView.setOnClickListener(v -> openRecipeActivity(meal.getRecipe().getId(), displayedMealType));
 
                     holder.addSnackLayout.setOnClickListener(v -> {
                         if (listener != null && selectedDate != null) {

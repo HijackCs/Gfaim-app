@@ -148,11 +148,22 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return null;
     }
 
+    private String getCurrentDate() {
+        java.time.LocalDate today = java.time.LocalDate.now();
+        return today.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+    }
 
     public void getMeal(String mealType, MealViewHolder holder, int position) {
         MealService service = ApiClient.getClient(context).create(MealService.class);
 
         Log.d(TAG, "Début du chargement des repas pour le type: " + mealType);
+
+        System.out.println("selected " + selectedDate);
+
+        if(selectedDate == null){
+            selectedDate = getCurrentDate();
+        }
+
         Call<List<MealResponseBody>> call = service.getMeal(member.getFamilyId(), selectedDate, mealType);
 
         call.enqueue(new Callback<List<MealResponseBody>>() {
@@ -250,45 +261,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             @Override
             public void onSuccess(CreateMember body) {}
         });
-
-        System.out.println("passe la");
-
-       /* if (selectedDate != null && mealsByDate.containsKey(selectedDate)) {
-            Map<String, MealInfo> dateMap = mealsByDate.get(selectedDate);
-            MealInfo mealInfo = dateMap.get(mealType);
-
-            if (mealInfo != null) {
-                // Afficher les informations du repas
-                holder.menuNameText.setText(mealInfo.menuName);
-                holder.timeText.setText(mealInfo.duration + " min");
-
-                // Vérifier s'il y a un snack pour ce repas
-                MealInfo snackInfo = mealInfo.snacks.get("Snack");
-                if (snackInfo != null) {
-                    holder.snackText.setText(snackInfo.menuName);
-                    holder.snackImage.setImageResource(R.drawable.ic_snack);
-                } else {
-                    holder.snackText.setText("Add a snack");
-                    holder.snackImage.setImageResource(R.drawable.ic_add_green);
-                }
-            } else {
-                // Afficher les valeurs par défaut pour le repas
-                holder.menuNameText.setText(R.string.no_meal_planned);
-                holder.caloriesText.setText("0 kcal");
-                holder.timeText.setText("0 min");
-                holder.snackText.setText("Add a snack");
-                holder.snackImage.setImageResource(R.drawable.ic_add_green);
-            }
-        } else {
-            // Pas de date sélectionnée ou pas de données pour cette date
-            holder.menuNameText.setText(R.string.no_meal_planned);
-            holder.caloriesText.setText("0 kcal");
-            holder.timeText.setText("0 min");
-            holder.snackText.setText("Add a snack");
-            holder.snackImage.setImageResource(R.drawable.ic_add_green);
-        }
-
-       */
 
     }
 

@@ -79,9 +79,9 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         List<String> texts = Arrays.asList(
-                "Petit Déjeuner",
-                "Déjeuner",
-                "Dîner"
+                "Breakfast",
+                "Lunch",
+                "Dinner"
         );
 
         CarrouselAdapter adapter = new CarrouselAdapter(images, texts);

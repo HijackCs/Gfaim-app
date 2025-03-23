@@ -119,6 +119,7 @@ public class SummaryFragment extends Fragment {
                 for (FoodItem ingredient : ingredients) {
                     Log.d("SummaryFragment", "Ajout de l'ingrédient : " + ingredient.getName());
                     ingrSaved.add(new CreateRecipeStepIngrBody(100, ingredient.getId(), 3L));
+                    System.out.println("add ingre " +ingrSaved);
                     TextView ingredientTextView = new TextView(requireContext());
                     ingredientTextView.setText(ingredient.getName());
                     ingredientTextView.setTextSize(16);
@@ -227,14 +228,16 @@ public class SummaryFragment extends Fragment {
         // Définir le type de repas
         String mealType = currentArgs.getString("mealType");
 
+        System.out.println("meal type " +mealType );
+
         switch (mealType) {
-            case "Breakfast":
+            case "BREAKFAST":
                 mealBody.setMealType("BREAKFAST");
                 break;
-            case "Lunch":
+            case "LUNCH":
                 mealBody.setMealType("LUNCH");
                 break;
-            case "Dinner":
+            case "DINNER":
                 mealBody.setMealType("DINNER");
                 break;
             case "SNACK":

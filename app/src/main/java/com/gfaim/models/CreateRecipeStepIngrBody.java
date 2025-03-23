@@ -23,4 +23,18 @@ public class CreateRecipeStepIngrBody {
     @SerializedName("unit_id")
     private Long unitId;
 
+
+
+    public Long getIngredientCatalogId() {
+        return ingredientCatalogId;
+    }
+
+    @Override
+    public String toString() {
+        return "CreateRecipeStepIngrBody{" +
+                "quantity=" + quantity +
+                ", ingredientCatalogId=" + ingredientCatalogId +
+                ", unitId=" + unitId +
+                '}';
+    }
 }

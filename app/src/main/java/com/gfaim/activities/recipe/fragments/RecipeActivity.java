@@ -20,8 +20,13 @@ import com.gfaim.api.RecipeService;
 import com.gfaim.activities.NavigationBar;
 import com.gfaim.models.CreateMealBody;
 import com.gfaim.models.CreateRecipeBody;
+import com.gfaim.models.CreateRecipeStepIngrBody;
 import com.gfaim.models.FoodItem;
+import com.gfaim.models.RecipeResponseBody;
 import com.gfaim.models.RecipeStep;
+import com.gfaim.models.RecipeStepIngrResponse;
+import com.gfaim.models.RecipeStepIngredientResponse;
+import com.gfaim.models.RecipeStepResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +41,9 @@ public class RecipeActivity extends AppCompatActivity {
     private SharedStepsViewModel sharedStepsViewModel;
     private ImageView backButton;
     private Long recipeId;
+
+    List<FoodItem> ingredients = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,21 +138,19 @@ public class RecipeActivity extends AppCompatActivity {
             Log.d(TAG, "Chargement de la recette depuis l'API, ID: " + recipeId);
 
             RecipeService recipeService = ApiClient.getClient(this).create(RecipeService.class);
-            Call<CreateRecipeBody> call = recipeService.getRecipe(recipeId);
+            Call<RecipeResponseBody> call = recipeService.getRecipe(recipeId);
 
-            call.enqueue(new Callback<CreateRecipeBody>() {
+            call.enqueue(new Callback<RecipeResponseBody>() {
                 @Override
-                public void onResponse(Call<CreateRecipeBody> call, Response<CreateRecipeBody> response) {
+                public void onResponse(Call<RecipeResponseBody> call, Response<RecipeResponseBody> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        CreateRecipeBody recipe = response.body();
+                        RecipeResponseBody recipe = response.body();
 
-                        // Afficher les données brutes et le type de chaque champ pour le débogage
                         Log.d(TAG, "Réponse API brute: " + recipe.toString());
                         Log.d(TAG, "---- Détails de la recette reçue ----");
                         Log.d(TAG, "ID: " + recipe.getId());
                         Log.d(TAG, "Nom: " + recipe.getName());
 
-                        // Log des valeurs nutritionnelles avec leur type
                         Log.d(TAG, "Calories (brut): " + recipe.getCalories() + " (type: " +
                                 (recipe.getCalories() != null ? "valeur présente" : "valeur absente") + ")");
                         Log.d(TAG, "Protéines (brut): " + recipe.getProtein() + "g (type: " +
@@ -161,7 +167,14 @@ public class RecipeActivity extends AppCompatActivity {
                         if (recipe.getSteps() != null) {
                             Log.d(TAG, "Nombre d'étapes: " + recipe.getSteps().size());
                             for (int i = 0; i < recipe.getSteps().size(); i++) {
-                                RecipeStep step = recipe.getSteps().get(i);
+                                RecipeStepResponse step = recipe.getSteps().get(i);
+                                System.out.println("steps" + step);
+                                    for(RecipeStepIngrResponse ingr :step.getIngredients()) {
+                                        System.out.println("ingr" + ingr);
+                                        ingredients.add(new FoodItem(ingr.getIngredientCatalog().getNameFr(), ingr.getIngredientCatalog().getNameEn(), ingr.getIngredientCatalog().getName(),ingr.getIngredientCatalog().getId() ));
+                                }
+                                System.out.println("ingredients " + ingredients);
+
                                 Log.d(TAG, "Étape " + (i+1) + ": " + step.getDescription());
                             }
                         } else {
@@ -196,7 +209,7 @@ public class RecipeActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<CreateRecipeBody> call, Throwable t) {
+                public void onFailure(Call<RecipeResponseBody> call, Throwable t) {
                     Log.e(TAG, "Échec de la requête API", t);
                     Toast.makeText(RecipeActivity.this,
                             "Échec de la connexion à l'API: " + t.getMessage(),
@@ -217,7 +230,7 @@ public class RecipeActivity extends AppCompatActivity {
      * Met à jour le ViewModel avec les données de la recette reçue
      * @param recipe La recette reçue de l'API
      */
-    private void updateViewModelWithRecipe(CreateRecipeBody recipe) {
+    private void updateViewModelWithRecipe(RecipeResponseBody recipe) {
         if (recipe == null) {
             return;
         }
@@ -229,32 +242,6 @@ public class RecipeActivity extends AppCompatActivity {
         sharedStepsViewModel.setParticipantCount(recipe.getNbServings());
         Log.d(TAG, "Nombre de portions mis à jour: " + recipe.getNbServings());
 
-        // Créer une liste d'ingrédients
-        List<FoodItem> ingredients = new ArrayList<>();
-
-        // Créer manuellement un ingrédient pour tester
-        try {
-            // Basé sur les logs, nous savons qu'il y a un ingrédient "Boeuf" dans les données JSON
-            // Mais notre modèle ne le désérialise pas correctement, donc créons-le manuellement
-            FoodItem beefItem = new FoodItem("Bœuf", "Beef", "beef", 3L);
-            ingredients.add(beefItem);
-            Log.d(TAG, "Ingrédient ajouté manuellement: " + beefItem.getName());
-
-            // Ajouter plus d'ingrédients pour tester le RecyclerView
-            FoodItem saltItem = new FoodItem("Sel", "Salt", "salt", 4L);
-            ingredients.add(saltItem);
-
-            FoodItem pepperItem = new FoodItem("Poivre", "Pepper", "pepper", 5L);
-            ingredients.add(pepperItem);
-
-            FoodItem onionItem = new FoodItem("Oignon", "Onion", "onion", 6L);
-            ingredients.add(onionItem);
-
-            Log.d(TAG, "Total ingrédients ajoutés manuellement: " + ingredients.size());
-        } catch (Exception e) {
-            Log.e(TAG, "Erreur lors de la création manuelle des ingrédients: " + e.getMessage(), e);
-        }
-
         // Mettre à jour la liste d'ingrédients dans le ViewModel
         sharedStepsViewModel._ingredients.setValue(ingredients);
         Log.d(TAG, "Nombre total d'ingrédients ajoutés: " + ingredients.size());
@@ -264,7 +251,7 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Mettre à jour les descriptions d'étapes
         List<String> stepDescriptions = new ArrayList<>();
-        for (RecipeStep step : recipe.getSteps()) {
+        for (RecipeStepResponse step : recipe.getSteps()) {
             stepDescriptions.add(step.getDescription());
         }
         sharedStepsViewModel.setSteps(stepDescriptions);

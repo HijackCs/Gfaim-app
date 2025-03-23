@@ -3,12 +3,14 @@ package com.gfaim.activities.calendar.fragments;
 import static android.content.ContentValues.TAG;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 import android.view.Gravity;
@@ -26,6 +28,8 @@ import com.gfaim.R;
 import com.gfaim.activities.calendar.adapter.MealAdapter;
 import com.gfaim.activities.calendar.adapter.MealAdapter.OnMealClickListener;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
+import com.gfaim.activities.home.HomeActivity;
+import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.MealService;
 import com.gfaim.models.MealResponseBody;
@@ -50,7 +54,7 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
     private RecyclerView mealRecyclerView;
     private MealAdapter mealAdapter;
     private String selectedDate;
-    private final List<String> meals = Arrays.asList("Breakfast", "Lunch", "Dinner", "Snack");
+    private final List<String> meals = Arrays.asList("Breakfast", "Lunch", "Dinner");
     private SharedStepsViewModel sharedStepsViewModel;
     private String lastMealType;
     private String lastParentMeal;
@@ -66,7 +70,9 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         View view = inflater.inflate(R.layout.fragment_calendar, container, false);
         context = requireContext();
 
-
+        // Initialiser la date du jour
+        java.time.LocalDate today = java.time.LocalDate.now();
+        selectedDate = today.format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
         // Initialiser le ViewModel
         sharedStepsViewModel = new ViewModelProvider(requireActivity()).get(SharedStepsViewModel.class);
@@ -82,6 +88,13 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
             selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
             mealAdapter.setSelectedDate(selectedDate);
+        });
+
+
+        FrameLayout circleProfile = view.findViewById(R.id.circleProfile);
+        circleProfile.setOnClickListener( v->{
+            Intent intent = new Intent(context, SettingsActivity.class);
+            startActivity(intent);
         });
 
         // Restaurer les données si on revient d'un autre fragment

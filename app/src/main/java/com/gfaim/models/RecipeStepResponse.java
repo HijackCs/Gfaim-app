@@ -1,18 +1,19 @@
 package com.gfaim.models;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecipeStep {
+public class RecipeStepResponse {
     @SerializedName("id")
     private Long id;
 
@@ -23,7 +24,7 @@ public class RecipeStep {
     private Integer stepNumber;
 
     @SerializedName("ingredients")
-    private List<CreateRecipeStepIngrBody> ingredients;
+    private List<RecipeStepIngrResponse> ingredients;
 
     public String getDescription() {
         return description;
@@ -49,17 +50,17 @@ public class RecipeStep {
         this.stepNumber = stepNumber;
     }
 
-    public List<CreateRecipeStepIngrBody> getIngredients() {
+    public List<RecipeStepIngrResponse> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(List<CreateRecipeStepIngrBody> ingredients) {
+    public void setIngredients(List<RecipeStepIngrResponse> ingredients) {
         this.ingredients = ingredients;
     }
 
     @Override
     public String toString() {
-        return "RecipeStep{" +
+        return "RecipeStepResponse{" +
                 "id=" + id +
                 ", description='" + description + '\'' +
                 ", stepNumber=" + stepNumber +

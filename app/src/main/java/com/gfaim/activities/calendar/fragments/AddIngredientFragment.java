@@ -1,10 +1,13 @@
 package com.gfaim.activities.calendar.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -24,6 +27,7 @@ import com.gfaim.R;
 import com.gfaim.activities.calendar.IngredientQuantityDialog;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.adapter.IngredientAdapter;
+import com.gfaim.activities.calendar.model.Recipe;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.IngredientCatalogService;
 import com.gfaim.auth.TokenManager;
@@ -43,15 +47,41 @@ public class AddIngredientFragment extends Fragment {
 
     private static final String TAG = "AddIngredientFragment";
     private List<FoodItem> selectedIngredients = new ArrayList<>();
+
+    private List<FoodItem> filteredList = new ArrayList<FoodItem>();
+
     private List<FoodItem> ingredients = new ArrayList<>();
     private SharedStepsViewModel sharedStepsViewModel;
     private RecyclerView recyclerView;
     private IngredientAdapter adapter;
-
     private ProgressBar progressBar;
     private TextView emptyTextView;
+    private EditText searchEditText;
 
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View view = inflater.inflate(R.layout.add_ingredient, container, false);
+
+
+        searchEditText = view.findViewById(R.id.searchEditTextAdd);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterItems(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        return view;
+
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -89,23 +119,27 @@ public class AddIngredientFragment extends Fragment {
             emptyTextView.setVisibility(View.GONE);
         }
 
-
         loadIngredientsFromAPI();
 
         ImageView backButton = view.findViewById(R.id.back);
         backButton.setOnClickListener(v -> navController.navigateUp());
     }
 
-    private void onIngredientSelected(FoodItem ingredient) {
-        if (!selectedIngredients.contains(ingredient)) {
-            selectedIngredients.add(ingredient);
-            sharedStepsViewModel.addIngredient(ingredient);
-            Toast.makeText(getContext(), ingredient.getName() + " ajouté !", Toast.LENGTH_SHORT).show();
+    public void filterItems(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(ingredients);
+        } else {
+            for (FoodItem item : ingredients) {
+                if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
         }
+        adapter.updateList(filteredList);
     }
 
     private void loadIngredientsFromAPI() {
-
         if (progressBar != null) progressBar.setVisibility(View.VISIBLE);
         if (recyclerView != null) recyclerView.setVisibility(View.GONE);
         if (emptyTextView != null) emptyTextView.setVisibility(View.GONE);
@@ -118,8 +152,8 @@ public class AddIngredientFragment extends Fragment {
         call.enqueue(new Callback<List<IngredientCatalogItem>>() {
             @Override
             public void onResponse(Call<List<IngredientCatalogItem>> call, Response<List<IngredientCatalogItem>> response) {
+                if (progressBar != null) progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
-                    if (progressBar != null) progressBar.setVisibility(View.GONE);
                     List<IngredientCatalogItem> catalogItems = response.body();
                     Log.d(TAG, "Nombre d'ingrédients reçus: " + catalogItems.size());
 
@@ -132,8 +166,10 @@ public class AddIngredientFragment extends Fragment {
                             ))
                             .collect(Collectors.toList());
 
+                    filteredList.addAll(ingredients);
+
                     // Mise à jour de l'adaptateur
-                    adapter.updateList(ingredients);
+                    adapter.updateList(filteredList);
                     Log.d(TAG, "Liste d'ingrédients mise à jour");
                     if (ingredients.isEmpty()) {
                         if (emptyTextView != null) emptyTextView.setVisibility(View.VISIBLE);
@@ -176,8 +212,11 @@ public class AddIngredientFragment extends Fragment {
         });
     }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.add_ingredient, container, false);
+    private void onIngredientSelected(FoodItem ingredient) {
+        if (!selectedIngredients.contains(ingredient)) {
+            selectedIngredients.add(ingredient);
+            sharedStepsViewModel.addIngredient(ingredient);
+            Toast.makeText(getContext(), ingredient.getName() + " ajouté !", Toast.LENGTH_SHORT).show();
+        }
     }
 }

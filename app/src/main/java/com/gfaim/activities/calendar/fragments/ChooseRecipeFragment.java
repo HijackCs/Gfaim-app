@@ -1,10 +1,13 @@
 package com.gfaim.activities.calendar.fragments;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -13,7 +16,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -24,6 +26,7 @@ import com.gfaim.api.ApiClient;
 import com.gfaim.api.MealService;
 import com.gfaim.api.RecipeService;
 import com.gfaim.models.CreateMealBody;
+import com.gfaim.models.FoodItem;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
@@ -31,7 +34,6 @@ import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,10 +45,15 @@ public class ChooseRecipeFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecipeAdapter adapter;
     private List<Recipe> recipes;
+
+    private List<Recipe> filteredList = new ArrayList<Recipe>();
+
     private NavController navController;
 
     private UtileProfile utileProfile;
     private MemberSessionBody member;
+
+    private EditText searchEditText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class ChooseRecipeFragment extends Fragment {
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
+                loadRecipesFromApi();
             }
             @Override
             public void onFailure(Throwable error) {}
@@ -75,7 +83,21 @@ public class ChooseRecipeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         // Charger les recettes depuis l'API
-        loadRecipesFromApi();
+
+        // Initialiser l'EditText de recherche
+        searchEditText = view.findViewById(R.id.searchEditTextAdd);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filterItems(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
 
         return view;
     }
@@ -83,16 +105,14 @@ public class ChooseRecipeFragment extends Fragment {
     private void loadRecipesFromApi() {
         RecipeService recipeService = ApiClient.getClient(requireContext()).create(RecipeService.class);
 
-        // Récupérer l'ID de la famille de l'utilisateur (à adapter selon votre logique)
-        Long familyId = 1L; // Exemple: ID de la famille actuelle
-
-        Call<List<Recipe>> call = recipeService.getRecipeSuggestions(familyId);
+        Call<List<Recipe>> call = recipeService.getRecipeSuggestions(member.getFamilyId());
         call.enqueue(new Callback<List<Recipe>>() {
             @Override
             public void onResponse(Call<List<Recipe>> call, Response<List<Recipe>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     recipes.clear();
                     recipes.addAll(response.body());
+                    filteredList.addAll(recipes);
                     adapter.notifyDataSetChanged();
                     Log.d(TAG, "Recettes chargées avec succès: " + recipes.size());
                 } else {
@@ -110,6 +130,20 @@ public class ChooseRecipeFragment extends Fragment {
     }
 
 
+    public void filterItems(String query) {
+        filteredList.clear();
+        if (query.isEmpty()) {
+            filteredList.addAll(recipes);
+        } else {
+            for (Recipe item : recipes) {
+                if (item.getName().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+        }
+        adapter.updateRecipes(filteredList);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -118,9 +152,7 @@ public class ChooseRecipeFragment extends Fragment {
 
         // Configuration du listener pour le clic sur une recette
         adapter.setOnItemClickListener(position -> {
-
             createMeal(position);
-
         });
 
         // Bouton retour
@@ -128,9 +160,8 @@ public class ChooseRecipeFragment extends Fragment {
         backButton.setOnClickListener(v -> navController.navigateUp());
     }
 
-    private void createMeal(int position){
-
-        Recipe selectedRecipe = recipes.get(position);
+    private void createMeal(int position) {
+        Recipe selectedRecipe = filteredList.get(position);
 
         MealService service = ApiClient.getClient(requireContext()).create(MealService.class);
         CreateMealBody mealBody = new CreateMealBody();
@@ -167,9 +198,8 @@ public class ChooseRecipeFragment extends Fragment {
         call.enqueue(new Callback<CreateMealBody>() {
             @Override
             public void onResponse(Call<CreateMealBody> call, Response<CreateMealBody> response) {
-                if(response.isSuccessful()){
+                if(response.isSuccessful()) {
                     navController.navigate(R.id.action_chooseRecipe_to_calendar);
-
                 } else {
                     Toast.makeText(requireContext(), "Erreur lors de la création du repas", Toast.LENGTH_SHORT).show();
                 }
@@ -181,5 +211,4 @@ public class ChooseRecipeFragment extends Fragment {
             }
         });
     }
-
 }

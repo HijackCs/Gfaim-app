@@ -2,6 +2,7 @@ package com.gfaim.api;
 
 import com.gfaim.activities.calendar.model.Recipe;
 import com.gfaim.models.CreateRecipeBody;
+import com.gfaim.models.RecipeResponseBody;
 
 import java.util.List;
 import retrofit2.Call;
@@ -13,7 +14,7 @@ import retrofit2.http.Path;
 
 public interface RecipeService {
     @GET("/recipes/{recipe_id}")
-    Call<CreateRecipeBody> getRecipe(@Path("recipe_id") Long recipe_id);
+    Call<RecipeResponseBody> getRecipe(@Path("recipe_id") Long recipe_id);
 
     @POST("/recipes")
     Call<CreateRecipeBody> createRecipe(@Body CreateRecipeBody request);

@@ -21,7 +21,9 @@ import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.auth.LoginActivity;
 import com.gfaim.activities.calendar.CalendarActivity;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
+import com.gfaim.models.RecipeResponseBody;
 import com.gfaim.models.RecipeStep;
+import com.gfaim.models.RecipeStepResponse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +38,7 @@ public class RecipeStepsFragment extends Fragment {
     private TextView stepInstructionsTextView;
     private Button previousStepButton;
     private Button nextStepButton;
-    private List<RecipeStep> steps;
+    private List<RecipeStepResponse> steps;
     private List<Integer> durations;
     private int currentStepIndex = 0;
     private LinearLayout stepIndicatorsLayout;
@@ -66,7 +68,7 @@ public class RecipeStepsFragment extends Fragment {
     private void debugViewModel() {
         if (sharedStepsViewModel != null) {
             String menuName = sharedStepsViewModel.getMenuName();
-            List<RecipeStep> steps = sharedStepsViewModel.getRawSteps();
+            List<RecipeStepResponse> steps = sharedStepsViewModel.getRawSteps();
 
             Log.d(TAG, "ViewModel - Menu name: " + menuName);
             Log.d(TAG, "ViewModel - Steps count: " + (steps != null ? steps.size() : 0));
@@ -176,7 +178,7 @@ public class RecipeStepsFragment extends Fragment {
 
             // Vérifier les étapes avant de créer les indicateurs
             for (int i = 0; i < steps.size(); i++) {
-                RecipeStep step = steps.get(i);
+                RecipeStepResponse step = steps.get(i);
                 Log.d(TAG, "Étape " + i + ": ID=" + step.getId() + ", Numéro=" + step.getStepNumber() + ", Description=" + step.getDescription());
 
                 // S'assurer que chaque étape a un numéro et un ID valide
@@ -193,7 +195,7 @@ public class RecipeStepsFragment extends Fragment {
 
             // Créer un nouvel indicateur pour chaque étape
             for (int i = 0; i < steps.size(); i++) {
-                RecipeStep step = steps.get(i);
+                RecipeStepResponse step = steps.get(i);
                 TextView indicator = new TextView(requireContext());
 
                 // Définir l'ID de l'étape comme texte de l'indicateur
@@ -241,7 +243,7 @@ public class RecipeStepsFragment extends Fragment {
                 currentStepIndex = steps.size() - 1;
             }
 
-            RecipeStep currentStep = steps.get(currentStepIndex);
+            RecipeStepResponse currentStep = steps.get(currentStepIndex);
 
             // Mettre à jour le numéro et le texte de l'étape
             stepNumberTextView.setText("Step " + currentStep.getStepNumber());

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import com.gfaim.models.FoodItem;
+import com.gfaim.models.RecipeStepResponse;
 import com.gfaim.models.RecipeStep;
 
 public class SharedStepsViewModel extends ViewModel {
@@ -21,7 +22,7 @@ public class SharedStepsViewModel extends ViewModel {
     public LiveData<List<String>> steps = _steps;
 
     // Stockage des étapes brutes avec leurs IDs
-    private List<RecipeStep> rawSteps = new ArrayList<>();
+    private List<RecipeStepResponse> rawSteps = new ArrayList<>();
 
     private final MutableLiveData<List<Integer>> _durations = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<Integer>> durations = _durations;
@@ -74,12 +75,12 @@ public class SharedStepsViewModel extends ViewModel {
         }
         }
     // Gestion des étapes brutes (avec leurs IDs)
-    public List<RecipeStep> getRawSteps() {
+    public List<RecipeStepResponse> getRawSteps() {
         return rawSteps;
     }
 
-    public void setRawSteps(List<RecipeStep> steps) {
-        this.rawSteps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
+    public void setRawSteps(List<RecipeStepResponse> steps) {
+        this.rawSteps = steps != null ? new ArrayList<RecipeStepResponse>() : new ArrayList<>();
    }
 
     public void removeIngredient(FoodItem ingredient) {

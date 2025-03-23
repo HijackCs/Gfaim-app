@@ -1,0 +1,103 @@
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/calendarFragment">
+
+    <fragment
+        android:id="@+id/calendarFragment"
+        android:name="com.gfaim.activities.calendar.fragments.CalendarFragment"
+        android:label="Calendar" >
+        <action
+            android:id="@+id/action_calendar_to_chooseRecipe"
+            app:destination="@id/chooseRecipeFragment" />
+        <action
+            android:id="@+id/action_calendar_to_addIngredients"
+            app:destination="@id/addIngredientsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addIngredientsFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddIngredientsFragment"
+        android:label="Add Ingredients">
+        <action
+            android:id="@+id/action_addIngredientsFragment_to_addIngredientFragment"
+            app:destination="@id/addIngredientFragment" />
+        <action
+            android:id="@+id/action_addIngredients_to_addSteps"
+            app:destination="@id/addStepsFragment">
+            <argument
+                android:name="selectedDate"
+                app:argType="string" />
+            <argument
+                android:name="mealType"
+                app:argType="string" />
+            <argument
+                android:name="cardPosition"
+                app:argType="integer" />
+        </action>
+        <argument
+            android:name="selectedDate"
+            app:argType="string" />
+        <argument
+            android:name="mealType"
+            app:argType="string" />
+        <argument
+            android:name="cardPosition"
+            app:argType="integer" />
+    </fragment>
+
+    <action
+        android:id="@+id/action_calendar_to_addIngredients"
+        app:destination="@id/addIngredientsFragment" />
+
+    <fragment
+        android:id="@+id/addIngredientFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddIngredientFragment"
+        android:label="Add Ingredient">
+        <action
+            android:id="@+id/action_addIngredient_to_addIngredients"
+            app:destination="@id/addIngredientsFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addStepsFragment"
+        android:name="com.gfaim.activities.calendar.fragments.AddStepsFragment"
+        android:label="Add Steps">
+        <action
+            android:id="@+id/action_addSteps_to_summary"
+            app:destination="@id/summaryFragment">
+            <argument
+                android:name="selectedDate"
+                app:argType="string" />
+            <argument
+                android:name="mealType"
+                app:argType="string" />
+            <argument
+                android:name="cardPosition"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/summaryFragment"
+        android:name="com.gfaim.activities.calendar.fragments.SummaryFragment"
+        android:label="Summary">
+        <action
+            android:id="@+id/action_summary_to_calendar"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chooseRecipeFragment"
+        android:name="com.gfaim.activities.calendar.fragments.ChooseRecipeFragment"
+        android:label="Choose Recipe">
+        <action
+            android:id="@+id/action_chooseRecipe_to_calendar"
+            app:destination="@id/calendarFragment" />
+    </fragment>
+
+    <!-- Définir les actions de navigation -->
+
+
+
+</navigation>

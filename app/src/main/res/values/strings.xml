@@ -15,6 +15,7 @@
     <string name="helloTxt">Hey, Hello 👋</string>
     <string name="name">Name</string>
     <string name="firstName">First name</string>
+    <string name="surname">Surname</string>
     <string name="haveAccount">Have an account?</string>
     <string name="terms">I agree to the terms of use</string>
 
@@ -44,7 +45,7 @@
     <string name="finish">Finish</string>
 
     <string name="screen0">Enjoy your lunch</string>
-    <string name="screen0Desc">Just relax and don’t overthink what to eat. We’ll take care of it for you with our personalized meal plans tailored to your needs.</string>
+    <string name="screen0Desc">Just relax and don\'t overthink what to eat. We\'ll take care of it for you with our personalized meal plans tailored to your needs.</string>
 
     <string name="screen1">Do you have any food allergies?</string>
     <string name="screen1Desc">To provide you with the best meal suggestions tailored to you and your family, you need to join a family or create a new one.</string>
@@ -107,9 +108,13 @@
     <string name="alreadyAccount">Vous avez déjà un compte ?</string>
     <string name="notEmpty">Le nom ne peut pas être vide</string>
     <string name="delete_family">Supprimer la famille</string>
+    <string name="leave_family">Quitter la famille</string>
+    <string name="no">non</string>
+    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">retour</string>
 
-    <!--facebook-->
-    <!--Facebook-->
+
     <!--Frigo-->
     <string name="confirm">Confirm</string>
     <string name="groceries">Groceries</string>
@@ -120,17 +125,24 @@
     <string name="add_groceries">Add Groceries</string>
     <string name="add">Add</string>
 
-
-
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
     <string name="facebook_client_token" translatable="false">d07a235c693668c9fc75d9475e0846b4</string>
-    <string name="leave_family">Quitter la famille</string>
-    <string name="no">non</string>
-    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
-    <string name="change_family">Changer de famille</string>
-    <string name="back">retour</string>
+
+    <!--Home-->
+    <string name="Home">Home</string>
+    <string name="what_s_for_today">What\'s for today ?</string>
+    <string name="weekly_progress">Weekly Progress</string>
+    <string name="calories">Calories</string>
+    <string name="nb_calories">nb calories</string>
+    <string name="Groceries">Groceries</string>
+    <string name="Recipes">Recipes</string>
+    <string name="Calendar">Calendar</string>
+    <string name="breakfast">Breakfast</string>
+    <string name="lunch">Lunch</string>
+    <string name="dinner">Dinner</string>
+    <string name="no_meal_planned">No meal planned</string>
 
 
 </resources>

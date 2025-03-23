@@ -10,27 +10,20 @@ import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.gfaim.R;
-import com.gfaim.activities.HomeActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
-import com.gfaim.activities.HomeActivity;
-import com.gfaim.activities.UserProfileActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
-import com.gfaim.models.AuthResponse;
-import com.gfaim.models.LoginRequest;
+import com.gfaim.models.auth.AuthResponse;
+import com.gfaim.models.auth.LoginRequest;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
 import com.gfaim.models.member.MemberSessionBody;
@@ -40,8 +33,6 @@ import com.gfaim.utility.auth.JwtDecoder;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-
-import org.w3c.dom.Text;
 
 import java.util.logging.Logger;
 

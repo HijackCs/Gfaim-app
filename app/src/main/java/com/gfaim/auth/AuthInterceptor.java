@@ -6,8 +6,8 @@ import static com.gfaim.utility.auth.ResponseStatus.UNAUTHORIZED;
 import android.util.Log;
 
 import com.gfaim.api.AuthService;
-import com.gfaim.models.AuthResponse;
-import com.gfaim.models.RefreshRequest;
+import com.gfaim.models.auth.AuthResponse;
+import com.gfaim.models.auth.RefreshRequest;
 
 import java.io.IOException;
 

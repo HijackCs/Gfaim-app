@@ -1,11 +1,11 @@
 package com.gfaim.api;
 
-import com.gfaim.models.AuthResponse;
-import com.gfaim.models.ForgotPasswordRequest;
-import com.gfaim.models.LoginRequest;
-import com.gfaim.models.RefreshRequest;
-import com.gfaim.models.ResetPasswordRequest;
-import com.gfaim.models.SignupRequest;
+import com.gfaim.models.auth.AuthResponse;
+import com.gfaim.models.auth.ForgotPasswordRequest;
+import com.gfaim.models.auth.LoginRequest;
+import com.gfaim.models.auth.RefreshRequest;
+import com.gfaim.models.auth.ResetPasswordRequest;
+import com.gfaim.models.auth.SignupRequest;
 
 import retrofit2.Call;
 import retrofit2.http.Body;

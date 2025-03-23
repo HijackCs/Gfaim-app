@@ -46,7 +46,7 @@ import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateSelfMemberBody;
-import com.gfaim.models.DietAllergy;
+import com.gfaim.models.user.DietAllergy;
 import com.gfaim.utility.auth.JwtDecoder;
 import com.google.android.flexbox.FlexboxLayout;
 import com.google.android.material.bottomsheet.BottomSheetDialog;

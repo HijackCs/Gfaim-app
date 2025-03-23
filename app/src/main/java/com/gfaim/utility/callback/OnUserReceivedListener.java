@@ -1,6 +1,6 @@
 package com.gfaim.utility.callback;
 
-import com.gfaim.models.UpdateUserBody;
+import com.gfaim.models.user.UpdateUserBody;
 import com.gfaim.models.user.UpdateUserPassword;
 
 public interface OnUserReceivedListener {

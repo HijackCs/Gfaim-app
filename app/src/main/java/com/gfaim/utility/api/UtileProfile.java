@@ -1,6 +1,5 @@
 package com.gfaim.utility.api;
 
-import android.accounts.OnAccountsUpdateListener;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,10 +12,10 @@ import com.gfaim.api.FamilyService;
 import com.gfaim.api.MemberService;
 import com.gfaim.api.UserService;
 import com.gfaim.auth.TokenManager;
-import com.gfaim.models.UpdateUserBody;
+import com.gfaim.models.user.UpdateUserBody;
 import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
-import com.gfaim.models.RefreshRequest;
+import com.gfaim.models.auth.RefreshRequest;
 import com.gfaim.models.family.LeaveFamilyBody;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;

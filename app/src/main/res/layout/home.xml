@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/appBackground">
+
+    <FrameLayout
+        android:id="@+id/circleProfile"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circle_profile"
+        android:layout_marginTop="50dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/textView"
+        android:layout_marginStart="60dp">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:src="@drawable/avatar" />
+    </FrameLayout>
 
 
     <TextView
@@ -13,70 +30,54 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="135dp"
-        android:layout_marginTop="144dp"
-        android:layout_marginEnd="135dp"
-        android:layout_marginBottom="542dp"
-        android:text="Welcome"
+        android:layout_marginTop="50dp"
+        android:text="@string/Home"
+        android:textColor="@color/grey"
         android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="163dp"
-        android:layout_marginTop="63dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="63dp"
-        android:text="name"
-        android:textColor="@color/black"
-        android:textSize="34sp"
-        app:layout_constraintBottom_toTopOf="@+id/email"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="100dp"
+        android:text="@string/what_s_for_today"
+        android:textColor="@color/grey"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="63dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="339dp"
-        android:text="frigo"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <androidx.cardview.widget.CardView
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        app:cardCornerRadius="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintStart_toStartOf="@id/bottom_bar"
+        app:layout_constraintTop_toBottomOf="@id/textView2">
 
-    <Button
-        android:id="@+id/signOutBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginStart="160dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="163dp"
-        android:layout_marginBottom="192dp"
-        android:backgroundTint="@color/black"
-        android:elevation="4dp"
-        android:padding="12dp"
-        android:text="profil"
-        android:textColor="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email" />
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/carrousel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <include layout="@layout/navigation_bar"/>
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

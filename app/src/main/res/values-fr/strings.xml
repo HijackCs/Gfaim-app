@@ -10,6 +10,7 @@
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
     <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="surname">Surname</string>
 
     <!--Inscription-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>

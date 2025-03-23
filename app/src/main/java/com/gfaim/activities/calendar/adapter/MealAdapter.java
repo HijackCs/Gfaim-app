@@ -172,15 +172,13 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
                     MealResponseBody meal = response.body().get(0);
 
-                    System.out.println("meal "+ meal.getRecipe().getName());
-                    // Afficher les informations du repas
                     holder.menuNameText.setText(meal.getRecipe().getName());
                     holder.timeText.setText(meal.getRecipe().getReadyInMinutes() + " min");
 
-                    // Utilisez la valeur du TextView mealTypeText comme type de repas affiché
                     final String displayedMealType = holder.mealTypeText.getText().toString();
 
                     holder.itemView.setOnClickListener(v -> openRecipeActivity(meal.getRecipe().getId(), displayedMealType));
+
 
                     holder.addSnackLayout.setOnClickListener(v -> {
                         if (listener != null && selectedDate != null) {
@@ -197,6 +195,33 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     holder.timeText.setText("0 min");
                     holder.snackText.setText("Add a snack");
                     holder.snackImage.setImageResource(R.drawable.ic_add_green);
+
+                    if(Objects.equals(member.getRole(), "CHEF")){
+                        holder.itemView.setOnClickListener(v -> {
+                            if (listener != null) {
+                                listener.onMealClick(mealType, position);
+                            }
+                        });
+
+                        holder.addSnackLayout.setOnClickListener(v -> {
+                            if (listener != null && selectedDate != null) {
+                                listener.onMealClick("Snack", position);
+                            }
+                        });
+                    }
+
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<MealResponseBody>> call, Throwable t) {
+                Log.e(TAG, "Erreur de connexion: " + t.getMessage());
+                holder.menuNameText.setText(R.string.no_meal_planned);
+                holder.timeText.setText("0 min");
+                holder.snackText.setText("Add a snack");
+                holder.snackImage.setImageResource(R.drawable.ic_add_green);
+                if(Objects.equals(member.getRole(), "CHEF")) {
                     holder.itemView.setOnClickListener(v -> {
                         if (listener != null) {
                             listener.onMealClick(mealType, position);
@@ -209,26 +234,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                         }
                     });
                 }
-            }
-
-            @Override
-            public void onFailure(Call<List<MealResponseBody>> call, Throwable t) {
-                Log.e(TAG, "Erreur de connexion: " + t.getMessage());
-                holder.menuNameText.setText(R.string.no_meal_planned);
-                holder.timeText.setText("0 min");
-                holder.snackText.setText("Add a snack");
-                holder.snackImage.setImageResource(R.drawable.ic_add_green);
-                holder.itemView.setOnClickListener(v -> {
-                    if (listener != null) {
-                        listener.onMealClick(mealType, position);
-                    }
-                });
-
-                holder.addSnackLayout.setOnClickListener(v -> {
-                    if (listener != null && selectedDate != null) {
-                        listener.onMealClick("Snack", position);
-                    }
-                });
             }
         });
     }

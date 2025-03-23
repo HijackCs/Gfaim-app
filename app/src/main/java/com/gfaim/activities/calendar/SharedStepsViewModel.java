@@ -59,6 +59,14 @@ public class SharedStepsViewModel extends ViewModel {
         this.participantCount = participantCount;
     }
 
+    /**
+     * Récupère le nombre de portions de la recette
+     * @return Le nombre de portions
+     */
+    public int getNbServings() {
+        return participantCount;
+    }
+
     // Gestion des étapes brutes (avec leurs IDs)
     public List<Step> getRawSteps() {
         return rawSteps;
@@ -296,12 +304,13 @@ public class SharedStepsViewModel extends ViewModel {
 
         // Mise à jour automatique des informations nutritionnelles
         if (recipe != null) {
+            Log.d(TAG, "setCurrentRecipe - Nombre de portions reçu: " + recipe.getNbServings());
             setNutritionInfo(recipe.getCalories(), recipe.getProtein(), recipe.getCarbs(), recipe.getFat());
             setMenuName(recipe.getName());
 
-            if (recipe.getNbServings() > 0) {
-                setParticipantCount(recipe.getNbServings());
-            }
+            // Mise à jour du nombre de portions sans condition
+            setParticipantCount(recipe.getNbServings());
+            Log.d(TAG, "setCurrentRecipe - Nombre de participants mis à jour: " + getParticipantCount());
 
             // Mise à jour des étapes si disponibles
             if (recipe.getSteps() != null) {

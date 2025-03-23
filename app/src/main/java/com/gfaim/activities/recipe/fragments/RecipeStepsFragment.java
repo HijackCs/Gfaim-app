@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
+import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.calendar.CalendarActivity;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.model.Step;
 
@@ -253,8 +255,8 @@ public class RecipeStepsFragment extends Fragment {
                 TextView indicator = new TextView(requireContext());
 
                 // Définir l'ID de l'étape comme texte de l'indicateur
-                indicator.setText(String.valueOf(step.getId()));
-                Log.d(TAG, "Création de l'indicateur pour l'étape " + i + " avec ID: " + step.getId());
+                indicator.setText(String.valueOf(step.getStepNumber()));
+                Log.d(TAG, "Création de l'indicateur pour l'étape " + i + " avec numéro: " + step.getStepNumber());
 
                 // Paramètres de mise en page
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -351,9 +353,9 @@ public class RecipeStepsFragment extends Fragment {
 
             // Changer le texte du bouton suivant à la dernière étape
             if (currentStepIndex == steps.size() - 1) {
-                nextStepButton.setText("Terminer");
+                nextStepButton.setText("Finish");
             } else {
-                nextStepButton.setText("Suivant");
+                nextStepButton.setText("Next");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans updateNavigationButtons", e);
@@ -392,8 +394,8 @@ public class RecipeStepsFragment extends Fragment {
     private void finishCooking() {
         try {
             if (getActivity() != null) {
-                Intent intent = new Intent(getActivity(), NavigationBar.class);
-                intent.putExtra("fragment", "home");
+                Intent intent = new Intent(getActivity(), CalendarActivity.class);
+                startActivity(intent);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 getActivity().finish();

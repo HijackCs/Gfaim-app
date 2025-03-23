@@ -117,7 +117,7 @@ public class RecipeIngredientsFragment extends Fragment implements IngredientAda
         fatValueTextView.setText(sharedStepsViewModel.getFat() + "g");
 
         // Mise à jour du nombre de portions
-        servingsTextView.setText(String.valueOf(sharedStepsViewModel.getParticipantCount()));
+        servingsTextView.setText(String.valueOf(sharedStepsViewModel.getNbServings()));
     }
 
     private void loadStepsFragment() {

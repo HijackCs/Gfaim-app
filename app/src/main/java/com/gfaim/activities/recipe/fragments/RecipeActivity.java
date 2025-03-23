@@ -18,6 +18,7 @@ import com.gfaim.activities.calendar.model.Step;
 import com.gfaim.activities.calendar.model.StepIngredient;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.RecipeService;
+import com.gfaim.activities.NavigationBar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,8 +36,8 @@ public class RecipeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
         try {
+            super.onCreate(savedInstanceState);
             setContentView(R.layout.recipe);
 
             // Initialiser le ViewModel
@@ -44,6 +45,10 @@ public class RecipeActivity extends AppCompatActivity {
 
             // Initialiser les vues
             initViews();
+
+            // Initialiser la barre de navigation avec le bouton Recipes actif
+            NavigationBar navigationBar = new NavigationBar(this);
+            navigationBar.setActiveButton(R.id.btn_recipes);
 
             // Important: Réinitialiser le ViewModel pour éviter des données d'une recette précédente
             sharedStepsViewModel.reset();
@@ -232,6 +237,10 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Mettre à jour le nom de la recette
         sharedStepsViewModel.setMenuName(recipe.getName());
+
+        // Mettre à jour le nombre de portions
+        sharedStepsViewModel.setParticipantCount(recipe.getNbServings());
+        Log.d(TAG, "Nombre de portions mis à jour: " + recipe.getNbServings());
 
         // Créer une liste d'ingrédients
         List<Ingredient> ingredients = new ArrayList<>();

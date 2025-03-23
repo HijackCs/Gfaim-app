@@ -74,14 +74,19 @@ public class SharedStepsViewModel extends ViewModel {
             _ingredients.setValue(currentIngredients);
         }
         }
-    // Gestion des étapes brutes (avec leurs IDs)
     public List<RecipeStepResponse> getRawSteps() {
         return rawSteps;
     }
 
     public void setRawSteps(List<RecipeStepResponse> steps) {
-        this.rawSteps = steps != null ? new ArrayList<RecipeStepResponse>() : new ArrayList<>();
-   }
+        if (steps != null) {
+            this.rawSteps = new ArrayList<>(steps);
+            Log.d(TAG, "rawSteps mis à jour avec " + rawSteps.size() + " éléments");
+        } else {
+            this.rawSteps = new ArrayList<>();
+            Log.d(TAG, "setRawSteps appelé avec une liste nulle");
+        }
+    }
 
     public void removeIngredient(FoodItem ingredient) {
         List<FoodItem> currentIngredients = _ingredients.getValue();
@@ -91,7 +96,6 @@ public class SharedStepsViewModel extends ViewModel {
         }
     }
 
-    // Gestion des étapes
     public LiveData<List<String>> getSteps() {
         return steps;
     }
@@ -100,7 +104,6 @@ public class SharedStepsViewModel extends ViewModel {
         _steps.setValue(new ArrayList<>(newSteps));
     }
 
-    // Gestion des durées
     public LiveData<List<Integer>> getDurations() {
         return durations;
     }

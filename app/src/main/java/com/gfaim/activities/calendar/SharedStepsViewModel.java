@@ -1,27 +1,27 @@
 package com.gfaim.activities.calendar;
 
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-
-import com.gfaim.activities.calendar.model.Ingredient;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import com.gfaim.models.FoodItem;
+import com.gfaim.models.RecipeStep;
 
 public class SharedStepsViewModel extends ViewModel {
     private static final String TAG = "SharedStepsViewModel";
-
     private String menuName = "";
     private int participantCount = 1;
-    private final MutableLiveData<List<FoodItem>> _ingredients = new MutableLiveData<>(new ArrayList<>());
+    public final MutableLiveData<List<FoodItem>> _ingredients = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<FoodItem>> ingredients = _ingredients;
     private final MutableLiveData<List<String>> _steps = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<String>> steps = _steps;
 
     // Stockage des étapes brutes avec leurs IDs
-    private List<Step> rawSteps = new ArrayList<>();
+    private List<RecipeStep> rawSteps = new ArrayList<>();
 
     private final MutableLiveData<List<Integer>> _durations = new MutableLiveData<>(new ArrayList<>());
     public LiveData<List<Integer>> durations = _durations;
@@ -33,7 +33,7 @@ public class SharedStepsViewModel extends ViewModel {
     private int fat = 0;
 
     // Variable pour stocker la recette actuelle
-    private Recipe currentRecipe = null;
+    private RecipeStep currentRecipe = null;
 
     // Getter et Setter pour le nom du menu
     public String getMenuName() {
@@ -74,11 +74,11 @@ public class SharedStepsViewModel extends ViewModel {
         }
         }
     // Gestion des étapes brutes (avec leurs IDs)
-    public List<Step> getRawSteps() {
+    public List<RecipeStep> getRawSteps() {
         return rawSteps;
     }
 
-    public void setRawSteps(List<Step> steps) {
+    public void setRawSteps(List<RecipeStep> steps) {
         this.rawSteps = steps != null ? new ArrayList<>(steps) : new ArrayList<>();
    }
 
@@ -197,7 +197,7 @@ public class SharedStepsViewModel extends ViewModel {
      * Définit directement la liste complète d'ingrédients
      * @param ingredients La nouvelle liste d'ingrédients
      */
-    public void setIngredients(List<Ingredient> ingredients) {
+    public void setIngredients(List<FoodItem> ingredients) {
         try {
             Log.d(TAG, "setIngredients appelé avec " + (ingredients != null ? ingredients.size() : 0) + " ingrédients");
 
@@ -208,20 +208,18 @@ public class SharedStepsViewModel extends ViewModel {
             }
 
             // Créer une nouvelle liste pour éviter les problèmes de référence
-            List<Ingredient> newList = new ArrayList<>(ingredients);
+            List<FoodItem> newList = new ArrayList<>(ingredients);
 
             // Log détaillé pour chaque ingrédient
             for (int i = 0; i < newList.size(); i++) {
-                Ingredient ing = newList.get(i);
-                Log.d(TAG, "Ingrédient " + (i+1) + ": " + ing.getName() +
-                        " (" + ing.getQuantity() + " " + ing.getUnit() + ")");
+                FoodItem ing = newList.get(i);
             }
 
             // Mise à jour du LiveData
             _ingredients.setValue(newList);
 
             // Vérification que la liste a bien été mise à jour
-            List<Ingredient> currentList = _ingredients.getValue();
+            List<FoodItem> currentList = _ingredients.getValue();
             if (currentList != null) {
                 Log.d(TAG, "Après setIngredients, _ingredients contient " + currentList.size() + " ingrédients");
             } else {
@@ -232,12 +230,4 @@ public class SharedStepsViewModel extends ViewModel {
             e.printStackTrace();
         }
     }
-
-    /**
-     * Obtient la LiveData contenant la liste des ingrédients
-     */
-    public LiveData<List<Ingredient>> getIngredients() {
-        return ingredients;
-    }
-
 }

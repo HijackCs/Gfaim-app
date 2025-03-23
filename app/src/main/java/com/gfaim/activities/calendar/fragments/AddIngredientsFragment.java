@@ -146,17 +146,17 @@ public class AddIngredientsFragment extends Fragment {
         });
     }
 
-    private void updateIngredientList(List<Ingredient> ingredients) {
+    private void updateIngredientList(List<FoodItem> ingredients) {
         ingredientContainer.removeAllViews();
         if (ingredients != null) {
-            for (Ingredient ingredient : ingredients) {
+            for (FoodItem ingredient : ingredients) {
                 addIngredientView(ingredient);
             }
         }
     }
 
 
-    private void addIngredientView(Ingredient ingredient) {
+    private void addIngredientView(FoodItem ingredient) {
         LinearLayout ingredientLayout = new LinearLayout(getContext());
         ingredientLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

@@ -80,14 +80,12 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
         // Initialiser le calendrier
         CalendarView calendarView = view.findViewById(R.id.calendarView);
         calendarView.setOnDateChangeListener((view1, year, month, dayOfMonth) -> {
-            System.out.println("je suis la ");
             selectedDate = String.format(Locale.getDefault(), "%d-%02d-%02d", year, month + 1, dayOfMonth);
             mealAdapter.setSelectedDate(selectedDate);
         });
 
         // Restaurer les données si on revient d'un autre fragment
         if (getArguments() != null) {
-            System.out.println("je gfd)dffdfdgfd la ");
             String date = getArguments().getString("selectedDate");
             String mealType = getArguments().getString("mealType");
 
@@ -96,11 +94,9 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
             String parentMeal = getArguments().getString("parentMeal");
 
             if (date != null && mealType != null) {
-                // Si on a un menuName dans les arguments, on l'utilise
                 if (menuName != null) {
                     mealAdapter.updateMealInfo(date, mealType, menuName, duration, parentMeal);
                 }
-                // Sinon, on vérifie si on a un menuName dans le ViewModel
                 else if ("Snack".equals(mealType) && sharedStepsViewModel.getMenuName() != null) {
                     String viewModelMenuName = sharedStepsViewModel.getMenuName();
                     if (viewModelMenuName != null && !viewModelMenuName.trim().isEmpty()) {
@@ -114,9 +110,7 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
                     }
                 }
 
-                // Mettre à jour la date sélectionnée dans le calendrier
                 try {
-                    System.out.println("je passe ici ");
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                     Date parsedDate = sdf.parse(date);
                     if (parsedDate != null) {
@@ -136,7 +130,6 @@ public class CalendarFragment extends Fragment implements OnMealClickListener {
     @Override
     public void onResume() {
         super.onResume();
-        System.out.println("je passe la");
         // Les arguments ont priorité sur le ViewModel
         Bundle args = getArguments();
         if (args != null) {

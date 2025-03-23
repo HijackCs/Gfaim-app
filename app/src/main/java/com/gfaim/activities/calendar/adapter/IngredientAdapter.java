@@ -1,5 +1,6 @@
 package com.gfaim.activities.calendar.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +14,18 @@ import com.gfaim.R;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.models.FoodItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
     private List<FoodItem> ingredients;
     private final OnIngredientClickListener listener;
-    private final SharedStepsViewModel viewModel;
+
+    private Context context;
+
+    public void setIngredientList(List<FoodItem> ingredients) {
+        this.ingredients = ingredients;
+    }
 
     public interface OnIngredientClickListener {
         void onIngredientClick(FoodItem ingredient);
@@ -27,7 +34,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public IngredientAdapter(List<FoodItem> ingredients, OnIngredientClickListener listener) {
         this.ingredients = ingredients;
         this.listener = listener;
-        this.viewModel = new SharedStepsViewModel();
+    }
+
+    public IngredientAdapter(Context context, OnIngredientClickListener listener) {
+        this.context = context;
+        this.ingredients = new ArrayList<>();
+        this.listener = listener;
     }
 
     public void updateList(List<FoodItem> newIngredients) {
@@ -64,12 +76,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
-        private final TextView caloriesTextView;
+       // private final TextView caloriesTextView;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.ingredient_name);
-            caloriesTextView = itemView.findViewById(R.id.ingredient_calories);
+            //caloriesTextView = itemView.findViewById(R.id.ingredient_calories);
         }
 
         public void bind(final FoodItem ingredient, final OnIngredientClickListener listener) {

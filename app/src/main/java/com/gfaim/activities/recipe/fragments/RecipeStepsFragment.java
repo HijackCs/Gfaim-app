@@ -21,7 +21,7 @@ import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.auth.LoginActivity;
 import com.gfaim.activities.calendar.CalendarActivity;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
-import com.gfaim.activities.calendar.model.Step;
+import com.gfaim.models.RecipeStep;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class RecipeStepsFragment extends Fragment {
     private TextView stepInstructionsTextView;
     private Button previousStepButton;
     private Button nextStepButton;
-    private List<Step> steps;
+    private List<RecipeStep> steps;
     private List<Integer> durations;
     private int currentStepIndex = 0;
     private LinearLayout stepIndicatorsLayout;
@@ -66,7 +66,7 @@ public class RecipeStepsFragment extends Fragment {
     private void debugViewModel() {
         if (sharedStepsViewModel != null) {
             String menuName = sharedStepsViewModel.getMenuName();
-            List<Step> steps = sharedStepsViewModel.getRawSteps();
+            List<RecipeStep> steps = sharedStepsViewModel.getRawSteps();
 
             Log.d(TAG, "ViewModel - Menu name: " + menuName);
             Log.d(TAG, "ViewModel - Steps count: " + (steps != null ? steps.size() : 0));
@@ -139,7 +139,6 @@ public class RecipeStepsFragment extends Fragment {
             // Si pas d'étapes, créer des étapes de test
             if (steps == null || steps.isEmpty()) {
                 Log.d(TAG, "Aucune étape dans le ViewModel, création d'étapes de test");
-                addTestSteps();
             } else {
                 Log.d(TAG, "Étapes récupérées: " + steps.size());
             }
@@ -163,63 +162,6 @@ public class RecipeStepsFragment extends Fragment {
     }
 
     /**
-     * Ajoute des étapes de test et met à jour le ViewModel
-     */
-    private void addTestSteps() {
-        try {
-            // Créer des étapes de test
-            List<Step> testSteps = new ArrayList<>();
-
-            Step step1 = new Step();
-            step1.setId(1L);
-            step1.setDescription("Prepare all ingredients: chop vegetables, measure spices, and slice meat.");
-            step1.setStepNumber(1);
-
-            Step step2 = new Step();
-            step2.setId(2L);
-            step2.setDescription("Heat a large pot over medium heat. Add sesame oil and sauté ginger until fragrant.");
-            step2.setStepNumber(2);
-
-            Step step3 = new Step();
-            step3.setId(3L);
-            step3.setDescription("Add chicken and cook until browned on all sides, about 5-7 minutes.");
-            step3.setStepNumber(3);
-
-            Step step4 = new Step();
-            step4.setId(4L);
-            step4.setDescription("We tie the bacon with twine so that the skin is on the outside and one end and the other practically meet. Heat a little oil in a pressure cooker and mark the bacon all over until golden brown. We remove and discard the oil.");
-            step4.setStepNumber(4);
-
-            testSteps.add(step1);
-            testSteps.add(step2);
-            testSteps.add(step3);
-            testSteps.add(step4);
-
-            // Créer des durées correspondantes
-            List<Integer> testDurations = Arrays.asList(5, 3, 7, 10);
-
-            // Mettre à jour le ViewModel
-            steps = new ArrayList<>(testSteps);
-            durations = new ArrayList<>(testDurations);
-
-            // Mettre à jour le ViewModel avec les étapes brutes
-            sharedStepsViewModel.setRawSteps(steps);
-
-            // Extraire les descriptions des étapes pour les méthodes existantes
-            List<String> stepDescriptions = new ArrayList<>();
-            for (Step step : steps) {
-                stepDescriptions.add(step.getDescription());
-            }
-            sharedStepsViewModel.setSteps(stepDescriptions);
-            sharedStepsViewModel.setDurations(durations);
-
-            Log.d(TAG, "Étapes de test ajoutées: " + steps.size());
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans addTestSteps", e);
-        }
-    }
-
-    /**
      * Crée dynamiquement les indicateurs d'étape en fonction du nombre d'étapes
      */
     private void createStepIndicators() {
@@ -234,7 +176,7 @@ public class RecipeStepsFragment extends Fragment {
 
             // Vérifier les étapes avant de créer les indicateurs
             for (int i = 0; i < steps.size(); i++) {
-                Step step = steps.get(i);
+                RecipeStep step = steps.get(i);
                 Log.d(TAG, "Étape " + i + ": ID=" + step.getId() + ", Numéro=" + step.getStepNumber() + ", Description=" + step.getDescription());
 
                 // S'assurer que chaque étape a un numéro et un ID valide
@@ -251,7 +193,7 @@ public class RecipeStepsFragment extends Fragment {
 
             // Créer un nouvel indicateur pour chaque étape
             for (int i = 0; i < steps.size(); i++) {
-                Step step = steps.get(i);
+                RecipeStep step = steps.get(i);
                 TextView indicator = new TextView(requireContext());
 
                 // Définir l'ID de l'étape comme texte de l'indicateur
@@ -299,7 +241,7 @@ public class RecipeStepsFragment extends Fragment {
                 currentStepIndex = steps.size() - 1;
             }
 
-            Step currentStep = steps.get(currentStepIndex);
+            RecipeStep currentStep = steps.get(currentStepIndex);
 
             // Mettre à jour le numéro et le texte de l'étape
             stepNumberTextView.setText("Step " + currentStep.getStepNumber());

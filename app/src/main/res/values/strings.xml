@@ -124,20 +124,6 @@
     <string name="add_groceries">Add Groceries</string>
     <string name="add">Add</string>
 
-    <!--Home-->
-    <string name="Home">Home</string>
-    <string name="what_s_for_today">What\'s for today ?</string>
-    <string name="weekly_progress">Weekly Progress</string>
-    <string name="calories">Calories</string>
-    <string name="nb_calories">nb calories</string>
-    <string name="Groceries">Groceries</string>
-    <string name="Recipes">Recipes</string>
-    <string name="Calendar">Calendar</string>
-    <string name="breakfast">Breakfast</string>
-    <string name="lunch">Lunch</string>
-    <string name="dinner">Dinner</string>
-    <string name="no_meal_planned">No meal planned</string>
-
     <!--facebook-->
     <string name="facebook_app_id" translatable="false">617642374011640</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb617642374011640</string>
@@ -156,11 +142,6 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="no_meal_planned">No meal planned</string>
-    <string name="leave_family">Quitter la famille</string>
-    <string name="no">non</string>
-    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
-    <string name="change_family">Changer de famille</string>
-    <string name="back">retour</string>
 
 
 </resources>

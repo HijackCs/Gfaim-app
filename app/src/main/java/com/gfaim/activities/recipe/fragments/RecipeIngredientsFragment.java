@@ -19,8 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.gfaim.R;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.adapter.IngredientAdapter;
-import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.recipe.fragments.RecipeStepsFragment;
+import com.gfaim.models.FoodItem;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -132,7 +132,7 @@ public class RecipeIngredientsFragment extends Fragment implements IngredientAda
     }
 
     @Override
-    public void onIngredientClick(Ingredient ingredient) {
+    public void onIngredientClick(FoodItem ingredient) {
         // Action à effectuer lors du clic sur un ingrédient
         if (ingredient != null) {
             Log.d(TAG, "Ingrédient cliqué: " + ingredient.getName());

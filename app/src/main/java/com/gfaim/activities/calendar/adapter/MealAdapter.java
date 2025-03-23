@@ -4,6 +4,7 @@ import static android.content.ContentValues.TAG;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
+import com.gfaim.activities.recipe.fragments.RecipeActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.IngredientCatalogService;
 import com.gfaim.api.MealService;
@@ -108,6 +110,40 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         return new MealViewHolder(view);
     }
 
+    private void openRecipeActivity(Long id) {
+            Intent intent = new Intent(context, RecipeActivity.class);
+            intent.putExtra("id", id);
+            context.startActivity(intent);
+    }
+
+    /**
+     * Trouve le type de repas associé à un menuName dans la map actuelle
+     */
+    private String findMealTypeForMenuName(String menuName) {
+        if (selectedDate != null) {
+            Map<String, MealInfo> mealsForDate = mealsByDate.get(selectedDate);
+            if (mealsForDate != null) {
+                for (Map.Entry<String, MealInfo> entry : mealsForDate.entrySet()) {
+                    if (menuName.equals(entry.getValue().menuName)) {
+                        return entry.getKey(); // Le mealType est la clé
+                    }
+
+                    // Chercher également dans les snacks
+                    Map<String, MealInfo> snacks = entry.getValue().snacks;
+                    if (snacks != null) {
+                        for (Map.Entry<String, MealInfo> snackEntry : snacks.entrySet()) {
+                            if (menuName.equals(snackEntry.getValue().menuName)) {
+                                return "Snack";
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+
     public void getMeal(String mealType, MealViewHolder holder, int position) {
         MealService service = ApiClient.getClient(context).create(MealService.class);
 
@@ -118,18 +154,14 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             @Override
             public void onResponse(Call<List<MealResponseBody>> call, Response<List<MealResponseBody>> response) {
                 if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    MealResponseBody meal = response.body().get(response.body().size() - 1);
+                    MealResponseBody meal = response.body().get(0);
 
                     System.out.println("meal "+ meal.getRecipe().getName());
                     // Afficher les informations du repas
                     holder.menuNameText.setText(meal.getRecipe().getName());
                     holder.timeText.setText(meal.getRecipe().getReadyInMinutes() + " min");
 
-                    holder.itemView.setOnClickListener(v -> {
-                        if (listener != null) {
-                            listener.onMealClick(mealType, position);
-                        }
-                    });
+                    holder.itemView.setOnClickListener(v -> openRecipeActivity(meal.getRecipe().getId()));
 
                     holder.addSnackLayout.setOnClickListener(v -> {
                         if (listener != null && selectedDate != null) {

@@ -12,17 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gfaim.R;
-import com.gfaim.activities.calendar.model.Ingredient;
+import com.gfaim.models.FoodItem;
 
 public class IngredientQuantityDialog extends Dialog {
-    private final Ingredient ingredient;
+    private final com.gfaim.models.FoodItem ingredient;
     private final OnIngredientQuantityListener listener;
 
     public interface OnIngredientQuantityListener {
-        void onIngredientQuantitySelected(Ingredient ingredient, double quantity, String unit);
+        void onIngredientQuantitySelected(FoodItem ingredient, double quantity, String unit);
     }
 
-    public IngredientQuantityDialog(Context context, Ingredient ingredient, OnIngredientQuantityListener listener) {
+    public IngredientQuantityDialog(Context context, FoodItem ingredient, OnIngredientQuantityListener listener) {
         super(context);
         this.ingredient = ingredient;
         this.listener = listener;

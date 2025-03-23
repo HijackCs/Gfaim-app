@@ -285,8 +285,8 @@ public class SummaryFragment extends Fragment {
             participantCountTextView.setText(String.valueOf(participantCount));
 
             // Mettre à jour les calories totales
-            int totalCalories = sharedStepsViewModel.getTotalCalories();
-            caloriesTextView.setText(totalCalories + " kcal");
+            /*int totalCalories = sharedStepsViewModel.getTotalCalories();
+            caloriesTextView.setText(totalCalories + " kcal");*/
 
             // Mettre à jour le temps total
             int totalDuration = sharedStepsViewModel.getTotalDuration();
@@ -294,7 +294,7 @@ public class SummaryFragment extends Fragment {
 
             Log.d("SummaryFragment", "Informations mises à jour - Menu: " + menuName +
                     ", Participants: " + participantCount +
-                    ", Calories: " + totalCalories +
+                   /* ", Calories: " + totalCalories +*/
                     ", Durée: " + totalDuration);
         }
     }

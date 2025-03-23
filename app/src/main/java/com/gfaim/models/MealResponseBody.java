@@ -13,6 +13,10 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MealResponseBody {
+    public Long getId() {
+        return id;
+    }
+
     @SerializedName("id")
     private Long id;
 

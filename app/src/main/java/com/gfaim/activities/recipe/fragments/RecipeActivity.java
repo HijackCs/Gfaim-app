@@ -12,13 +12,16 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.gfaim.R;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
-import com.gfaim.activities.calendar.model.Ingredient;
 import com.gfaim.activities.calendar.model.Recipe;
 import com.gfaim.activities.calendar.model.Step;
 import com.gfaim.activities.calendar.model.StepIngredient;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.RecipeService;
 import com.gfaim.activities.NavigationBar;
+import com.gfaim.models.CreateMealBody;
+import com.gfaim.models.CreateRecipeBody;
+import com.gfaim.models.FoodItem;
+import com.gfaim.models.RecipeStep;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +59,6 @@ public class RecipeActivity extends AppCompatActivity {
             // Vérifier si nous avons des données depuis l'intent
             handleIntent();
 
-            // Si nous avons l'ID de la recette, la charger depuis l'API
             if (recipeId != null) {
                 loadRecipeFromApi(recipeId);
             }
@@ -68,7 +70,7 @@ public class RecipeActivity extends AppCompatActivity {
                         sharedStepsViewModel.getIngredients().getValue().isEmpty()) &&
                         (sharedStepsViewModel.getMenuName() == null ||
                                 sharedStepsViewModel.getMenuName().isEmpty())) {
-                    ensureTestIngredientsAvailable();
+                   // ensureTestIngredientsAvailable();
                 }
             }
 
@@ -98,8 +100,8 @@ public class RecipeActivity extends AppCompatActivity {
         try {
             if (getIntent() != null && sharedStepsViewModel != null) {
                 // Récupérer l'ID de la recette s'il existe
-                if (getIntent().hasExtra("recipe_id")) {
-                    recipeId = getIntent().getLongExtra("recipe_id", -1);
+                if (getIntent().hasExtra("id")) {
+                    recipeId = getIntent().getLongExtra("id", -1);
                     if (recipeId <= 0) {
                         recipeId = null;
                         Log.e(TAG, "ID de recette invalide dans l'intent");
@@ -107,27 +109,6 @@ public class RecipeActivity extends AppCompatActivity {
                         Log.d(TAG, "ID de recette récupéré: " + recipeId);
                     }
                 }
-
-                // Récupérer le nom du menu s'il existe
-                if (getIntent().hasExtra("menuName")) {
-                    String menuName = getIntent().getStringExtra("menuName");
-                    if (menuName != null && !menuName.isEmpty()) {
-                        sharedStepsViewModel.setMenuName(menuName);
-                        Log.d(TAG, "Menu name set from intent: " + menuName);
-
-                        // Si pas d'ID de recette, essayer de récupérer la recette complète associée au menuName
-                        if (recipeId == null) {
-                            loadRecipeDataByMenuName(menuName);
-                        }
-                    }
-                } else {
-                    Log.d(TAG, "Pas de menuName dans l'intent");
-                }
-
-                // Charger les données transmises directement via l'intent
-                loadDataFromIntent();
-            } else {
-                Log.d(TAG, "Intent ou ViewModel null");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans handleIntent", e);
@@ -143,13 +124,13 @@ public class RecipeActivity extends AppCompatActivity {
             Log.d(TAG, "Chargement de la recette depuis l'API, ID: " + recipeId);
 
             RecipeService recipeService = ApiClient.getClient(this).create(RecipeService.class);
-            Call<Recipe> call = recipeService.getRecipe(recipeId);
+            Call<CreateRecipeBody> call = recipeService.getRecipe(recipeId);
 
-            call.enqueue(new Callback<Recipe>() {
+            call.enqueue(new Callback<CreateRecipeBody>() {
                 @Override
-                public void onResponse(Call<Recipe> call, Response<Recipe> response) {
+                public void onResponse(Call<CreateRecipeBody> call, Response<CreateRecipeBody> response) {
                     if (response.isSuccessful() && response.body() != null) {
-                        Recipe recipe = response.body();
+                        CreateRecipeBody recipe = response.body();
 
                         // Afficher les données brutes et le type de chaque champ pour le débogage
                         Log.d(TAG, "Réponse API brute: " + recipe.toString());
@@ -158,14 +139,14 @@ public class RecipeActivity extends AppCompatActivity {
                         Log.d(TAG, "Nom: " + recipe.getName());
 
                         // Log des valeurs nutritionnelles avec leur type
-                        Log.d(TAG, "Calories (brut): " + recipe.getCalories() + " (type: " +
+                       /* Log.d(TAG, "Calories (brut): " + recipe.getCalories() + " (type: " +
                                 (recipe.getCalories() != 0 ? "valeur présente" : "valeur absente") + ")");
                         Log.d(TAG, "Protéines (brut): " + recipe.getProtein() + "g (type: " +
                                 (recipe.getProtein() != 0 ? "valeur présente" : "valeur absente") + ")");
                         Log.d(TAG, "Glucides (brut): " + recipe.getCarbs() + "g (type: " +
                                 (recipe.getCarbs() != 0 ? "valeur présente" : "valeur absente") + ")");
                         Log.d(TAG, "Graisses (brut): " + recipe.getFat() + "g (type: " +
-                                (recipe.getFat() != 0 ? "valeur présente" : "valeur absente") + ")");
+                                (recipe.getFat() != 0 ? "valeur présente" : "valeur absente") + ")");*/
 
                         Log.d(TAG, "Prêt en: " + recipe.getReadyInMinutes() + " min");
                         Log.d(TAG, "Portions: " + recipe.getNbServings());
@@ -174,7 +155,7 @@ public class RecipeActivity extends AppCompatActivity {
                         if (recipe.getSteps() != null) {
                             Log.d(TAG, "Nombre d'étapes: " + recipe.getSteps().size());
                             for (int i = 0; i < recipe.getSteps().size(); i++) {
-                                Step step = recipe.getSteps().get(i);
+                                RecipeStep step = recipe.getSteps().get(i);
                                 Log.d(TAG, "Étape " + (i+1) + ": " + step.getDescription());
                             }
                         } else {
@@ -201,7 +182,7 @@ public class RecipeActivity extends AppCompatActivity {
                                 "Erreur lors du chargement de la recette: " + response.code(),
                                 Toast.LENGTH_SHORT).show();
                         // Charger des données de test en cas d'échec
-                        ensureTestIngredientsAvailable();
+                        //ensureTestIngredientsAvailable();
                     }
 
                     // Mettre à jour l'interface utilisateur
@@ -209,19 +190,19 @@ public class RecipeActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<Recipe> call, Throwable t) {
+                public void onFailure(Call<CreateRecipeBody> call, Throwable t) {
                     Log.e(TAG, "Échec de la requête API", t);
                     Toast.makeText(RecipeActivity.this,
                             "Échec de la connexion à l'API: " + t.getMessage(),
                             Toast.LENGTH_SHORT).show();
                     // Charger des données de test en cas d'échec
-                    ensureTestIngredientsAvailable();
+                   // ensureTestIngredientsAvailable();
                     loadIngredientsFragment();
                 }
             });
         } catch (Exception e) {
             Log.e(TAG, "Exception lors du chargement de la recette depuis l'API", e);
-            ensureTestIngredientsAvailable();
+            //ensureTestIngredientsAvailable();
             loadIngredientsFragment();
         }
     }
@@ -230,7 +211,7 @@ public class RecipeActivity extends AppCompatActivity {
      * Met à jour le ViewModel avec les données de la recette reçue
      * @param recipe La recette reçue de l'API
      */
-    private void updateViewModelWithRecipe(Recipe recipe) {
+    private void updateViewModelWithRecipe(CreateRecipeBody recipe) {
         if (recipe == null) {
             return;
         }
@@ -243,15 +224,15 @@ public class RecipeActivity extends AppCompatActivity {
         Log.d(TAG, "Nombre de portions mis à jour: " + recipe.getNbServings());
 
         // Créer une liste d'ingrédients
-        List<Ingredient> ingredients = new ArrayList<>();
+        List<FoodItem> ingredients = new ArrayList<>();
 
         // Extraire les ingrédients de chaque étape
         if (recipe.getSteps() != null) {
-            for (Step step : recipe.getSteps()) {
+            for (RecipeStep step : recipe.getSteps()) {
                 if (step.getIngredients() != null) {
-                    for (StepIngredient si : step.getIngredients()) {
+                    /*for (StepIngredient si : step.getIngredients()) {
                         if (si != null && si.getIngredientCatalog() != null) {
-                            Ingredient ingredient = new Ingredient(
+                            FoodItem ingredient = new FoodItem(
                                     si.getIngredientCatalog().getNameFr() != null ?
                                             si.getIngredientCatalog().getNameFr() :
                                             si.getIngredientCatalog().getName(),
@@ -265,7 +246,7 @@ public class RecipeActivity extends AppCompatActivity {
                             );
                             ingredients.add(ingredient);
                         }
-                    }
+                    }*/
                 }
             }
         }
@@ -278,81 +259,18 @@ public class RecipeActivity extends AppCompatActivity {
 
         // Mettre à jour les descriptions d'étapes
         List<String> stepDescriptions = new ArrayList<>();
-        for (Step step : recipe.getSteps()) {
+        for (RecipeStep step : recipe.getSteps()) {
             stepDescriptions.add(step.getDescription());
         }
         sharedStepsViewModel.setSteps(stepDescriptions);
 
         // Mettre à jour les informations nutritionnelles
-        sharedStepsViewModel.setNutritionInfo(
+       /* sharedStepsViewModel.setNutritionInfo(
                 recipe.getCalories(),
                 recipe.getProtein(),
                 recipe.getCarbs(),
                 recipe.getFat()
-        );
-    }
-
-    /**
-     * Charge les données d'une recette à partir de l'intent
-     */
-    private void loadDataFromIntent() {
-        try {
-            if (getIntent() != null) {
-                // Vérifier si des ingrédients sont transmis via l'intent
-                if (getIntent().hasExtra("ingredients")) {
-                    ArrayList<Parcelable> ingredients = getIntent().getParcelableArrayListExtra("ingredients");
-                    if (ingredients != null && !ingredients.isEmpty()) {
-                        // Mettre à jour le ViewModel avec ces ingrédients
-                        for (Parcelable ingredient : ingredients) {
-                            sharedStepsViewModel.addIngredient((Ingredient) ingredient);
-                        }
-                        Log.d(TAG, "Ingrédients chargés depuis l'intent: " + ingredients.size());
-                    }
-                }
-
-                // Vérifier si des étapes sont transmises via l'intent
-                if (getIntent().hasExtra("steps")) {
-                    ArrayList<String> steps = getIntent().getStringArrayListExtra("steps");
-                    if (steps != null && !steps.isEmpty()) {
-                        sharedStepsViewModel.setSteps(steps);
-                        Log.d(TAG, "Étapes chargées depuis l'intent: " + steps.size());
-                    }
-                }
-
-                // Vérifier si des durées sont transmises via l'intent
-                if (getIntent().hasExtra("durations")) {
-                    ArrayList<Integer> durations = getIntent().getIntegerArrayListExtra("durations");
-                    if (durations != null && !durations.isEmpty()) {
-                        sharedStepsViewModel.setDurations(durations);
-                        Log.d(TAG, "Durées chargées depuis l'intent: " + durations.size());
-                    }
-                }
-
-                // Vérifier si une durée totale est transmise
-                if (getIntent().hasExtra("duration")) {
-                    int duration = getIntent().getIntExtra("duration", 0);
-                    if (duration > 0) {
-                        // Si pas de durées par étape déjà définies, on utilise la durée totale
-                        if (sharedStepsViewModel.getDurations().getValue() == null ||
-                                sharedStepsViewModel.getDurations().getValue().isEmpty()) {
-                            List<Integer> singleDuration = new ArrayList<>();
-                            singleDuration.add(duration);
-                            sharedStepsViewModel.setDurations(singleDuration);
-                            Log.d(TAG, "Durée totale chargée depuis l'intent: " + duration + " min");
-                        }
-                    }
-                }
-
-                // Vérifier si un nombre de participants est transmis
-                if (getIntent().hasExtra("participantCount")) {
-                    int participantCount = getIntent().getIntExtra("participantCount", 2);
-                    sharedStepsViewModel.setParticipantCount(participantCount);
-                    Log.d(TAG, "Nombre de participants: " + participantCount);
-                }
-            }
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans loadDataFromIntent", e);
-        }
+        );*/
     }
 
     /**
@@ -376,160 +294,15 @@ public class RecipeActivity extends AppCompatActivity {
                 Log.d(TAG, "Des ingrédients existent déjà dans le ViewModel, pas besoin de les charger");
                 return;
             }
-
-            // Sinon, continuer avec les données de test associées au menuName
-            if ("Ramen".equalsIgnoreCase(menuName)) {
-                loadRamenRecipe();
-            } else if ("Pasta".equalsIgnoreCase(menuName)) {
-                loadPastaRecipe();
-            } else if ("Chicken Curry".equalsIgnoreCase(menuName)) {
-                loadChickenCurryRecipe();
-            } else {
-                Log.d(TAG, "Aucune recette prédéfinie pour: " + menuName);
-            }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans loadRecipeDataByMenuName", e);
         }
     }
-
-    /**
-     * Charge une recette de Ramen prédéfinie
-     */
-    private void loadRamenRecipe() {
-        try {
-            // Créer une liste d'ingrédients pour le Ramen
-            List<Ingredient> ingredients = new ArrayList<>();
-            ingredients.add(new Ingredient("Noodles", 220));
-            ingredients.add(new Ingredient("Chicken breast", 150));
-            ingredients.add(new Ingredient("Soy sauce", 15));
-            ingredients.add(new Ingredient("Miso paste", 50));
-            ingredients.add(new Ingredient("Green onions", 10));
-            ingredients.add(new Ingredient("Soft-boiled egg", 70));
-
-            // Mettre à jour le ViewModel avec ces ingrédients
-            for (Ingredient ingredient : ingredients) {
-                sharedStepsViewModel.addIngredient(ingredient);
-            }
-
-            // Définir les étapes
-            List<String> steps = new ArrayList<>();
-            steps.add("Boil water and cook noodles according to package instructions.");
-            steps.add("In a separate pot, combine broth ingredients and bring to a simmer.");
-            steps.add("Slice chicken and cook in the broth until done.");
-            steps.add("Serve noodles in bowls, pour broth over, and top with chicken and garnishes.");
-
-            // Définir les durées
-            List<Integer> durations = new ArrayList<>();
-            for (int i = 0; i < steps.size(); i++) {
-                durations.add(5); // 5 minutes par étape
-            }
-
-            // Mettre à jour le ViewModel
-            sharedStepsViewModel.setSteps(steps);
-            sharedStepsViewModel.setDurations(durations);
-            sharedStepsViewModel.setParticipantCount(2);
-
-            Log.d(TAG, "Recette Ramen chargée: " + ingredients.size() + " ingrédients, " + steps.size() + " étapes");
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans loadRamenRecipe", e);
-        }
-    }
-
-    /**
-     * Charge une recette de Pasta prédéfinie
-     */
-    private void loadPastaRecipe() {
-        try {
-            // Créer une liste d'ingrédients pour les pâtes
-            List<Ingredient> ingredients = new ArrayList<>();
-            ingredients.add(new Ingredient("Spaghetti", 180));
-            ingredients.add(new Ingredient("Ground beef", 200));
-            ingredients.add(new Ingredient("Tomato sauce", 100));
-            ingredients.add(new Ingredient("Onion", 40));
-            ingredients.add(new Ingredient("Garlic", 15));
-            ingredients.add(new Ingredient("Parmesan cheese", 30));
-
-            // Mettre à jour le ViewModel avec ces ingrédients
-            for (Ingredient ingredient : ingredients) {
-                sharedStepsViewModel.addIngredient(ingredient);
-            }
-
-            // Définir les étapes
-            List<String> steps = new ArrayList<>();
-            steps.add("Boil water and cook pasta according to package instructions.");
-            steps.add("In a pan, sauté onions and garlic until fragrant.");
-            steps.add("Add ground beef and cook until browned.");
-            steps.add("Add tomato sauce and simmer for 10 minutes.");
-            steps.add("Serve pasta topped with sauce and sprinkle with cheese.");
-
-            // Définir les durées
-            List<Integer> durations = new ArrayList<>();
-            for (int i = 0; i < steps.size(); i++) {
-                durations.add(5); // 5 minutes par étape
-            }
-
-            // Mettre à jour le ViewModel
-            sharedStepsViewModel.setSteps(steps);
-            sharedStepsViewModel.setDurations(durations);
-            sharedStepsViewModel.setParticipantCount(4);
-
-            Log.d(TAG, "Recette Pasta chargée: " + ingredients.size() + " ingrédients, " + steps.size() + " étapes");
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans loadPastaRecipe", e);
-        }
-    }
-
-    /**
-     * Charge une recette de Poulet au curry prédéfinie
-     */
-    private void loadChickenCurryRecipe() {
-        try {
-            // Créer une liste d'ingrédients
-            List<Ingredient> ingredients = new ArrayList<>();
-            ingredients.add(new Ingredient("Chicken thighs", 300));
-            ingredients.add(new Ingredient("Curry powder", 20));
-            ingredients.add(new Ingredient("Coconut milk", 150));
-            ingredients.add(new Ingredient("Onion", 40));
-            ingredients.add(new Ingredient("Garlic", 15));
-            ingredients.add(new Ingredient("Ginger", 10));
-            ingredients.add(new Ingredient("Rice", 200));
-
-            // Mettre à jour le ViewModel avec ces ingrédients
-            for (Ingredient ingredient : ingredients) {
-                sharedStepsViewModel.addIngredient(ingredient);
-            }
-
-            // Définir les étapes
-            List<String> steps = new ArrayList<>();
-            steps.add("Cut chicken into bite-sized pieces.");
-            steps.add("In a large pot, sauté onions, garlic, and ginger until fragrant.");
-            steps.add("Add chicken and cook until browned on all sides.");
-            steps.add("Add curry powder and stir to coat the chicken.");
-            steps.add("Pour in coconut milk and simmer for 20 minutes.");
-            steps.add("Serve hot over cooked rice.");
-
-            // Définir les durées
-            List<Integer> durations = new ArrayList<>();
-            for (int i = 0; i < steps.size(); i++) {
-                durations.add(5); // 5 minutes par étape
-            }
-
-            // Mettre à jour le ViewModel
-            sharedStepsViewModel.setSteps(steps);
-            sharedStepsViewModel.setDurations(durations);
-            sharedStepsViewModel.setParticipantCount(3);
-
-            Log.d(TAG, "Recette Chicken Curry chargée: " + ingredients.size() + " ingrédients, " + steps.size() + " étapes");
-        } catch (Exception e) {
-            Log.e(TAG, "Exception dans loadChickenCurryRecipe", e);
-        }
-    }
-
     /**
      * Ajoute des ingrédients de test si aucun ingrédient n'existe déjà
      * Cette méthode est utile pour tester l'affichage
      */
-    private void ensureTestIngredientsAvailable() {
+   /* private void ensureTestIngredientsAvailable() {
         try {
             if (sharedStepsViewModel != null) {
                 List<Ingredient> ingredients = sharedStepsViewModel.getIngredients().getValue();
@@ -573,7 +346,7 @@ public class RecipeActivity extends AppCompatActivity {
         } catch (Exception e) {
             Log.e(TAG, "Exception dans ensureTestIngredientsAvailable", e);
         }
-    }
+    }*/
 
     private void loadIngredientsFragment() {
         try {

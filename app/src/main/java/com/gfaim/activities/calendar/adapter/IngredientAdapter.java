@@ -47,7 +47,7 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
     public void onBindViewHolder(@NonNull IngredientViewHolder holder, int position) {
         FoodItem ingredient = ingredients.get(position);
         holder.bind(ingredient, listener);
-        
+
         // Vérifier si l'ingrédient est déjà sélectionné
        /* List<FoodItem> selectedIngredients = viewModel.getIngredients().getValue();
         if (selectedIngredients != null && selectedIngredients.contains(ingredient)) {
@@ -64,10 +64,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     static class IngredientViewHolder extends RecyclerView.ViewHolder {
         private final TextView nameTextView;
+        private final TextView caloriesTextView;
 
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.ingredient_name);
+            caloriesTextView = itemView.findViewById(R.id.ingredient_calories);
         }
 
         public void bind(final FoodItem ingredient, final OnIngredientClickListener listener) {

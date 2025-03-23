@@ -25,7 +25,7 @@ public interface MealService {
 
     @GET("/families/{familyId}/meals")
     Call<List<MealResponseBody>> getMeal(@Path("familyId") Long familyId,
-                                       @Query("date") String date, 
+                                       @Query("date") String date,
                                        @Query("meal_type") String mealType);
 /*
     @PATCH("/families/{id}/meals/{mealId}")

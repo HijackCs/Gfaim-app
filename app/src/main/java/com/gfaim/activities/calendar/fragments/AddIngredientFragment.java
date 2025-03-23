@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gfaim.R;
+import com.gfaim.activities.calendar.IngredientQuantityDialog;
 import com.gfaim.activities.calendar.SharedStepsViewModel;
 import com.gfaim.activities.calendar.adapter.IngredientAdapter;
 import com.gfaim.api.ApiClient;
@@ -30,6 +31,7 @@ import com.gfaim.models.FoodItem;
 import com.gfaim.models.IngredientCatalogItem;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -59,7 +61,7 @@ public class AddIngredientFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.mealRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        
+
         // Initialiser l'adaptateur une seule fois
         adapter = new IngredientAdapter(ingredients, this::onIngredientSelected);
         recyclerView.setAdapter(adapter);

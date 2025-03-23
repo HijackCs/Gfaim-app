@@ -79,7 +79,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
     public void updateMealInfo(String date, String mealType, String menuName, int duration, String parentMeal) {
         Map<String, MealInfo> dateMap = mealsByDate.computeIfAbsent(date, k -> new HashMap<>());
-        System.out.println("lalala222");
 
         if ("Snack".equals(mealType) && parentMeal != null) {
             // Mettre à jour le snack pour le repas parent
@@ -106,10 +105,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         context = parent.getContext();
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.meal_card, parent, false);
-
-
-
-
         return new MealViewHolder(view);
     }
 

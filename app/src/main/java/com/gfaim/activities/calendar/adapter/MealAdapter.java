@@ -111,6 +111,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
     }
 
     private void openRecipeActivity(Long id, String mealType) {
+
+        System.out.println("je veux la recip");
+
         Intent intent = new Intent(context, RecipeActivity.class);
         intent.putExtra("id", id);
 
@@ -157,9 +160,6 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
         MealService service = ApiClient.getClient(context).create(MealService.class);
 
         Log.d(TAG, "Début du chargement des repas pour le type: " + mealType);
-
-        System.out.println("selected " + selectedDate);
-
         if(selectedDate == null){
             selectedDate = getCurrentDate();
         }
@@ -188,6 +188,9 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
 
                     Log.d(TAG, "Repas chargé avec succès: ");
                 } else {
+
+                    System.out.println("la");
+
                     String errorCode = String.valueOf(response.code());
                     Log.e(TAG, "Erreur lors du chargement des repas: " + errorCode);
                     holder.menuNameText.setText(R.string.no_meal_planned);
@@ -196,7 +199,10 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
                     holder.snackText.setText("Add a snack");
                     holder.snackImage.setImageResource(R.drawable.ic_add_green);
 
+                    holder.itemView.setOnClickListener(null);
+
                     if(Objects.equals(member.getRole(), "CHEF")){
+
                         holder.itemView.setOnClickListener(v -> {
                             if (listener != null) {
                                 listener.onMealClick(mealType, position);
@@ -217,6 +223,8 @@ public class MealAdapter extends RecyclerView.Adapter<MealAdapter.MealViewHolder
             @Override
             public void onFailure(Call<List<MealResponseBody>> call, Throwable t) {
                 Log.e(TAG, "Erreur de connexion: " + t.getMessage());
+                System.out.println("ici");
+                holder.itemView.setOnClickListener(null);
                 holder.menuNameText.setText(R.string.no_meal_planned);
                 holder.timeText.setText("0 min");
                 holder.snackText.setText("Add a snack");

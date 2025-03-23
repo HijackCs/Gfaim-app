@@ -2,7 +2,6 @@ package com.gfaim.activities.auth;
 
 import static android.view.View.GONE;
 import static android.view.View.VISIBLE;
-import static androidx.core.content.ContextCompat.startActivity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,9 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -29,8 +26,8 @@ import com.gfaim.activities.auth.onboarding.OnBoardingActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.AuthService;
 import com.gfaim.auth.TokenManager;
-import com.gfaim.models.AuthResponse;
-import com.gfaim.models.SignupRequest;
+import com.gfaim.models.auth.AuthResponse;
+import com.gfaim.models.auth.SignupRequest;
 import com.gfaim.utility.auth.AuthManager;
 
 import java.util.logging.Logger;

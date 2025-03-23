@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Dimensions pour les indicateurs d'étape -->
+    <dimen name="step_indicator_size">24dp</dimen>
+    <dimen name="step_indicator_margin">8dp</dimen>
+</resources>

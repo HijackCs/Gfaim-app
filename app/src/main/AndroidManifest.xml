@@ -108,16 +108,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activities.UserProfileActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+
+        <activity android:name=".activities.calendar.CalendarActivity"/>
+        <activity android:name=".activities.recipe.fragments.RecipeActivity"/>
 
 
-        <activity android:name=".activities.HomeActivity"></activity>
+        <activity android:name=".activities.home.HomeActivity"></activity>
 
     </application>
 

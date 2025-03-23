@@ -10,6 +10,7 @@
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
     <string name="forgotPwd">Mots de passe oublié ?</string>
+    <string name="surname">Surname</string>
 
     <!--Inscription-->
     <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
@@ -49,6 +50,19 @@
     <string name="about_app">À propos de l\'application</string>
     <string name="JoinOrCreate">Join or Create a Family</string>
 
+    <!--Home-->
+    <string name="Home">Accueil</string>
+    <string name="what_s_for_today">What\'s for today ?</string>
+    <string name="weekly_progress">Progrès hebdomadaires</string>
+    <string name="calories">Calories</string>
+    <string name="nb_calories">Nombre calories</string>
+    <string name="Groceries">Epicerie</string>
+    <string name="Recipes">Recette</string>
+    <string name="Calendar">Calendrier</string>
+    <string name="breakfast">Petit Déjeuner</string>
+    <string name="lunch">Déjeuner</string>
+    <string name="dinner">Dinner</string>
+    <string name="no_meal_planned">No meal planned</string>
 
     <!--Onboarding-->
     <string name="skip">Passer</string>

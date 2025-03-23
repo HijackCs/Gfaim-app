@@ -3,13 +3,17 @@ package com.gfaim.activities.settings;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gfaim.R;
+import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.auth.LoginActivity;
+import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
@@ -22,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     private UtileProfile utileProfile;
 
+    private NavigationBar navigationBar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +42,7 @@ public class SettingsActivity extends AppCompatActivity {
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(v -> utileProfile.logout());
 
-
+        setupBackBtn();
     }
 
     public void setupAboutBtn() {
@@ -97,6 +102,15 @@ public class SettingsActivity extends AppCompatActivity {
         logOut.setOnClickListener(view -> {
             Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
             startActivity(intent);
+        });
+    }
+
+    public void setupBackBtn(){
+        ImageView myAccount = findViewById(R.id.back);
+        myAccount.setOnClickListener(view -> {
+            Intent intent = new Intent(SettingsActivity.this, HomeActivity.class);
+            startActivity(intent);
+            finish();
         });
     }
 }

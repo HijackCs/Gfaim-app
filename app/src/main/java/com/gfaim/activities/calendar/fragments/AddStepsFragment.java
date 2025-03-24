@@ -121,6 +121,10 @@ public class AddStepsFragment extends Fragment {
         LinearLayout stepsContainer = requireView().findViewById(R.id.stepsContainer);
         int stepNumber = stepsContainer.getChildCount() + 1;
 
+        if (stepNumber > 5) {
+            return;
+        }
+
         LinearLayout stepLayout = new LinearLayout(requireContext());
         stepLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

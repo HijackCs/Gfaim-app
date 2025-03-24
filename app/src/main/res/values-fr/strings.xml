@@ -165,5 +165,17 @@
     <string name="screen2Family">Des allergies alimentaires ?</string>
     <string name="screen3Family">Suivez-vous un de ces régimes ?</string>
 
+    <string name="cancel">Annuler</string>
+    <string name="role_chef">Chef cuisinier</string>
+    <string name="role_consumer">Consommateur</string>
+    <string name="memberMail">Email du membre</string>
+    <string name="alreadyAccount">Vous avez déjà un compte ?</string>
+    <string name="notEmpty">Le nom ne peut pas être vide</string>
+    <string name="delete_family">Supprimer la famille</string>
+    <string name="leave_family">Quitter la famille</string>
+    <string name="no">Non</string>
+    <string name="joinorno">Voulez-vous rejoindre une famille ou non ?</string>
+    <string name="change_family">Changer de famille</string>
+    <string name="back">Retour</string>
 
 </resources>

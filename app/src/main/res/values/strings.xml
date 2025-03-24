@@ -163,6 +163,28 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="no_meal_planned">No meal planned</string>
+    <string name="add_ingre">Ajout d\'ingredients</string>
+    <string name="menu_name">Nom du menu</string>
+    <string name="partcipant_number">Nombre de participants</string>
+    <string name="add_your_ingre">Ajoutez des ingrédients</string>
+    <string name="add_step">Ajoutez des étapes</string>
+    <string name="step_one">Etape 1</string>
+    <string name="add_one_step">Ajoutez une étape</string>
+    <string name="choose_recipe">Choisie une recette</string>
+    <string name="ingrdient">Ingredients</string>
+    <string name="energy">Energie</string>
+    <string name="protein">Proteine</string>
+    <string name="carbs">Glucide</string>
+    <string name="fat">Gras</string>
+    <string name="start_cooking">G Faim !</string>
+    <string name="step">Etape</string>
+    <string name="hello_user">Salut user 👋</string>
+    <string name="creeateRecipe">Créer une recette</string>
+    <string name="chooseOption">Choisir une option</string>
+    <string name="summary">Résumé</string>
+    <string name="totalCal">Total de calories</string>
+    <string name="totaltime">Temps total</string>
+    <string name="steps">Etapes</string>
 
 
 </resources>

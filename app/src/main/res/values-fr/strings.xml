@@ -9,60 +9,59 @@
     <string name="or">ou</string>
     <string name="noAccount">Pas de compte ?</string>
     <string name="signUp">Inscris-toi</string>
-    <string name="forgotPwd">Mots de passe oublié ?</string>
-    <string name="surname">Surname</string>
+    <string name="forgotPwd">Mot de passe oublié ?</string>
+    <string name="surname">Nom de famille</string>
 
     <!--Inscription-->
-    <string name="registerTxtView">Rentre tes informations pour avoir accès à ton compte</string>
+    <string name="registerTxtView">Rentre tes informations pour accéder à ton compte</string>
     <string name="helloTxt">Salut 👋</string>
     <string name="name">Nom</string>
     <string name="firstName">Prénom</string>
-    <string name="haveAccount">Tu as un compte ?</string>
+    <string name="haveAccount">Tu as déjà un compte ?</string>
     <string name="terms">J\'accepte les termes d\'utilisation</string>
 
-    <!--Check Mail-->
-    <string name="checkMail">Regarde tes mails</string>
+    <!--Vérification Mail-->
+    <string name="checkMail">Regarde tes emails</string>
     <string name="continueBtn">Continuer</string>
-    <string name="enter_code">enter code</string>
-    <string name="new_password">new password</string>
-    <string name="confirm_password">confirm password</string>
-    <string name="reset_password">reset password\n</string>
+    <string name="enter_code">Entrer le code</string>
+    <string name="new_password">Nouveau mot de passe</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="reset_password">Réinitialiser le mot de passe</string>
 
-
-    <!--Forgot pwd-->
+    <!--Mot de passe oublié-->
     <string name="sendCode">Envoyer le code</string>
     <string name="resetPwd">Réinitialiser le mot de passe</string>
     <string name="remember">Tu te souviens de ton mot de passe ?</string>
     <string name="goBackLogin">Retour à la connexion</string>
-    <string name="your_email">Ton Email</string>
+    <string name="your_email">Ton email</string>
 
-    <!--settings-->
+    <!--Paramètres-->
     <string name="delete_profile">Supprimer le profil</string>
     <string name="update_profile">Mettre à jour le profil</string>
     <string name="my_account">Mon compte</string>
-    <string name="manage_account_settings">Gérer les paramètres de votre compte</string>
+    <string name="manage_account_settings">Gérer les paramètres de ton compte</string>
     <string name="family_group">Groupe familial</string>
     <string name="manage_family_settings">Gérer les paramètres familiaux</string>
     <string name="log_out">Déconnexion</string>
-    <string name="log_out_text">Sécurisez davantage votre compte</string>
+    <string name="log_out_text">Sécurise davantage ton compte</string>
     <string name="more">Plus</string>
     <string name="help_support">Aide et support</string>
     <string name="about_app">À propos de l\'application</string>
-    <string name="JoinOrCreate">Join or Create a Family</string>
+    <string name="JoinOrCreate">Rejoindre ou créer une famille</string>
 
-    <!--Home-->
+    <!--Accueil-->
     <string name="Home">Accueil</string>
-    <string name="what_s_for_today">What\'s for today ?</string>
+    <string name="what_s_for_today">Qu\'y a-t-il au menu aujourd\'hui ?</string>
     <string name="weekly_progress">Progrès hebdomadaires</string>
     <string name="calories">Calories</string>
-    <string name="nb_calories">Nombre calories</string>
-    <string name="Groceries">Epicerie</string>
-    <string name="Recipes">Recette</string>
+    <string name="nb_calories">Nombre de calories</string>
+    <string name="Groceries">Épicerie</string>
+    <string name="Recipes">Recettes</string>
     <string name="Calendar">Calendrier</string>
-    <string name="breakfast">Petit Déjeuner</string>
+    <string name="breakfast">Petit-déjeuner</string>
     <string name="lunch">Déjeuner</string>
-    <string name="dinner">Dinner</string>
-    <string name="no_meal_planned">No meal planned</string>
+    <string name="dinner">Dîner</string>
+    <string name="no_meal_planned">Aucun repas prévu</string>
 
     <!--Onboarding-->
     <string name="skip">Passer</string>
@@ -70,21 +69,21 @@
     <string name="next">Suivant</string>
     <string name="finish">Terminer</string>
 
-    <string name="screen0">Profitez de votre repas</string>
-    <string name="screen0Desc">Détendez-vous et ne réfléchissez pas trop à ce que vous allez manger. Nous nous occupons de tout avec des plans de repas personnalisés adaptés à vos besoins.</string>
+    <string name="screen0">Profite de ton repas</string>
+    <string name="screen0Desc">Détends-toi et ne réfléchis pas trop à ce que tu vas manger. Nous nous occupons de tout avec des plans de repas personnalisés adaptés à tes besoins.</string>
 
-    <string name="screen1">Avez-vous des allergies alimentaires ?</string>
-    <string name="screen1Desc">Pour vous proposer les meilleures suggestions de repas adaptées à vous et votre famille, vous devez rejoindre une famille ou en créer une nouvelle.</string>
+    <string name="screen1">As-tu des allergies alimentaires ?</string>
+    <string name="screen1Desc">Pour te proposer les meilleures suggestions de repas, rejoins une famille ou crée-en une nouvelle.</string>
 
-    <string name="screen2">Suivez-vous l’un de ces régimes ?</string>
-    <string name="screen2Desc">Pour vous offrir la meilleure expérience alimentaire personnalisée, nous devons en savoir plus sur vous.</string>
+    <string name="screen2">Suis-tu un régime alimentaire ?</string>
+    <string name="screen2Desc">Pour te proposer une expérience alimentaire personnalisée, nous devons en savoir plus sur toi.</string>
 
-    <string name="screen3">Rejoignez votre famille</string>
-    <string name="screen3Desc">Pour vous offrir la meilleure expérience alimentaire personnalisée, nous devons en savoir plus sur vous.</string>
+    <string name="screen3">Rejoins ta famille</string>
+    <string name="screen3Desc">Pour une meilleure expérience, nous devons en savoir plus sur toi.</string>
 
     <string name="enterValidFamily">Veuillez entrer un code de famille valide.</string>
 
-
+    <!--Allergies-->
     <string name="allergieGluten">Gluten</string>
     <string name="allergieDiary">Produits laitiers</string>
     <string name="allergieEgg">Œufs</string>
@@ -94,6 +93,7 @@
     <string name="allergieMilk">Lait</string>
     <string name="allergieFish">Poisson</string>
 
+    <!--Régimes-->
     <string name="dietsVegan">Végan</string>
     <string name="dietsPaleo">Paléo</string>
     <string name="dietsDukan">Dukan</string>
@@ -101,51 +101,32 @@
     <string name="dietsAktin">Atkins</string>
     <string name="dietsInterFast">Jeûne intermittent</string>
 
+    <!--Famille-->
     <string name="familyCode">Code familial</string>
-    <string name="joinFamilly">Rejoindre votre famille</string>
-    <string name="createFamily">Créer un nouveau groupe familial</string>
-    <string name="tv_welcome_message">Bienvenue dans votre famille !</string>
+    <string name="joinFamilly">Rejoindre une famille</string>
+    <string name="createFamily">Créer un groupe familial</string>
+    <string name="tv_welcome_message">Bienvenue dans ta famille !</string>
     <string name="familyName">Nom de la famille</string>
-    <string name="createFamilly">Créez votre famille !</string>
+    <string name="createFamilly">Créer ta famille !</string>
     <string name="new_fam">Une nouvelle famille a été créée !</string>
     <string name="joinFamily">Rejoindre la famille</string>
 
-
-    <!-- Erreurs -->
+    <!--Erreurs-->
     <string name="errorSending">Erreur lors de l\'envoi.</string>
     <string name="errorFetching">Erreur lors de la récupération des données.</string>
-    <string name="errorCreatingMember">Erreur lors de la creation d\'un membre.</string>
-    <string name="errorCreatingFamily">Erreur lors de la creation d\'une famille.</string>
+    <string name="errorCreatingMember">Erreur lors de la création d\'un membre.</string>
+    <string name="errorCreatingFamily">Erreur lors de la création d\'une famille.</string>
     <string name="impossibleFetch">Impossible de récupérer les données</string>
     <string name="fillAll">Veuillez remplir tous les champs.</string>
     <string name="samePassword">Les mots de passe ne correspondent pas.</string>
     <string name="errorCode">Code invalide ou erreur de réinitialisation.</string>
-    <string name="errorConnection">Erreur de connexion : </string>
+    <string name="errorConnection">Erreur de connexion :</string>
     <string name="codeSent">Code envoyé par email.</string>
     <string name="noIngredient">Aucun ingrédient disponible</string>
     <string name="impossibleConnection">Impossible de se connecter au serveur. Veuillez réessayer plus tard.</string>
     <string name="errorDeleting">Erreur lors de la suppression.</string>
-    <string name="toFridge">au frigo</string>
-    <string name="toShopping">à la liste de courses</string>
-
-
-    <!--Famille-->
-    <string name="screen0Family">Données générales</string>
-    <string name="screen1Family">Rôle des membres</string>
-    <string name="screen2Family">Des allergies alimentaires ?</string>
-    <string name="screen3Family">Suivez-vous un de ces régimes ?</string>
-    <string name="cancel">Annuler</string>
-    <string name="role_chef">Chef cuisinier</string>
-    <string name="role_consumer">Consommateur</string>
-    <string name="memberMail">Email du membre</string>
-    <string name="alreadyAccount">Vous avez déjà un compte ?</string>
-    <string name="notEmpty">Le nom ne peut pas être vide</string>
-    <string name="delete_family">Supprimer la famille</string>
-    <string name="leave_family">Quitter la famille</string>
-    <string name="no">non</string>
-    <string name="joinorno">Voulez vous rejoindre une famille ou non ?</string>
-    <string name="change_family">Changer de famille</string>
-    <string name="back">retour</string>
+    <string name="toFridge">Au frigo</string>
+    <string name="toShopping">À la liste de courses</string>
 
     <!--Frigo-->
     <string name="confirm">Confirmer</string>
@@ -154,7 +135,29 @@
     <string name="shopping">Courses</string>
     <string name="fridge">Frigo</string>
     <string name="send">Envoyer</string>
-    <string name="add_groceries">Add Groceries</string>
-    <string name="add">Add</string>
+    <string name="add_groceries">Ajouter des courses</string>
+    <string name="add">Ajouter</string>
+    <string name="add_ingre">Ajout d\'ingredients</string>
+    <string name="menu_name">Nom du menu</string>
+    <string name="partcipant_number">Nombre de participants</string>
+    <string name="add_your_ingre">Ajoutez des ingrédients</string>
+    <string name="add_step">Ajoutez des étapes</string>
+    <string name="step_one">Etape 1</string>
+    <string name="add_one_step">Ajoutez une étape</string>
+    <string name="choose_recipe">Choisie une recette</string>
+    <string name="ingrdient">Ingredients</string>
+    <string name="energy">Energie</string>
+    <string name="protein">Proteine</string>
+    <string name="carbs">Glucide</string>
+    <string name="fat">Gras</string>
+    <string name="start_cooking">G Faim !</string>
+    <string name="step">Etape</string>
+    <string name="hello_user">Salut user 👋</string>
+    <string name="creeateRecipe">Créer une recette</string>
+    <string name="chooseOption">Choisir une option</string>
+    <string name="summary">Résumé</string>
+    <string name="totalCal">Total de calories</string>
+    <string name="totaltime">Temps total</string>
+    <string name="steps">Etapes</string>
 
 </resources>

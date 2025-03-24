@@ -101,12 +101,18 @@ public class CarrouselAdapter extends RecyclerView.Adapter<CarrouselAdapter.Carr
         switch (mealType) {
             case "Breakfast":
                 return "BREAKFAST";
+            case "Petit Déjeuner":
+                return "BREAKFAST";
             case "Lunch":
+                return "LUNCH";
+            case "Déjeuner":
                 return "LUNCH";
             case "Dinner":
                 return "DINNER";
+            case "Diner":
+                return "DINNER";
             default:
-                return "BREAKFAST";
+                return "";
         }
     }
 

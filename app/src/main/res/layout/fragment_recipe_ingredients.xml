@@ -64,7 +64,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Energy"
+                android:text="@string/energy"
                 android:textColor="@color/grey"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -89,7 +89,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Protein"
+                android:text="@string/protein"
                 android:textColor="@color/grey"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -114,7 +114,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Carbs"
+                android:text="@string/carbs"
                 android:textColor="@color/grey"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -139,7 +139,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Fat"
+                android:text="@string/fat"
                 android:textColor="@color/grey"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -152,7 +152,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="30dp"
-        android:text="Ingredients"
+        android:text="@string/ingrdient"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold"
@@ -203,7 +203,7 @@
         android:layout_height="66dp"
         android:backgroundTint="@color/greenBtn"
         android:padding="16dp"
-        android:text="Start cooking"
+        android:text="@string/start_cooking"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"

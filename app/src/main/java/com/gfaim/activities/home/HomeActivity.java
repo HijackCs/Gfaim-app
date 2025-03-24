@@ -79,11 +79,17 @@ public class HomeActivity extends AppCompatActivity {
         );
 
         List<String> texts = Arrays.asList(
+                "Petit Déjeuner",
+                "Déjeuner",
+                "Diner"
+        );
+/*
+        List<String> texts = Arrays.asList(
                 "Breakfast",
                 "Lunch",
                 "Dinner"
         );
-
+*/
         CarrouselAdapter adapter = new CarrouselAdapter(images, texts);
         viewPager.setAdapter(adapter);
     }

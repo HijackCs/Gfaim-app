@@ -170,17 +170,25 @@ public class ChooseRecipeFragment extends Fragment {
         String dateString = getArguments().getString("selectedDate");
         mealBody.setDate(dateString);
 
-        // Définir le type de repas
         String mealType = getArguments().getString("mealType");
 
         switch (mealType) {
             case "BREAKFAST":
                 mealBody.setMealType("BREAKFAST");
                 break;
+            case "Petit déjeuner":
+                mealBody.setMealType("BREAKFAST");
+                break;
             case "LUNCH":
                 mealBody.setMealType("LUNCH");
                 break;
+            case "Déjeuner":
+                mealBody.setMealType("LUNCH");
+                break;
             case "DINNER":
+                mealBody.setMealType("DINNER");
+                break;
+            case "Diner":
                 mealBody.setMealType("DINNER");
                 break;
             case "Snack":

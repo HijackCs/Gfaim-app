@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +15,12 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.gfaim.R;
 import com.gfaim.activities.NavigationBar;
 import com.gfaim.activities.settings.SettingsActivity;
+import com.gfaim.models.member.CreateMember;
+import com.gfaim.models.member.CreateMemberNoAccount;
+import com.gfaim.models.member.MemberSessionBody;
+import com.gfaim.utility.api.UtileProfile;
+import com.gfaim.utility.callback.OnMemberReceivedListener;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
@@ -23,6 +30,9 @@ public class HomeActivity extends AppCompatActivity {
     private final Logger log = Logger.getLogger(HomeActivity.class.getName());
     private NavigationBar navigationBar;
 
+    private MemberSessionBody member;
+
+    private UtileProfile utileProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +62,31 @@ public class HomeActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
 
             navigationBar.setActiveButton(R.id.btn_home);
+
+            utileProfile = new UtileProfile(this);
+            utileProfile.getSessionMember(new OnMemberReceivedListener() {
+                @Override
+                public void onSuccess(CreateMemberNoAccount session) {
+                    //empty
+                }
+                @Override
+                public void onSuccess(MemberSessionBody session) {
+
+                    member = session;
+
+                    TextView user = findViewById(R.id.textView3);
+                    user.setText("Salut "+ member.getFirstName() +" \uD83D\uDC4B");
+
+                }
+                @Override
+                public void onFailure(Throwable error) {
+                    //empty
+                }
+                @Override
+                public void onSuccess(CreateMember body) {
+                    //empty
+                }
+            });
 
         } catch (Exception e) {
             log.warning("[acceuil][onCreate] Problème au lancement de HomeActivity");

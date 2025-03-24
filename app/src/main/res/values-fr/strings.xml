@@ -159,5 +159,7 @@
     <string name="totalCal">Total de calories</string>
     <string name="totaltime">Temps total</string>
     <string name="steps">Etapes</string>
+    <string name="screen0Family">Données générales</string>
+
 
 </resources>

@@ -44,13 +44,15 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 public class FamilyActivity extends AppCompatActivity {
 
     private static final int REQUEST_ADD_MEMBER = 1;
     private GridLayout membersGrid;
     private ImageButton btnAddMember;
-    private final List<MemberSessionBody> membersList = new ArrayList<>(); // Stocke les noms des membres
+    private final List<MemberSessionBody> membersList = new ArrayList<>();
+    private final Logger log = Logger.getLogger(FamilyActivity.class.getName());
 
     UtileProfile utileProfile;
     private MemberSessionBody memberSession;
@@ -81,19 +83,25 @@ public class FamilyActivity extends AppCompatActivity {
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
-
+                // empty
             }
 
             @Override
             public void onSuccess(MemberSessionBody session) {
-                memberSession = session; // Stocke dans l'Activity
+                memberSession = session;
                 utileProfile.getFamily(new OnFamilyReceivedListener() {
                     @Override
-                    public void onSuccess() {}
+                    public void onSuccess() {
+                        //empty
+                    }
                     @Override
-                    public void onSuccess(LeaveFamilyBody family) {}
+                    public void onSuccess(LeaveFamilyBody family) {
+                        //empty
+                    }
                     @Override
-                    public void onSuccess(CreateFamilyBody family) {}
+                    public void onSuccess(CreateFamilyBody family) {
+                        //empty
+                    }
                     @Override
                     public void onSuccess(FamilyBody session) {
                         family = session;
@@ -112,19 +120,20 @@ public class FamilyActivity extends AppCompatActivity {
                     }
                     @Override
                     public void onFailure(Throwable error) {
-                        System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
+                        log.info("Error fetching family : " + error.getMessage());
                     }
                 }, memberSession.getFamilyId());
             }
             @Override
             public void onFailure(Throwable error) {
-                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                log.info("Error fetching session : " + error.getMessage());
             }
             @Override
-            public void onSuccess(CreateMember body) {}
+            public void onSuccess(CreateMember body) {
+                //empty
+            }
         });
     }
-
 
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
@@ -141,9 +150,6 @@ public class FamilyActivity extends AppCompatActivity {
 
         FrameLayout editName = findViewById(R.id.editName);
         editName.setVisibility(VISIBLE);
-
-        //TextView btnDeleteFamily = findViewById(R.id.btnDeleteFamily);
-        //btnDeleteFamily.setVisibility(VISIBLE);
 
         btnAddMember.setLayoutParams(new ViewGroup.LayoutParams(150, 150));
         btnAddMember.setImageResource(R.drawable.ic_add);
@@ -240,13 +246,21 @@ public class FamilyActivity extends AppCompatActivity {
 
                     utileProfile.leaveFamily(new OnFamilyReceivedListener() {
                         @Override
-                        public void onSuccess() {}
+                        public void onSuccess() {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(LeaveFamilyBody family) {}
+                        public void onSuccess(LeaveFamilyBody family) {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(CreateFamilyBody family) {}
+                        public void onSuccess(CreateFamilyBody family) {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(FamilyBody family) {}
+                        public void onSuccess(FamilyBody family) {
+                            //empty
+                        }
                         @Override
                         public void onFailure(Throwable error) {
                             membersGrid.removeView(memberLayout);
@@ -275,13 +289,21 @@ public class FamilyActivity extends AppCompatActivity {
 
                     utileProfile.leaveFamily(new OnFamilyReceivedListener() {
                         @Override
-                        public void onSuccess() {}
+                        public void onSuccess() {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(LeaveFamilyBody family) {}
+                        public void onSuccess(LeaveFamilyBody family) {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(CreateFamilyBody family) {}
+                        public void onSuccess(CreateFamilyBody family) {
+                            //empty
+                        }
                         @Override
-                        public void onSuccess(FamilyBody family) {}
+                        public void onSuccess(FamilyBody family) {
+                            //empty
+                        }
                         @Override
                         public void onFailure(Throwable error) {
                             Intent intent = new Intent(FamilyActivity.this, SettingsActivity.class);
@@ -333,7 +355,9 @@ public class FamilyActivity extends AppCompatActivity {
 
         familyName.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //empty
+            }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -345,12 +369,14 @@ public class FamilyActivity extends AppCompatActivity {
 
                 if (!filteredText.equals(s.toString())) {
                     familyName.setText(filteredText);
-                    familyName.setSelection(filteredText.length()); // Remettre le curseur à la fin
+                    familyName.setSelection(filteredText.length());
                 }
             }
 
             @Override
-            public void afterTextChanged(Editable s) {}
+            public void afterTextChanged(Editable s) {
+                //empty
+            }
         });
 
         editName.setOnClickListener(v -> {
@@ -378,12 +404,12 @@ public class FamilyActivity extends AppCompatActivity {
                 utileProfile.updateFamily(new OnFamilyReceivedListener() {
                     @Override
                     public void onSuccess() {
-
+//empty
                     }
 
                     @Override
                     public void onSuccess(LeaveFamilyBody family) {
-
+//empty
                     }
 
                     @Override
@@ -391,28 +417,36 @@ public class FamilyActivity extends AppCompatActivity {
 
                         utileProfile.getFamily(new OnFamilyReceivedListener() {
                             @Override
-                            public void onSuccess() {}
+                            public void onSuccess() {
+                                //empty
+                            }
                             @Override
-                            public void onSuccess(LeaveFamilyBody family) {}
+                            public void onSuccess(LeaveFamilyBody family) {
+                                //empty
+                            }
                             @Override
-                            public void onSuccess(CreateFamilyBody family) {}
+                            public void onSuccess(CreateFamilyBody family) {
+                                //empty
+                            }
                             @Override
                             public void onSuccess(FamilyBody family) {
                                 TextView familyName = findViewById(R.id.familyName);
                                 familyName.setText(family.getName());
                             }
                             @Override
-                            public void onFailure(Throwable error) {}
+                            public void onFailure(Throwable error) {
+                                //empty
+                            }
                         }, memberSession.getFamilyId());
                     }
 
                     @Override
-                    public void onSuccess(FamilyBody family) {
+                    public void onSuccess(FamilyBody family) {//empty
 
                     }
                     @Override
                     public void onFailure(Throwable error) {
-                        System.err.println("Erreur lors de la récupération de la famille : " + error.getMessage());
+                        log.info("Error fetching family : " + error.getMessage());
                     }
                 }, memberSession.getFamilyId(), newName);
 
@@ -427,13 +461,11 @@ public class FamilyActivity extends AppCompatActivity {
 
 
         cancelName.setOnClickListener(v -> {
-            familyName.setText(oldName[0]); // Restaurer l'ancien texte
+            familyName.setText(oldName[0]);
 
-            // Désactiver l'édition
             familyName.setFocusable(false);
             familyName.setCursorVisible(false);
 
-            // Réafficher le bouton d'édition
             editName.setVisibility(VISIBLE);
             checkName.setVisibility(GONE);
             cancelName.setVisibility(GONE);

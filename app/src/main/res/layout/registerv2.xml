@@ -75,7 +75,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Lastname"
+        android:text="@string/firstName"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginBottom="4dp" />
@@ -95,7 +95,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Password"
+        android:text="@string/password"
         android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginBottom="4dp" />

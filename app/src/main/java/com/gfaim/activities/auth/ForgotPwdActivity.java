@@ -48,9 +48,7 @@ public class ForgotPwdActivity extends AppCompatActivity {
         Button sendMailBtn = findViewById(R.id.SendMail);
         sendMailBtn.setOnClickListener(v -> {
             String email = emailInput.getText().toString().trim();
-            if (email.isEmpty()) {
-                Toast.makeText(this, "Veuillez entrer votre email.", Toast.LENGTH_SHORT).show();
-            } else {
+            if (!email.isEmpty()) {
                 sendForgotPasswordRequest(email);
             }
         });
@@ -64,19 +62,19 @@ public class ForgotPwdActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(ForgotPwdActivity.this, "Code envoyé à votre email.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPwdActivity.this, R.string.codeSent, Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(getApplicationContext(), CheckMailActivity.class);
                     intent.putExtra("email", email);
                     startActivity(intent);
                     finish();
                 } else {
-                    Toast.makeText(ForgotPwdActivity.this, "Erreur lors de l'envoi du code.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ForgotPwdActivity.this, R.string.errorSending, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(ForgotPwdActivity.this, "Erreur de connexion : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ForgotPwdActivity.this, R.string.errorConnection + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

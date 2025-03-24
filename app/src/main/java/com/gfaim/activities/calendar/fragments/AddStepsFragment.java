@@ -143,7 +143,7 @@ public class AddStepsFragment extends Fragment {
         );
         stepEditText.setLayoutParams(stepParams);
         stepEditText.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.rounded_border));
-        stepEditText.setHint("Step " + stepNumber);
+        stepEditText.setHint("Etape " + stepNumber);
         stepEditText.setPadding(
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()),
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()),
@@ -218,7 +218,7 @@ public class AddStepsFragment extends Fragment {
                 );
                 stepEditText.setLayoutParams(stepParams);
                 stepEditText.setBackground(ContextCompat.getDrawable(requireContext(), R.drawable.rounded_border));
-                stepEditText.setHint("Step " + (i + 1));
+                stepEditText.setHint("Etape " + (i + 1));
                 stepEditText.setText(steps.get(i));
                 stepEditText.setPadding(
                         (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics()),

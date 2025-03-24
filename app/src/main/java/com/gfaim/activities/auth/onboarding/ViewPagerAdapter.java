@@ -72,7 +72,8 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Getter
     private Long familyId;
 
-    private String bearer = "Bearer ";
+    private static final String BEARER = "Bearer ";
+    private static final String ERROR = "Erreur: ";
 
     private boolean displayFamilyJoin = true;
 
@@ -176,13 +177,13 @@ public class ViewPagerAdapter extends PagerAdapter {
     public void fetchDietOrAllergy(boolean isDiet, FetchCallback callback) {
         DietAllergyService service = ApiClient.getClient(context).create(DietAllergyService.class);
         tokenManager = new TokenManager(context);
-        String token = bearer + tokenManager.getAccessToken();
+        String token = BEARER + tokenManager.getAccessToken();
 
         Call<List<DietAllergy>> call = isDiet ? service.getDiets(token) : service.getAllergies(token);
 
         call.enqueue(new Callback<List<DietAllergy>>() {
             @Override
-            public void onResponse(Call<List<DietAllergy>> call, Response<List<DietAllergy>> response) {
+            public void onResponse(@NonNull Call<List<DietAllergy>> call, @NonNull Response<List<DietAllergy>> response) {
                 HashMap<Integer, String> res = new HashMap<>();
                 if (response.isSuccessful() && response.body() != null) {
                     List<DietAllergy> items = response.body();
@@ -192,14 +193,14 @@ public class ViewPagerAdapter extends PagerAdapter {
                     }
                     callback.onSuccess(res);
                 } else {
-                    Toast.makeText(context, "Erreur lors de la récupération des données", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.errorFetching, Toast.LENGTH_SHORT).show();
                     callback.onFailure();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<DietAllergy>> call, Throwable t) {
-                Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<List<DietAllergy>> call, @NonNull Throwable t) {
+                Toast.makeText(context, ERROR + t.getMessage(), Toast.LENGTH_SHORT).show();
                 callback.onFailure();
             }
         });
@@ -262,7 +263,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
             @Override
             public void onFailure() {
-                Toast.makeText(context, "Impossible de récupérer les données", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.impossibleFetch, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -284,21 +285,21 @@ public class ViewPagerAdapter extends PagerAdapter {
         //create member
         MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
         String email = getUserEmail();
-        Call<CreateMember> call = memberService.createMember(bearer + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
+        Call<CreateMember> call = memberService.createMember(BEARER + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
         call.enqueue(new Callback<CreateMember>() {
             @Override
-            public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
+            public void onResponse(@NonNull Call<CreateMember> call, @NonNull Response<CreateMember> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     setMemberId(response.body().getId());
                     familyId = response.body().getFamilyId();
                 } else {
-                    Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.errorCreatingMember, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<CreateMember> call, Throwable t) {
-                Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<CreateMember> call, @NonNull Throwable t) {
+                Toast.makeText(context, ERROR + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -312,18 +313,18 @@ public class ViewPagerAdapter extends PagerAdapter {
 
         call.enqueue(new Callback<FamilyBody>() {
             @Override
-            public void onResponse(Call<FamilyBody> call, Response<FamilyBody> response) {
+            public void onResponse(@NonNull Call<FamilyBody> call, @NonNull Response<FamilyBody> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     tvFamilyName.setText( response.body().getName());
 
                 } else {
-                    Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.errorCreatingMember, Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<FamilyBody> call, Throwable t) {
-                Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, ERROR + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -369,7 +370,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             codeFamily = familyCode.getText().toString();
             MemberService memberService = ApiClient.getClient(context).create(MemberService.class);
             String email = getUserEmail();
-            Call<CreateMember> call = memberService.createMember("Bearer " + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
+            Call<CreateMember> call = memberService.createMember(BEARER + tokenManager.getAccessToken(), new CreateSelfMemberBody(true, codeFamily, email));
             call.enqueue(new Callback<CreateMember>() {
                 @Override
                 public void onResponse(Call<CreateMember> call, Response<CreateMember> response) {
@@ -389,13 +390,13 @@ public class ViewPagerAdapter extends PagerAdapter {
                         check.setVisibility(View.VISIBLE);
                         ((Animatable) check.getDrawable()).start();
                     } else {
-                        Toast.makeText(context, "Erreur lors de la creation d'un membre", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.errorCreatingMember, Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<CreateMember> call, Throwable t) {
-                    Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, ERROR + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         });
@@ -464,7 +465,7 @@ public class ViewPagerAdapter extends PagerAdapter {
             tokenManager = new TokenManager(context);
             FamilyService familyService = ApiClient.getClient(context).create(FamilyService.class);
 
-            Call<CreateFamily> call = familyService.createFamily("Bearer " + tokenManager.getAccessToken(), new CreateFamilyBody(familyNameStr));
+            Call<CreateFamily> call = familyService.createFamily(BEARER + tokenManager.getAccessToken(), new CreateFamilyBody(familyNameStr));
             call.enqueue(new Callback<CreateFamily>() {
                 @Override
                 public void onResponse(Call<CreateFamily> call, Response<CreateFamily> response) {
@@ -474,14 +475,14 @@ public class ViewPagerAdapter extends PagerAdapter {
                         createMember(codeFamily);
 
                     } else {
-                        Toast.makeText(context, "Erreur lors de la creation d'une famille", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.errorCreatingFamily, Toast.LENGTH_SHORT).show();
 
                     }
                 }
 
                 @Override
-                public void onFailure(Call<CreateFamily> call, Throwable t) {
-                    Toast.makeText(context, "Erreur: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                public void onFailure(@NonNull Call<CreateFamily> call, Throwable t) {
+                    Toast.makeText(context, ERROR + t.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -500,7 +501,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     private void copyToClipboard(String text) {
         ClipboardManager clipboard = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("Copied Text", text); // Création du ClipData
+        ClipData clip = ClipData.newPlainText("Copied Text", text);
         clipboard.setPrimaryClip(clip);
     }
 

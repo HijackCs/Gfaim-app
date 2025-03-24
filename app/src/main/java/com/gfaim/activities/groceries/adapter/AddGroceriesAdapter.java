@@ -38,8 +38,7 @@ public class AddGroceriesAdapter extends RecyclerView.Adapter<AddGroceriesAdapte
         holder.itemName.setText(item.getName());
         holder.itemCheckbox.setVisibility(View.VISIBLE);
 
-        // Vérifier si l'élément est sélectionné
-        holder.itemCheckbox.setOnCheckedChangeListener(null); // Empêche les boucles infinies
+        holder.itemCheckbox.setOnCheckedChangeListener(null);
         holder.itemCheckbox.setChecked(fragment.getSelectedItems().contains(item));
 
         holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {

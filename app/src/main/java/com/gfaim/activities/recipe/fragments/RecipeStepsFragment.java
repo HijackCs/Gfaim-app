@@ -297,9 +297,9 @@ public class RecipeStepsFragment extends Fragment {
 
             // Changer le texte du bouton suivant à la dernière étape
             if (currentStepIndex == steps.size() - 1) {
-                nextStepButton.setText("Finish");
+                nextStepButton.setText("A Table !");
             } else {
-                nextStepButton.setText("Next");
+                nextStepButton.setText("Suivant");
             }
         } catch (Exception e) {
             Log.e(TAG, "Exception dans updateNavigationButtons", e);

@@ -45,8 +45,7 @@ public class AddGroceriesActivity extends AppCompatActivity {
     private Button addButton;
     private AddGroceriesFragment addGroceriesFragment;
     
-    private UtileProfile utileProfile;
-    
+
     private MemberSessionBody member;
 
     @Override
@@ -54,26 +53,31 @@ public class AddGroceriesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_groceries);
 
-        utileProfile = new UtileProfile(this);
+        UtileProfile utileProfile = new UtileProfile(this);
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
-            public void onSuccess(CreateMemberNoAccount session) {}
+            public void onSuccess(CreateMemberNoAccount session) {
+                //empty
+            }
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
             }
             @Override
-            public void onFailure(Throwable error) {}
+            public void onFailure(Throwable error) {
+                //empty
+            }
             @Override
-            public void onSuccess(CreateMember body) {}
+            public void onSuccess(CreateMember body) {
+                //empty
+            }
         });
 
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         EditText searchEditText = findViewById(R.id.searchEditTextAdd);
         addButton = findViewById(R.id.addButton);
 
-        // Adapter pour le RecyclerView dans ViewPager
         AddGroceriesViewPagerAdapter adapter = new AddGroceriesViewPagerAdapter(this);
         viewPager.setAdapter(adapter);
         addGroceriesFragment = (AddGroceriesFragment) adapter.createFragment(0);
@@ -100,25 +104,19 @@ public class AddGroceriesActivity extends AppCompatActivity {
             List<FoodItem> selectedItems = addGroceriesFragment.getSelectedItems();
 
             if (selectedItems.isEmpty()) {
-                Toast.makeText(this, "Aucun élément sélectionné", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Préparer les données pour l'API
             List<AddShoppingItemRequest> requestItems = new ArrayList<>();
             for (FoodItem item : selectedItems) {
                 requestItems.add(new AddShoppingItemRequest(item.getIngredientName()));
             }
 
-            // Récupérer l'onglet d'origine (0 = Fridge, 1 = Shopping)
             int currentTab = getIntent().getIntExtra("CURRENT_TAB", 0);
 
-            // Appel à l'API selon l'onglet actif
             if (currentTab == 0) {
-                // Ajouter au frigo
                 addIngredientsToFridge(selectedItems, requestItems);
             } else {
-                // Ajouter à la liste de courses
                 addIngredientsToShoppingList(selectedItems, requestItems);
             }
         });
@@ -135,34 +133,31 @@ public class AddGroceriesActivity extends AppCompatActivity {
         ShoppingService shoppingService = ApiClient.getClient(this).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
-        // Utiliser la version flexible qui renvoie Object pour le frigo
         Call<Object> call = shoppingService.addIngredientsToFridgeFlexible(token, member.getFamilyId(), requestItems);
-        Log.d(TAG, "Appel API Frigo Flexible en cours: " + call.request().url());
+        Log.d(TAG, "API call: " + call.request().url());
 
         call.enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
-                Log.d(TAG, "Réponse Frigo reçue - Code: " + response.code());
+                Log.d(TAG, "Response Frigo received - Code: " + response.code());
 
                 try {
                     if (response.errorBody() != null) {
                         Log.e(TAG, "Corps d'erreur: " + response.errorBody().string());
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, "Erreur lors de la lecture du corps d'erreur: " + e.getMessage(), e);
+                    Log.e(TAG, "Error : " + e.getMessage(), e);
                 }
 
                 if (response.isSuccessful()) {
-                    Log.d(TAG, "Réponse réussie: " + (response.body() != null ? response.body().toString() : "null"));
+                    Log.d(TAG, "Successful : " + (response.body() != null ? response.body().toString() : "null"));
 
-                    // Retourner les éléments sélectionnés à l'activité précédente
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("SELECTED_ITEMS", new ArrayList<>(selectedItems));
-                    resultIntent.putExtra("CURRENT_TAB", 0);  // 0 = Frigo
+                    resultIntent.putExtra("CURRENT_TAB", 0);
                     setResult(RESULT_OK, resultIntent);
                     finish();
 
-                    Toast.makeText(AddGroceriesActivity.this, "Ingrédients ajoutés au frigo avec succès", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(AddGroceriesActivity.this, "Erreur lors de l'ajout des ingrédients au frigo: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
@@ -170,8 +165,8 @@ public class AddGroceriesActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
-                Log.e(TAG, "Erreur lors de l'ajout au frigo: " + t.getMessage(), t);
-                Toast.makeText(AddGroceriesActivity.this, "Erreur de communication: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error adding to fridge: " + t.getMessage(), t);
+                Toast.makeText(AddGroceriesActivity.this, R.string.errorFetching + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -182,19 +177,19 @@ public class AddGroceriesActivity extends AppCompatActivity {
         String token = "Bearer " + tokenManager.getAccessToken();
 
         Call<List<ShoppingListResponse>> call = shoppingService.addIngredientsToShoppingList(token, member.getFamilyId(), requestItems);
-        Log.d(TAG, "Appel API Shopping en cours: " + call.request().url());
+        Log.d(TAG, "API call: " + call.request().url());
 
         call.enqueue(new Callback<List<ShoppingListResponse>>() {
             @Override
             public void onResponse(Call<List<ShoppingListResponse>> call, Response<List<ShoppingListResponse>> response) {
-                Log.d(TAG, "Réponse Shopping reçue - Code: " + response.code());
+                Log.d(TAG, "Shopping response  received - Code: " + response.code());
                 handleApiResponse(response, selectedItems, 1);
             }
 
             @Override
             public void onFailure(Call<List<ShoppingListResponse>> call, Throwable t) {
-                Log.e(TAG, "Erreur lors de l'ajout à la liste de courses: " + t.getMessage(), t);
-                Toast.makeText(AddGroceriesActivity.this, "Erreur de communication: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e(TAG, "Error adding to shopping: " + t.getMessage(), t);
+                Toast.makeText(AddGroceriesActivity.this, R.string.errorFetching + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -202,36 +197,29 @@ public class AddGroceriesActivity extends AppCompatActivity {
     private void handleApiResponse(Response<List<ShoppingListResponse>> response, List<FoodItem> selectedItems, int currentTab) {
         try {
             if (response.errorBody() != null) {
-                Log.e(TAG, "Corps d'erreur: " + response.errorBody().string());
+                Log.e(TAG, "Error: " + response.errorBody().string());
             }
         } catch (Exception e) {
-            Log.e(TAG, "Erreur lors de la lecture du corps d'erreur: " + e.getMessage(), e);
+            Log.e(TAG, "Error reading error: " + e.getMessage(), e);
         }
 
         if (response.isSuccessful() && response.body() != null) {
-            Log.d(TAG, "Taille du corps de la réponse: " + response.body().size());
             if (!response.body().isEmpty()) {
                 ShoppingListResponse firstItem = response.body().get(0);
-                Log.d(TAG, "Premier élément - familyId: " + firstItem.getFamilyId());
                 if (firstItem.getItems() != null) {
-                    Log.d(TAG, "Premier élément - nombre d'items: " + firstItem.getItems().size());
+                    Log.d(TAG, "first element - number of items: " + firstItem.getItems().size());
                 } else {
-                    Log.d(TAG, "Premier élément - items est null");
+                    Log.d(TAG, "item is null");
                 }
             }
 
-            // Retourner les éléments sélectionnés à l'activité précédente
             Intent resultIntent = new Intent();
             resultIntent.putExtra("SELECTED_ITEMS", new ArrayList<>(selectedItems));
             resultIntent.putExtra("CURRENT_TAB", currentTab);
             setResult(RESULT_OK, resultIntent);
             finish();
-
-            // Afficher un message approprié
-            String destination = (currentTab == 0) ? "au frigo" : "à la liste de courses";
-            Toast.makeText(AddGroceriesActivity.this, "Ingrédients ajoutés " + destination + " avec succès", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(AddGroceriesActivity.this, "Erreur lors de l'ajout des ingrédients: " + response.code(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(AddGroceriesActivity.this, R.string.errorFetching + response.code(), Toast.LENGTH_SHORT).show();
         }
     }
 

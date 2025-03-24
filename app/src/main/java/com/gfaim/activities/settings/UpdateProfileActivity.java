@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import com.gfaim.R;
+import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.UserService;
 import com.gfaim.models.user.UpdateUserBody;
@@ -30,6 +31,8 @@ import com.gfaim.models.user.UpdateUserPassword;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.gfaim.utility.api.UtileProfile;
 import com.gfaim.utility.callback.OnUserReceivedListener;
+import java.util.Objects;
+import java.util.logging.Logger;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -51,6 +54,8 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
     private MemberSessionBody member;
 
+    private final Logger log = Logger.getLogger(UpdateProfileActivity.class.getName());
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,26 +64,25 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
         utileProfile = new UtileProfile(this);
 
-
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
-
+                //empty
             }
 
             @Override
             public void onSuccess(MemberSessionBody session) {
-                member = session; // Stocke dans l'Activity
+                member = session;
                 getAllInfo();
             }
             @Override
             public void onFailure(Throwable error) {
-                System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                log.info("Error fetching session : " + error.getMessage());
             }
 
             @Override
             public void onSuccess(CreateMember body) {
-
+                //empty
             }
         });
 
@@ -162,6 +166,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
         TextWatcher textWatcher = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //empty
             }
 
             @Override
@@ -171,6 +176,7 @@ public class UpdateProfileActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
+            //empty
             }
         };
 
@@ -242,9 +248,12 @@ public class UpdateProfileActivity extends AppCompatActivity {
                 utileProfile.updateUserPassword(new OnUserReceivedListener() {
                     @Override
                     public void onSuccess(UpdateUserBody session) {
+                        //empty
                     }
                     @Override
-                    public void onSuccess(UpdateUserPassword session) {}
+                    public void onSuccess(UpdateUserPassword session) {
+                        //empty
+                    }
                     @Override
                     public void onFailure(Throwable error) {
                         updateUser( firstNameValue, lastNameValue);
@@ -260,7 +269,9 @@ public class UpdateProfileActivity extends AppCompatActivity {
             public void onSuccess(UpdateUserBody session) {
                 utileProfile.getSessionMember(new OnMemberReceivedListener() {
                     @Override
-                    public void onSuccess(CreateMemberNoAccount session) {}
+                    public void onSuccess(CreateMemberNoAccount session) {
+                        //empty
+                    }
                     @Override
                     public void onSuccess(MemberSessionBody session) {
                         firstName.setText("");
@@ -273,17 +284,22 @@ public class UpdateProfileActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Throwable error) {
                         utileProfile.logout();
-                        System.err.println("Erreur lors de la récupération de la session : " + error.getMessage());
+                        log.info("Erreur lors de la récupération de la session : " + error.getMessage());
                     }
                     @Override
                     public void onSuccess(CreateMember body) {
+                        //empty
                     }
                 });
             }
             @Override
-            public void onSuccess(UpdateUserPassword session) {}
+            public void onSuccess(UpdateUserPassword session) {
+                //empty
+            }
             @Override
-            public void onFailure(Throwable error) {}
+            public void onFailure(Throwable error) {
+                //empty
+            }
         },member.getUserId(), emailValue, firstNameValue, lastNameValue);
     }
 
@@ -301,16 +317,16 @@ public class UpdateProfileActivity extends AppCompatActivity {
                             public void onResponse(Call<Void> call, Response<Void> response) {
                                 if (response.isSuccessful()) {
 
-                                    System.out.println("Membre supprimé avec succès.");
+                                    log.info("Successfully deleted.");
                                     utileProfile.logout();
                                 } else {
-                                    System.err.println("Erreur lors de la suppression : " + response.message());
+                                    log.info("Error during deleting: " + response.message());
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<Void> call, Throwable t) {
-                                System.err.println("Erreur réseau : " + t.getMessage());
+                                log.info("Network error : " + t.getMessage());
                             }
                         });
                     })

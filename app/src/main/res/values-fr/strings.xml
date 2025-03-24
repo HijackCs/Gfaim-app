@@ -82,6 +82,9 @@
     <string name="screen3">Rejoignez votre famille</string>
     <string name="screen3Desc">Pour vous offrir la meilleure expérience alimentaire personnalisée, nous devons en savoir plus sur vous.</string>
 
+    <string name="enterValidFamily">Veuillez entrer un code de famille valide.</string>
+
+
     <string name="allergieGluten">Gluten</string>
     <string name="allergieDiary">Produits laitiers</string>
     <string name="allergieEgg">Œufs</string>
@@ -106,6 +109,25 @@
     <string name="createFamilly">Créez votre famille !</string>
     <string name="new_fam">Une nouvelle famille a été créée !</string>
     <string name="joinFamily">Rejoindre la famille</string>
+
+
+    <!-- Erreurs -->
+    <string name="errorSending">Erreur lors de l\'envoi.</string>
+    <string name="errorFetching">Erreur lors de la récupération des données.</string>
+    <string name="errorCreatingMember">Erreur lors de la creation d\'un membre.</string>
+    <string name="errorCreatingFamily">Erreur lors de la creation d\'une famille.</string>
+    <string name="impossibleFetch">Impossible de récupérer les données</string>
+    <string name="fillAll">Veuillez remplir tous les champs.</string>
+    <string name="samePassword">Les mots de passe ne correspondent pas.</string>
+    <string name="errorCode">Code invalide ou erreur de réinitialisation.</string>
+    <string name="errorConnection">Erreur de connexion : </string>
+    <string name="codeSent">Code envoyé par email.</string>
+    <string name="noIngredient">Aucun ingrédient disponible</string>
+    <string name="impossibleConnection">Impossible de se connecter au serveur. Veuillez réessayer plus tard.</string>
+    <string name="errorDeleting">Erreur lors de la suppression.</string>
+    <string name="toFridge">au frigo</string>
+    <string name="toShopping">à la liste de courses</string>
+
 
     <!--Famille-->
     <string name="screen0Family">Données générales</string>

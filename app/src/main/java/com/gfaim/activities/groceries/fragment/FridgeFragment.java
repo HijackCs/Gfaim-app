@@ -44,49 +44,50 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
     private List<FoodItem> filteredList = new ArrayList<>();
 
     private FridgeAdapter adapter;
-    private RecyclerView recyclerView;
     private TokenManager tokenManager;
-    private UtileProfile utileProfile;
     private MemberSessionBody member;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
-        recyclerView = view.findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         tokenManager = new TokenManager(getContext());
-        
-        utileProfile = new UtileProfile(getContext());
+
+        UtileProfile utileProfile = new UtileProfile(getContext());
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
-            public void onSuccess(CreateMemberNoAccount session) {}
+            public void onSuccess(CreateMemberNoAccount session) {
+                // Empty
+            }
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
                 loadFridgeData();
             }
             @Override
-            public void onFailure(Throwable error) {}
+            public void onFailure(Throwable error) {
+                // Empty
+            }
             @Override
-            public void onSuccess(CreateMember body) {}
+            public void onSuccess(CreateMember body) {
+                // Empty
+            }
         });
         
 
         adapter = new FridgeAdapter(foodList);
         recyclerView.setAdapter(adapter);
 
-        // Ajouter un séparateur
         DividerItemDecoration divider = new DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.divider));
         recyclerView.addItemDecoration(divider);
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new SwipeToDeleteCallback(requireContext(), this));
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        // Récupérer les données du frigo depuis l'API
 
         return view;
     }
@@ -103,9 +104,8 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
                     ShoppingListResponse fridgeResponse = response.body();
                     List<ShoppingItem> items = fridgeResponse.getItems();
 
-                    foodList.clear(); // Vider la liste existante
+                    foodList.clear();
 
-                    // Convertir les ShoppingItem en FoodItem
                     for (ShoppingItem item : items) {
                         FoodItem foodItem = new FoodItem(
                                 item.getIngredientNameFr(),
@@ -116,23 +116,20 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
                         foodList.add(foodItem);
                     }
 
-                    // Mettre à jour la liste filtrée
                     filteredList.clear();
                     filteredList.addAll(foodList);
 
-                    // Notifier l'adaptateur
                     adapter.updateList(foodList);
                     adapter.notifyDataSetChanged();
 
-                    Toast.makeText(getContext(), "Contenu du frigo récupéré avec succès", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Erreur lors de la récupération du frigo: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.errorFetching + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ShoppingListResponse> call, Throwable t) {
-                Toast.makeText(getContext(), "Erreur de communication: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.impossibleFetch + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -152,10 +149,8 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
             return;
         }
 
-        // Vider les listes existantes
         foodList.clear();
 
-        // Convertir les ShoppingItem en FoodItem
         for (ShoppingItem item : items) {
             FoodItem foodItem = new FoodItem(
                     item.getIngredientNameFr(),
@@ -166,11 +161,9 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
             foodList.add(foodItem);
         }
 
-        // Mettre à jour la liste filtrée
         filteredList.clear();
         filteredList.addAll(foodList);
 
-        // Notifier l'adaptateur du changement
         adapter.updateList(filteredList);
         adapter.notifyDataSetChanged();
     }
@@ -179,7 +172,7 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
     public void filterItems(String query) {
         filteredList.clear();
         if (query.isEmpty()) {
-            filteredList.addAll(foodList); // Afficher tous les éléments si la recherche est vide
+            filteredList.addAll(foodList);
         } else {
             for (FoodItem item : foodList) {
                 if (item.getName().toLowerCase().contains(query.toLowerCase())) {
@@ -188,17 +181,14 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
             }
         }
         if(!filteredList.isEmpty()){
-            adapter.updateList(filteredList);  // Met à jour la liste filtrée dans l'adaptateur
+            adapter.updateList(filteredList);
             adapter.notifyDataSetChanged();
-
         }
-
     }
 
 
     @Override
     public void removeItem(FoodItem item) {
-        // Appel à l'API pour supprimer l'ingrédient
         ShoppingService shoppingService = ApiClient.getClient(getContext()).create(ShoppingService.class);
         String token = "Bearer " + tokenManager.getAccessToken();
 
@@ -207,21 +197,18 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Suppression locale uniquement si l'appel API a réussi
                     filteredList.remove(item);
                     foodList.remove(item);
                     adapter.updateList(filteredList);
                     adapter.notifyDataSetChanged();
-
-                    Toast.makeText(getContext(), "Ingrédient supprimé du frigo", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Erreur lors de la suppression: " + response.code(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), R.string.errorDeleting + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(getContext(), "Erreur de communication: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), R.string.errorFetching + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -233,7 +220,7 @@ public class FridgeFragment extends Fragment implements RemovableFragment {
     }
 
     public int getNextId() {
-        return foodList.size() + 1; // Génère un nouvel ID unique
+        return foodList.size() + 1;
     }
 
     @Override

@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Step "
+        android:text="@string/step"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -111,7 +111,7 @@
             android:backgroundTint="@color/greenBtn"
             android:padding="16dp"
             android:layout_marginEnd="20dp"
-            android:text="Previous"
+            android:text="@string/previous"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />
@@ -123,7 +123,7 @@
             android:layout_height="66dp"
             android:backgroundTint="@color/greenBtn"
             android:padding="16dp"
-            android:text="Next"
+            android:text="@string/next"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="16sp" />

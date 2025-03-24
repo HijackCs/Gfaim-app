@@ -225,19 +225,26 @@ public class SummaryFragment extends Fragment {
         String dateString = currentArgs.getString("selectedDate");
         mealBody.setDate(dateString);
 
-        // Définir le type de repas
         String mealType = currentArgs.getString("mealType");
 
-        System.out.println("meal type " +mealType );
 
         switch (mealType) {
             case "BREAKFAST":
                 mealBody.setMealType("BREAKFAST");
                 break;
+            case "Petit Déjeuner":
+                mealBody.setMealType("BREAKFAST");
+                break;
             case "LUNCH":
                 mealBody.setMealType("LUNCH");
                 break;
+            case "Déjeuner":
+                mealBody.setMealType("LUNCH");
+                break;
             case "DINNER":
+                mealBody.setMealType("DINNER");
+                break;
+            case "Diner":
                 mealBody.setMealType("DINNER");
                 break;
             case "SNACK":

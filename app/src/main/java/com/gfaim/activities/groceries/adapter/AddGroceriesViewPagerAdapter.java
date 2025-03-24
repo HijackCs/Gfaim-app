@@ -7,9 +7,6 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.gfaim.activities.groceries.fragment.AddGroceriesFragment;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class AddGroceriesViewPagerAdapter extends FragmentStateAdapter {
     private final Fragment fragment;
 

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+
 import com.gfaim.R;
 import com.gfaim.activities.home.HomeActivity;
 import com.gfaim.api.ApiClient;
@@ -49,6 +50,7 @@ public class OnBoardingActivity extends AppCompatActivity {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             //empty
         }
+
         @Override
         public void onPageSelected(int position) {
 
@@ -59,12 +61,13 @@ public class OnBoardingActivity extends AppCompatActivity {
             } else {
                 backButton.setVisibility(View.INVISIBLE);
             }
-            if (position == 3){
+            if (position == 3) {
                 nextButton.setText(R.string.finish);
             } else {
                 nextButton.setText(R.string.next);
             }
         }
+
         @Override
         public void onPageScrollStateChanged(int state) {
             //empty
@@ -92,14 +95,14 @@ public class OnBoardingActivity extends AppCompatActivity {
             else {
                 String familyCode = viewPagerAdapter.getCodeFamily();
                 if (familyCode == null || familyCode.isEmpty() || familyCode.equals("000000")) {
-                    Toast.makeText(this, "Veuillez entrer un code de famille valide", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.enterValidFamily, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                postSelections(this, ALLERGIES,viewPagerAdapter.getSelectedAllergiesItems());
-                postSelections(this,"diets",viewPagerAdapter.getSelectedDietsItems());
+                postSelections(this, ALLERGIES, viewPagerAdapter.getSelectedAllergiesItems());
+                postSelections(this, "diets", viewPagerAdapter.getSelectedDietsItems());
 
                 Intent i = new Intent(OnBoardingActivity.this, HomeActivity.class);
-                log.info("[OnBoardingActivity][OnCreate] (finish) info de l'inscription " + registerInfo);
+                log.info("[OnBoardingActivity][OnCreate] (finish) Register info: " + registerInfo);
 
                 startActivity(i);
                 finish();
@@ -141,25 +144,23 @@ public class OnBoardingActivity extends AppCompatActivity {
             @Override
             public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    log.info("Données envoyées avec succès");
-                    Toast.makeText(context, "Données envoyées avec succès", Toast.LENGTH_SHORT).show();
-
+                    log.info("Data successfully send.");
                 } else {
-                    Toast.makeText(context, "Erreur lors de l'envoi", Toast.LENGTH_SHORT).show();
-                    log.info("Erreur lors de l'envoi");
+                    Toast.makeText(context, R.string.errorSending, Toast.LENGTH_SHORT).show();
+                    log.info("Error while sending data.");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
-                log.info("Erreur: " + t.getMessage());
+                log.info("Error: " + t.getMessage());
             }
         });
     }
 
 
     public void setDotIndicator(int position) {
-        int totalDots = 4; // Nombre total d'étapes
+        int totalDots = 4;
         dots = new TextView[totalDots];
         dotIndicator.removeAllViews();
 
@@ -175,8 +176,6 @@ public class OnBoardingActivity extends AppCompatActivity {
                     TypedValue.COMPLEX_UNIT_DIP, sizeInDp, getResources().getDisplayMetrics());
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(sizeInPx, sizeInPx);
-
-
 
             dots[i].setLayoutParams(params);
 

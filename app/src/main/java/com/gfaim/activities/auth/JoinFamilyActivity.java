@@ -1,8 +1,5 @@
 package com.gfaim.activities.auth;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.os.Bundle;
@@ -17,26 +14,18 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import com.gfaim.R;
-import com.gfaim.activities.settings.SettingsActivity;
 import com.gfaim.activities.settings.family.FamilyActivity;
 import com.gfaim.api.ApiClient;
 import com.gfaim.api.FamilyService;
-import com.gfaim.api.MemberService;
 import com.gfaim.auth.TokenManager;
-import com.gfaim.models.family.CreateFamily;
-import com.gfaim.models.family.CreateFamilyBody;
 import com.gfaim.models.family.FamilyBody;
 import com.gfaim.models.family.JoinFamily;
 import com.gfaim.models.member.CreateMember;
 import com.gfaim.models.member.CreateMemberNoAccount;
-import com.gfaim.models.member.CreateSelfMemberBody;
 import com.gfaim.models.member.MemberSessionBody;
 import com.gfaim.utility.api.UtileProfile;
-import com.gfaim.utility.auth.JwtDecoder;
 import com.gfaim.utility.callback.OnMemberReceivedListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -57,7 +46,6 @@ public class JoinFamilyActivity extends AppCompatActivity {
     private static Long memberId;
 
     private TokenManager tokenManager;
-    private UtileProfile utileProfile;
     private MemberSessionBody member;
 
     @Override
@@ -67,19 +55,25 @@ public class JoinFamilyActivity extends AppCompatActivity {
         setContentView(R.layout.joinfamily);
 
         tokenManager = new TokenManager(this);
-        utileProfile = new UtileProfile(this);
+        UtileProfile utileProfile = new UtileProfile(this);
 
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
-            public void onSuccess(CreateMemberNoAccount session) {}
+            public void onSuccess(CreateMemberNoAccount session) {
+                //empty
+            }
             @Override
             public void onSuccess(MemberSessionBody session) {
                 member = session;
             }
             @Override
-            public void onFailure(Throwable error) {}
+            public void onFailure(Throwable error) {
+                //empty
+            }
             @Override
-            public void onSuccess(CreateMember body) {}
+            public void onSuccess(CreateMember body) {
+                //empty
+            }
         });
 
         Button joinFamily = findViewById(R.id.joinFamily);
@@ -93,20 +87,7 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
     }
 
-    private String getUserEmail() {
-        String accessToken = tokenManager.getAccessToken();
-        if (accessToken != null) {
-            String decodedToken = JwtDecoder.decodeJWT(accessToken);
-            assert decodedToken != null;
-            JsonObject jsonObject = JsonParser.parseString(decodedToken).getAsJsonObject();
-            if (jsonObject.has("upn")) {
-                return jsonObject.get("upn").getAsString();
-            }
-        }
-        return "";
-    }
-
-    private void getFamillyName(View view) {
+    private void getFamilyName(View view) {
         //create member
         FamilyService familyService = ApiClient.getClient(this).create(FamilyService.class);
         Call<FamilyBody> call = familyService.getFamily(familyId, tokenManager.getAccessToken());
@@ -122,6 +103,7 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<FamilyBody> call, Throwable t) {
+                // empty
             }
         });
     }
@@ -175,8 +157,7 @@ public class JoinFamilyActivity extends AppCompatActivity {
                         familyCode.setVisibility(View.GONE);
                         tvFamilyName.setVisibility(View.VISIBLE);
                         tvWelcomeMessage.setVisibility(View.VISIBLE);
-                        getFamillyName(view2);
-                        //Supprime les boutons parents
+                        getFamilyName(view2);
                         joinFamily2.setVisibility(View.GONE);
                         check.setVisibility(View.VISIBLE);
                         ((Animatable) check.getDrawable()).start();
@@ -185,6 +166,7 @@ public class JoinFamilyActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
+                    // empty
                 }
             });
         });

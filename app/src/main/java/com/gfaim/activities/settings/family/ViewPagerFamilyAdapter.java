@@ -38,7 +38,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
     private final Context context;
     String name;
-   // private String selectedRole = "";
 
     @Getter
     private final HashMap<Integer, String> selectedAllergiesItems = new HashMap<>();
@@ -48,11 +47,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
     @Getter
     @Setter
     private static Long memberId;
-
-    private TokenManager tokenManager;
-
-
-    //private final String memberName = null;
 
     private final int[] sliderAllTitle = {
             R.string.screen0Family,
@@ -88,7 +82,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         FlexboxLayout allergyContainer = view.findViewById(R.id.diet_container);
         sliderTitle.setText(this.sliderAllTitle[position]);
         EditText memberName = view.findViewById(R.id.memberName);
-        //LinearLayout roleDisplay = view.findViewById(R.id.role_display);
 
         if(position == 0){
             handleEditText(memberName);
@@ -96,12 +89,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
             placeHolder1.setVisibility(View.GONE);
             memberName.setVisibility(View.GONE);
         }
-
-        /*if(position ==1){
-            initRoleSelect(view);
-        }else{
-            roleDisplay.setVisibility(View.GONE);
-        }*/
 
         if (position == 1 || position == 2) {
             generateAllergyButtons(allergyContainer, position);
@@ -119,10 +106,10 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         memberName.setVisibility(View.VISIBLE);
 
 
-        // Bloquer l'autre champ lors de la saisie
         memberName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //empty
             }
 
             @Override
@@ -177,12 +164,10 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
                     button.setOnClickListener(v -> {
                         if (selectedItems.containsKey(itemId)) {
-                            // Désélectionner
                             selectedItems.remove(itemId);
                             button.setBackground(getRoundedBorder(Color.TRANSPARENT, Color.BLACK));
                             button.setTextColor(Color.BLACK);
                         } else {
-                            // Sélectionner
                             selectedItems.put(itemId, itemName);
                             button.setBackground(getRoundedBorder(Color.parseColor("#A6CB96"), Color.TRANSPARENT));
                             button.setTextColor(Color.WHITE);
@@ -201,14 +186,14 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
 
             @Override
             public void onFailure() {
-                Toast.makeText(context, "Impossible de récupérer les données", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.errorFetching, Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     public void fetchDietOrAllergy(boolean isDiet, FetchCallback callback) {
         DietAllergyService service = ApiClient.getClient(context).create(DietAllergyService.class);
-        tokenManager = new TokenManager(context);
+        TokenManager tokenManager = new TokenManager(context);
         String token = "bearer "+ tokenManager.getAccessToken();
 
         Call<List<DietAllergy>> call = isDiet ? service.getDiets(token) : service.getAllergies(token);
@@ -225,7 +210,7 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
                     }
                     callback.onSuccess(res);
                 } else {
-                    Toast.makeText(context, "Erreur lors de la récupération des données", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.errorFetching, Toast.LENGTH_SHORT).show();
                     callback.onFailure();
                 }
             }
@@ -238,51 +223,6 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         });
     }
 
-    /*
-    private void initRoleSelect(View view) {
-        LinearLayout roleChef = view.findViewById(R.id.role_chef);
-        LinearLayout roleConsumer = view.findViewById(R.id.role_consumer);
-        ImageView iconChef = view.findViewById(R.id.icon_chef);
-        ImageView iconConsumer = view.findViewById(R.id.icon_consumer);
-        TextView textChef = view.findViewById(R.id.text_chef);
-        TextView textConsumer = view.findViewById(R.id.text_consumer);
-
-        updateRoleUI(roleChef, roleConsumer, iconChef, iconConsumer, textChef, textConsumer);
-
-        View.OnClickListener roleClickListener = v -> {
-            if (v.getId() == R.id.role_chef) {
-                selectedRole = String.valueOf(R.string.role_chef);
-            } else {
-                selectedRole = String.valueOf(R.string.role_consumer);
-            }
-
-            updateRoleUI(roleChef, roleConsumer, iconChef, iconConsumer, textChef, textConsumer);
-        };
-
-        roleChef.setOnClickListener(roleClickListener);
-        roleConsumer.setOnClickListener(roleClickListener);
-    }
-
-    private void updateRoleUI(LinearLayout roleChef, LinearLayout roleConsumer, ImageView iconChef, ImageView iconConsumer, TextView textChef, TextView textConsumer) {
-        roleChef.setBackgroundResource(R.drawable.role_unselected);
-        roleConsumer.setBackgroundResource(R.drawable.role_unselected);
-        iconChef.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
-        iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.orangeBtn));
-        textChef.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
-        textConsumer.setTextColor(ContextCompat.getColor(context, R.color.orangeBtn));
-
-        if (selectedRole.equals(String.valueOf(R.string.role_chef))) {
-            roleChef.setBackgroundResource(R.drawable.role_selected);
-            iconChef.setColorFilter(ContextCompat.getColor(context, R.color.white));
-            textChef.setTextColor(ContextCompat.getColor(context, R.color.white));
-        } else if (selectedRole.equals(String.valueOf(R.string.role_consumer))) {
-            roleConsumer.setBackgroundResource(R.drawable.role_selected);
-            iconConsumer.setColorFilter(ContextCompat.getColor(context, R.color.white));
-            textConsumer.setTextColor(ContextCompat.getColor(context, R.color.white));
-        }
-    }*/
-
-
     private GradientDrawable getRoundedBorder(int backgroundColor, int borderColor) {
         GradientDrawable drawable = new GradientDrawable();
         drawable.setShape(GradientDrawable.RECTANGLE);
@@ -292,14 +232,10 @@ public class ViewPagerFamilyAdapter extends PagerAdapter {
         return drawable;
     }
 
-
-
-
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
         container.removeView((LinearLayout) object);
     }
-
 
     public String getMemberName(){
         return name;

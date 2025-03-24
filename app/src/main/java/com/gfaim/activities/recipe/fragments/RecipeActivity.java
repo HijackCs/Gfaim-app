@@ -163,18 +163,13 @@ public class RecipeActivity extends AppCompatActivity {
                         Log.d(TAG, "Prêt en: " + recipe.getReadyInMinutes() + " min");
                         Log.d(TAG, "Portions: " + recipe.getNbServings());
 
-                        // Étapes
                         if (recipe.getSteps() != null) {
                             Log.d(TAG, "Nombre d'étapes: " + recipe.getSteps().size());
                             for (int i = 0; i < recipe.getSteps().size(); i++) {
                                 RecipeStepResponse step = recipe.getSteps().get(i);
-                                System.out.println("steps" + step);
                                     for(RecipeStepIngrResponse ingr :step.getIngredients()) {
-                                        System.out.println("ingr" + ingr);
                                         ingredients.add(new FoodItem(ingr.getIngredientCatalog().getNameFr(), ingr.getIngredientCatalog().getNameEn(), ingr.getIngredientCatalog().getName(),ingr.getIngredientCatalog().getId() ));
                                 }
-                                System.out.println("ingredients " + ingredients);
-
                                 Log.d(TAG, "Étape " + (i+1) + ": " + step.getDescription());
                             }
                         } else {
@@ -188,7 +183,6 @@ public class RecipeActivity extends AppCompatActivity {
                                 (response.errorBody() != null ? response.errorBody().toString() : "Erreur inconnue") +
                                 ", code: " + response.code());
 
-                        // Tenter d'afficher plus de détails sur l'erreur
                         if (response.errorBody() != null) {
                             try {
                                 Log.e(TAG, "Détail de l'erreur: " + response.errorBody().string());
@@ -200,8 +194,6 @@ public class RecipeActivity extends AppCompatActivity {
                         Toast.makeText(RecipeActivity.this,
                                 "Erreur lors du chargement de la recette: " + response.code(),
                                 Toast.LENGTH_SHORT).show();
-                        // Charger des données de test en cas d'échec
-                        //ensureTestIngredientsAvailable();
                     }
 
                     // Mettre à jour l'interface utilisateur
@@ -214,14 +206,11 @@ public class RecipeActivity extends AppCompatActivity {
                     Toast.makeText(RecipeActivity.this,
                             "Échec de la connexion à l'API: " + t.getMessage(),
                             Toast.LENGTH_SHORT).show();
-                    // Charger des données de test en cas d'échec
-                    // ensureTestIngredientsAvailable();
                     loadIngredientsFragment();
                 }
             });
         } catch (Exception e) {
             Log.e(TAG, "Exception lors du chargement de la recette depuis l'API", e);
-            //ensureTestIngredientsAvailable();
             loadIngredientsFragment();
         }
     }
@@ -235,41 +224,32 @@ public class RecipeActivity extends AppCompatActivity {
             return;
         }
 
-        // Mettre à jour le nom de la recette
         sharedStepsViewModel.setMenuName(recipe.getName());
 
-        // Mettre à jour le nombre de portions
         sharedStepsViewModel.setParticipantCount(recipe.getNbServings());
         Log.d(TAG, "Nombre de portions mis à jour: " + recipe.getNbServings());
 
-        // Mettre à jour la liste d'ingrédients dans le ViewModel
         sharedStepsViewModel._ingredients.setValue(ingredients);
         Log.d(TAG, "Nombre total d'ingrédients ajoutés: " + ingredients.size());
 
-        // Mettre à jour les étapes
         sharedStepsViewModel.setRawSteps(recipe.getSteps());
 
-        // Mettre à jour les descriptions d'étapes
         List<String> stepDescriptions = new ArrayList<>();
         for (RecipeStepResponse step : recipe.getSteps()) {
             stepDescriptions.add(step.getDescription());
         }
         sharedStepsViewModel.setSteps(stepDescriptions);
 
-        // Mettre à jour la durée totale de préparation
         List<Integer> durations = new ArrayList<>();
-        // Si readyInMinutes est disponible, utiliser cette valeur comme durée totale
         if (recipe.getReadyInMinutes() != null && recipe.getReadyInMinutes() > 0) {
             durations.add(recipe.getReadyInMinutes());
             Log.d(TAG, "Durée de préparation mise à jour: " + recipe.getReadyInMinutes() + " min");
         } else {
-            // Sinon, utiliser une valeur par défaut
-            durations.add(15); // 15 minutes par défaut si non spécifié
+            durations.add(15);
             Log.d(TAG, "Durée de préparation par défaut utilisée: 15 min");
         }
         sharedStepsViewModel.setDurations(durations);
 
-        // Mettre à jour les informations nutritionnelles
         sharedStepsViewModel.setNutritionInfo(
                 recipe.getCalories() != null ? recipe.getCalories() : 0,
                 recipe.getProtein() != null ? recipe.getProtein() : 0,
@@ -277,7 +257,6 @@ public class RecipeActivity extends AppCompatActivity {
                 recipe.getFat() != null ? recipe.getFat() : 0
         );
 
-        // Log des informations nutritionnelles
         Log.d(TAG, "Informations nutritionnelles mises à jour: " +
                 "Calories: " + recipe.getCalories() +
                 ", Protéines: " + recipe.getProtein() + "g" +

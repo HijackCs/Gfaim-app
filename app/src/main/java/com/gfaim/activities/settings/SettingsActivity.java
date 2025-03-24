@@ -49,39 +49,40 @@ public class SettingsActivity extends AppCompatActivity {
         LinearLayout aboutApp = findViewById(R.id.aboutApp);
 
         aboutApp.setOnClickListener(v -> {
-            String url = "https://streamable.com/lf027o"; // Remplace avec ton lien
+            String url = "https://streamable.com/lf027o";
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             v.getContext().startActivity(intent);
         });
     }
 
 
-    public void setupUsername(){
+    public void setupUsername() {
         utileProfile.getSessionMember(new OnMemberReceivedListener() {
             @Override
             public void onSuccess(CreateMemberNoAccount session) {
-
+                //empty
             }
 
             @Override
             public void onSuccess(MemberSessionBody session) {
                 TextView userName = findViewById(R.id.user_name);
-                userName.setText(session.getFirstName()+" "+session.getLastName());
+                userName.setText(session.getFirstName() + " " + session.getLastName());
             }
 
             @Override
             public void onFailure(Throwable error) {
+                //empty
 
             }
 
             @Override
             public void onSuccess(CreateMember body) {
-
+                //empty
             }
         });
     }
 
-    public void accountBtnSetup(){
+    public void accountBtnSetup() {
         LinearLayout myAccount = findViewById(R.id.my_account);
         myAccount.setOnClickListener(view -> {
             Intent intent = new Intent(SettingsActivity.this, UpdateProfileActivity.class);
@@ -89,7 +90,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void familyBtnSetup(){
+    public void familyBtnSetup() {
         LinearLayout myAccount = findViewById(R.id.my_family);
         myAccount.setOnClickListener(view -> {
             Intent intent = new Intent(SettingsActivity.this, FamilyActivity.class);
@@ -97,7 +98,7 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-    public void logOutBtnSetup(){
+    public void logOutBtnSetup() {
         LinearLayout logOut = findViewById(R.id.logOut);
         logOut.setOnClickListener(view -> {
             Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);

@@ -56,6 +56,8 @@
     <string name="screen3">Join your family</string>
     <string name="screen3Desc">To give you the best personalized dietary experience, we need to know more about you.</string>
 
+    <string name="enterValidFamily">You need to enter a valid family code.</string>
+
     <string name="allergieGluten">Gluten</string>
     <string name="allergieDiary">Dairy</string>
     <string name="allergieEgg">Egg</string>
@@ -94,6 +96,24 @@
     <string name="help_support">Help and support</string>
     <string name="about_app">About App</string>
     <string name="JoinOrCreate">Join or Create a Family</string>
+
+
+    <!-- Errors -->
+    <string name="errorSending">Error while sending.</string>
+    <string name="errorFetching">"Error fetching data."</string>
+    <string name="errorCreatingMember">Error while creating a member.</string>
+    <string name="errorCreatingFamily">Error while creating a family.</string>
+    <string name="impossibleFetch">Impossible to fetch data.</string>
+    <string name="fillAll">You must fill all fields.</string>
+    <string name="samePassword">Password must be identical.</string>
+    <string name="errorCode">Invalid code or error while reset.</string>
+    <string name="errorConnection">Connection error : </string>
+    <string name="codeSent">Code sent by mail.</string>
+    <string name="noIngredient">No ingredient available.</string>
+    <string name="impossibleConnection">Impossible to connect to server. Please retry later.</string>
+    <string name="errorDeleting">Error while deleting.</string>
+    <string name="toFridge">to fridge</string>
+    <string name="toShopping">to shopping list</string>
 
 
     <!--Famille-->
@@ -143,6 +163,28 @@
     <string name="lunch">Lunch</string>
     <string name="dinner">Dinner</string>
     <string name="no_meal_planned">No meal planned</string>
+    <string name="add_ingre">Ajout d\'ingredients</string>
+    <string name="menu_name">Nom du menu</string>
+    <string name="partcipant_number">Nombre de participants</string>
+    <string name="add_your_ingre">Ajoutez des ingrédients</string>
+    <string name="add_step">Ajoutez des étapes</string>
+    <string name="step_one">Etape 1</string>
+    <string name="add_one_step">Ajoutez une étape</string>
+    <string name="choose_recipe">Choisie une recette</string>
+    <string name="ingrdient">Ingredients</string>
+    <string name="energy">Energie</string>
+    <string name="protein">Proteine</string>
+    <string name="carbs">Glucide</string>
+    <string name="fat">Gras</string>
+    <string name="start_cooking">G Faim !</string>
+    <string name="step">Etape</string>
+    <string name="hello_user">Salut user 👋</string>
+    <string name="creeateRecipe">Créer une recette</string>
+    <string name="chooseOption">Choisir une option</string>
+    <string name="summary">Résumé</string>
+    <string name="totalCal">Total de calories</string>
+    <string name="totaltime">Temps total</string>
+    <string name="steps">Etapes</string>
 
 
 </resources>

@@ -114,12 +114,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void setupAuthButtons() {
         log.info("[RegisterActivity][setupAuthButtons] setup auth Btn ");
 
-       // LinearLayout googleBtn = findViewById(R.id.googleButton);
-        //LinearLayout facebookBtn = findViewById(R.id.facebookButton);
-
         authManager = new AuthManager(this);
-//        authManager.setupGoogleLogin(googleBtn, this);
-  //      authManager.setupFacebookLogin(facebookBtn, this);
     }
 
     private void signUp() {

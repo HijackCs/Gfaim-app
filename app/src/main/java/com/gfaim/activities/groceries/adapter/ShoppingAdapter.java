@@ -18,7 +18,6 @@ import java.util.List;
 
 public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHolder> /*implements RemovableAdapter*/ {
     private List<FoodItem> shoppingList;
-    private List<FoodItem> selectedItems = new ArrayList<>();
     private ShoppingFragment fragment;
 
     public ShoppingAdapter(List<FoodItem> shoppingList, ShoppingFragment fragment) {
@@ -39,13 +38,10 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
         holder.itemName.setText(item.getName());
         holder.itemCheckbox.setVisibility(View.VISIBLE);
 
-        // Vérifier si l'élément est sélectionné
-        holder.itemCheckbox.setOnCheckedChangeListener(null); // Empêche les boucles infinies
+        holder.itemCheckbox.setOnCheckedChangeListener(null);
         holder.itemCheckbox.setChecked(fragment.getSelectedItems().contains(item));
 
-        holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            fragment.toggleItemSelection(item, isChecked);
-        });
+        holder.itemCheckbox.setOnCheckedChangeListener((buttonView, isChecked) -> fragment.toggleItemSelection(item, isChecked));
     }
 
 
@@ -53,6 +49,7 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
     public int getItemCount() {
         return shoppingList.size();
     }
+
     public void updateList(List<FoodItem> newList) {
         this.shoppingList = new ArrayList<>(newList);
     }
@@ -68,9 +65,5 @@ public class ShoppingAdapter extends RecyclerView.Adapter<ShoppingAdapter.ViewHo
             itemCheckbox = itemView.findViewById(R.id.itemCheckbox);
         }
     }
-
-
-
-
 
 }
